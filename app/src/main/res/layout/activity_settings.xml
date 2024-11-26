@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:padding="4dp">
+
+        <Button
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:backgroundTint="@color/white"
+            android:outlineProvider="none"
+            android:padding="@dimen/padding_12"
+            app:icon="@drawable/back"
+            app:iconTint="@color/black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginStart="@dimen/margin_12"
+            android:text="@string/settings"
+            android:textColor="@color/black"
+            android:textSize="@dimen/primary_text_size"/>
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="61dp"
+        android:layout_marginTop="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/margin_21"
+            android:layout_marginStart="@dimen/margin_16"
+            android:text="@string/dark_theme"
+            android:textSize="@dimen/margin_16"
+            android:textColor="@color/black_0"/>
+
+        <Switch
+            android:layout_width="56dp"
+            android:layout_height="40dp"
+            android:layout_gravity="end"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="6dp"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="61dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/margin_21"
+            android:layout_marginStart="@dimen/margin_16"
+            android:text="@string/share"
+            android:textSize="@dimen/margin_16"
+            android:textColor="@color/black_0"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_share"
+            android:layout_gravity="end"
+            android:layout_marginTop="@dimen/margin_19"
+            android:layout_marginEnd="@dimen/margin_12"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="61dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/margin_21"
+            android:layout_marginStart="@dimen/margin_16"
+            android:text="@string/support"
+            android:textSize="@dimen/margin_16"
+            android:textColor="@color/black_0"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_support"
+            android:layout_gravity="end"
+            android:layout_marginTop="@dimen/margin_19"
+            android:layout_marginEnd="@dimen/margin_12"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="61dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/margin_21"
+            android:layout_marginStart="@dimen/margin_16"
+            android:text="@string/user_agreement"
+            android:textSize="@dimen/margin_16"
+            android:textColor="@color/black_0"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_user_agreement"
+            android:layout_gravity="end"
+            android:layout_marginTop="@dimen/margin_19"
+            android:layout_marginEnd="@dimen/margin_12"/>
+
+    </FrameLayout>
+
+</LinearLayout>
