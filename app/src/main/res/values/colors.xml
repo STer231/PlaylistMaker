@@ -5,5 +5,6 @@
     <color name="white">#FFFFFF</color>
     <color name="blue">#3772E7</color>
     <color name="gray">#AEAFB4</color>
+    <color name="track_gray">#E6E8EB</color>
 
 </resources>

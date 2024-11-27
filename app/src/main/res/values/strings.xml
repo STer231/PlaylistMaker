@@ -7,4 +7,5 @@
     <string name="share">Поделиться приложением</string>
     <string name="support">Написать в поддержку</string>
     <string name="user_agreement">Пользовательское соглашение</string>
+    <string name="back_button">Кнопка назад</string>
 </resources>
