@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     android:orientation="vertical">
 
     <LinearLayout
@@ -19,7 +20,7 @@
             android:outlineProvider="none"
             android:padding="@dimen/padding_12"
             app:icon="@drawable/back"
-            app:iconTint="@color/black" />
+            app:iconTint="@color/white" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -27,7 +28,7 @@
             android:layout_marginStart="@dimen/margin_12"
             android:gravity="center"
             android:text="@string/settings"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="@dimen/primary_text_size" />
     </LinearLayout>
 
@@ -44,7 +45,7 @@
             android:layout_marginStart="@dimen/margin_16"
             android:layout_weight="1"
             android:text="@string/dark_theme"
-            android:textColor="@color/black_0"
+            android:textColor="@color/white"
             android:textSize="@dimen/text_16" />
 
         <androidx.appcompat.widget.SwitchCompat
@@ -53,9 +54,9 @@
             android:layout_gravity="center"
             android:layout_marginEnd="6dp"
             android:paddingEnd="9dp"
-            android:checked="false"
-            app:thumbTint="@color/gray"
-            app:trackTint="@color/track_off" />
+            android:checked="true"
+            app:thumbTint="@color/thumb_on"
+            app:trackTint="@color/track_on" />
 
     </LinearLayout>
 
@@ -71,7 +72,7 @@
             android:layout_marginStart="@dimen/margin_16"
             android:layout_weight="1"
             android:text="@string/share"
-            android:textColor="@color/black_0"
+            android:textColor="@color/white"
             android:textSize="@dimen/text_16" />
 
         <ImageView
@@ -79,7 +80,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_19"
             android:layout_marginEnd="@dimen/margin_12"
-            android:src="@drawable/ic_share" />
+            android:src="@drawable/ic_share"
+            app:tint="@color/white" />
 
     </LinearLayout>
 
@@ -95,7 +97,7 @@
             android:layout_marginStart="@dimen/margin_16"
             android:layout_weight="1"
             android:text="@string/support"
-            android:textColor="@color/black_0"
+            android:textColor="@color/white"
             android:textSize="@dimen/text_16" />
 
         <ImageView
@@ -103,7 +105,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_19"
             android:layout_marginEnd="@dimen/margin_12"
-            android:src="@drawable/ic_support" />
+            android:src="@drawable/ic_support"
+            app:tint="@color/white" />
 
     </LinearLayout>
 
@@ -119,7 +122,7 @@
             android:layout_marginStart="@dimen/margin_16"
             android:layout_weight="1"
             android:text="@string/user_agreement"
-            android:textColor="@color/black_0"
+            android:textColor="@color/white"
             android:textSize="@dimen/text_16" />
 
         <ImageView
@@ -127,7 +130,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_19"
             android:layout_marginEnd="@dimen/margin_12"
-            android:src="@drawable/ic_user_agreement" />
+            android:src="@drawable/ic_user_agreement"
+            app:tint="@color/white" />
 
     </LinearLayout>
 
