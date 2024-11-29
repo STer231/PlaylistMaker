@@ -13,9 +13,11 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        val backButton = findViewById<Button>(R.id.back)
-        backButton.setOnClickListener {
+       /* val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        toolbar.setTitle(R.string.settings)
+        toolbar.setNavigationIcon(R.drawable.back)
+        toolbar.setNavigationOnClickListener {
             finish()
-        }
+        } */
     }
 }
