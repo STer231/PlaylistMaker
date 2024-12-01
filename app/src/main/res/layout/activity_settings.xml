@@ -5,31 +5,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:padding="4dp">
-
-        <Button
-            android:id="@+id/back"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="@android:color/transparent"
-            android:contentDescription="@string/back_button"
-            android:outlineProvider="none"
-            android:padding="@dimen/padding_12"
-            app:icon="@drawable/back"
-            app:iconTint="@color/black" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/margin_12"
-            android:gravity="center"
-            android:text="@string/settings"
-            android:textColor="@color/black"
-            android:textSize="@dimen/primary_text_size" />
-    </LinearLayout>
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,26 +16,17 @@
         android:layout_marginTop="24dp"
         android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="@dimen/margin_16"
-            android:layout_weight="1"
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:checked="false"
+            android:paddingStart="@dimen/margin_16"
+            android:paddingEnd="18dp"
             android:text="@string/dark_theme"
             android:textColor="@color/black_0"
-            android:textSize="@dimen/text_16" />
-
-        <androidx.appcompat.widget.SwitchCompat
-            android:layout_width="56dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:layout_marginEnd="6dp"
-            android:paddingEnd="9dp"
-            android:checked="false"
+            android:textSize="@dimen/text_16"
             app:thumbTint="@color/gray"
             app:trackTint="@color/track_off" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -70,17 +40,12 @@
             android:layout_gravity="center"
             android:layout_marginStart="@dimen/margin_16"
             android:layout_weight="1"
+            android:drawableEnd="@drawable/ic_share"
+            android:paddingEnd="@dimen/padding_12"
             android:text="@string/share"
             android:textColor="@color/black_0"
             android:textSize="@dimen/text_16" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_19"
-            android:layout_marginEnd="@dimen/margin_12"
-            android:src="@drawable/ic_share" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -94,17 +59,11 @@
             android:layout_gravity="center"
             android:layout_marginStart="@dimen/margin_16"
             android:layout_weight="1"
+            android:drawableEnd="@drawable/ic_support"
+            android:paddingEnd="@dimen/padding_12"
             android:text="@string/support"
             android:textColor="@color/black_0"
             android:textSize="@dimen/text_16" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_19"
-            android:layout_marginEnd="@dimen/margin_12"
-            android:src="@drawable/ic_support" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -118,17 +77,11 @@
             android:layout_gravity="center"
             android:layout_marginStart="@dimen/margin_16"
             android:layout_weight="1"
+            android:drawableEnd="@drawable/ic_user_agreement"
+            android:paddingEnd="@dimen/padding_12"
             android:text="@string/user_agreement"
             android:textColor="@color/black_0"
             android:textSize="@dimen/text_16" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_19"
-            android:layout_marginEnd="@dimen/margin_12"
-            android:src="@drawable/ic_user_agreement" />
-
     </LinearLayout>
 
 </LinearLayout>
