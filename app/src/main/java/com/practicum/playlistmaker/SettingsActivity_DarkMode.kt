@@ -1,20 +1,19 @@
 package com.practicum.playlistmaker
 
 import android.os.Bundle
-import android.widget.Button
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.appcompat.widget.Toolbar
+
 
 class SettingsActivity_DarkMode : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_settings_dark_mode)
 
-        val backButton = findViewById<Button>(R.id.back)
-        backButton.setOnClickListener {
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        toolbar.setTitle(R.string.settings)
+        toolbar.setNavigationIcon(R.drawable.back)
+        toolbar.setNavigationOnClickListener {
             finish()
         }
     }
