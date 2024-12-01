@@ -13,12 +13,6 @@
         android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
         tools:targetApi="31">
         <activity
-            android:name=".SettingsActivity_DarkMode"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity_DarkMode"
-            android:exported="false" />
-        <activity
             android:name=".SearchActivity"
             android:exported="false" />
         <activity

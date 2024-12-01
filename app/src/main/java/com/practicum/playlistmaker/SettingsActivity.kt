@@ -11,8 +11,6 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_settings)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        toolbar.setTitle(R.string.settings)
-        toolbar.setNavigationIcon(R.drawable.back)
         toolbar.setNavigationOnClickListener {
             finish()
         }

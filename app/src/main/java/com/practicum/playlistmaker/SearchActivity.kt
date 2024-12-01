@@ -10,8 +10,6 @@ class SearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        toolbar.setTitle(R.string.search)
-        toolbar.setNavigationIcon(R.drawable.back)
         toolbar.setNavigationOnClickListener {
             finish()
         }

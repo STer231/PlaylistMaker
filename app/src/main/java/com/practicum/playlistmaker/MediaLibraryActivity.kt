@@ -10,8 +10,6 @@ class MediaLibraryActivity : AppCompatActivity() {
         setContentView(R.layout.activity_media_library)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        toolbar.setTitle(R.string.media_library)
-        toolbar.setNavigationIcon(R.drawable.back)
         toolbar.setNavigationOnClickListener {
             finish()
         }
