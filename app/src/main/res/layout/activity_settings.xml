@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="@string/settings"
+        app:navigationIcon="@drawable/back"/>
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_61"
+        android:checked="false"
+        android:layout_marginTop="24dp"
+        android:paddingEnd="18dp"
+        android:paddingStart="@dimen/margin_16"
+        android:text="@string/dark_theme"
+        android:textColor="@color/black_0"
+        android:textSize="@dimen/text_16"
+        app:thumbTint="@color/gray"
+        app:trackTint="@color/track_off" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_61"
+        android:layout_gravity="center"
+        android:paddingEnd="@dimen/padding_12"
+        android:paddingStart="@dimen/margin_16"
+        android:gravity="center_vertical"
+        android:text="@string/share"
+        android:textColor="@color/black_0"
+        android:textSize="@dimen/text_16"
+        app:drawableEndCompat="@drawable/ic_share" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_61"
+        android:layout_gravity="center"
+        android:paddingEnd="@dimen/padding_12"
+        android:paddingStart="@dimen/margin_16"
+        android:gravity="center_vertical"
+        android:text="@string/support"
+        android:textColor="@color/black_0"
+        android:textSize="@dimen/text_16"
+        app:drawableEndCompat="@drawable/ic_support" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_61"
+        android:layout_gravity="center"
+        android:paddingEnd="@dimen/padding_12"
+        android:paddingStart="@dimen/margin_16"
+        android:gravity="center_vertical"
+        android:text="@string/user_agreement"
+        android:textColor="@color/black_0"
+        android:textSize="@dimen/text_16"
+        app:drawableEndCompat="@drawable/ic_user_agreement" />
+
+</LinearLayout>
