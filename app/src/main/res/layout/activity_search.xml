@@ -1,14 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="@string/search"
-        app:navigationIcon="@drawable/back"/>
+        app:navigationIcon="@drawable/back"
+        app:title="@string/search" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_marginHorizontal="@dimen/margin_16"
+        android:layout_marginTop="@dimen/padding_8"
+        android:background="@drawable/ed_style"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/searchEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/ic_search_edit_text"
+            android:drawablePadding="@dimen/padding_8"
+            android:hint="@string/search"
+            android:textColorHint="@color/gray"
+            android:textColor="@color/black_0"
+            android:textSize="@dimen/text_16"
+            android:paddingStart="@dimen/padding_12"
+            android:maxLength="15"
+            android:maxLines="1"
+            android:inputType="text"
+            android:background="@null"/>
+
+        <ImageView
+            android:id="@+id/clearIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:tint="@color/gray"
+            android:visibility="gone"
+            android:background="@null"
+            tools:ignore="UseAppTint" />
+
+    </LinearLayout>
+
 </LinearLayout>

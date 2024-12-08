@@ -5,6 +5,7 @@
     <color name="white">#FFFFFF</color>
     <color name="blue">#3772E7</color>
     <color name="gray">#AEAFB4</color>
+    <color name="gray_1">#E6E8EB</color>
     <color name="track_off">#E6E8EB</color>
     <color name="thumb_on">#3772E7</color>
     <color name="track_on">#9FBBF3</color>
