@@ -8,9 +8,7 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:navigationIcon="@drawable/back"
+        style="@style/SubsequentToolbarsStyle"
         app:title="@string/search" />
 
     <LinearLayout
@@ -22,33 +20,24 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
+        <ImageView style="@style/IconEditTextSearchStyle"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="@dimen/padding_8"
+            android:src="@drawable/ic_search_edit_text"/>
+
         <EditText
             android:id="@+id/searchEditText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableLeft="@drawable/ic_search_edit_text"
-            android:drawablePadding="@dimen/padding_8"
-            android:hint="@string/search"
-            android:textColorHint="@color/gray"
-            android:textColor="@color/black_0"
-            android:textSize="@dimen/text_16"
-            android:paddingStart="@dimen/padding_12"
-            android:maxLength="15"
-            android:maxLines="1"
-            android:inputType="text"
-            android:background="@null"/>
-
-        <ImageView
-            android:id="@+id/clearIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
-            android:tint="@color/gray"
-            android:visibility="gone"
+            style="@style/EditTextSearchStyle"
             android:background="@null"
-            tools:ignore="UseAppTint" />
+            android:hint="@string/search" />
+
+        <ImageView style="@style/IconEditTextSearchStyle"
+            android:id="@+id/clearIcon"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/padding_8"
+            android:background="@null"
+            android:src="@drawable/ic_baseline_close"
+            android:visibility="gone" />
 
     </LinearLayout>
 

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <style name="Base.Toolbar" parent="Widget.Material3.Toolbar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -14,13 +13,33 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="SubsequentToolbars" parent="Base.Toolbar">
+    <style name="SubsequentToolbarsStyle" parent="Base.Toolbar">
         <item name="titleTextColor">@color/black_0</item>
         <item name="navigationIcon">@drawable/back</item>
         <item name="navigationIconTint">@color/black_0</item>
     </style>
 
-    <style name="SwitchTheme">
+    <style name="EditTextSearchStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textColorHint">@color/gray</item>
+        <item name="android:textColor">@color/black_0</item>
+        <item name="android:textSize">@dimen/text_16</item>
+        <item name="android:maxLength">12</item>
+        <item name="maxLines">1</item>
+        <item name="android:inputType">text</item>
+        <item name="fontFamily">@font/ys_display_regular</item>
+        <item name="fontWeight">400</item>
+    </style>
+
+    <style name="IconEditTextSearchStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="tint">@color/gray</item>
+    </style>
+    
+    <style name="SwitchThemeStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/height_61</item>
         <item name="android:checked">false</item>

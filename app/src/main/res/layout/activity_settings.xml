@@ -7,11 +7,11 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        style="@style/SubsequentToolbars"
+        style="@style/SubsequentToolbarsStyle"
         app:title="@string/settings" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
-        style="@style/SwitchTheme"
+        style="@style/SwitchThemeStyle"
         android:layout_marginTop="24dp"
         android:text="@string/dark_theme" />
 
