@@ -16,7 +16,6 @@
     <style name="SubsequentToolbarsStyle" parent="Base.Toolbar">
         <item name="titleTextColor">@color/white</item>
         <item name="navigationIcon">@drawable/back</item>
-        <item name="navigationIconTint">@color/white</item>
     </style>
 
     <style name="EditTextSearchStyle">
@@ -24,7 +23,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
         <item name="android:textColorHint">@color/black</item>
-        <item name="android:textColor">@color/black_0</item>
+        <item name="android:textColor">@color/black</item>
         <item name="android:textSize">@dimen/text_16</item>
         <item name="android:maxLength">12</item>
         <item name="maxLines">1</item>
@@ -67,7 +66,7 @@
         <item name="fontWeight">400</item>
     </style>
 
-    <style name="ButtonNavigationStyle">
+    <style name="ButtonNavigationStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0dp</item>
         <item name="android:layout_weight">1</item>

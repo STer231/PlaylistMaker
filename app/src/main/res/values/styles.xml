@@ -14,9 +14,8 @@
     </style>
 
     <style name="SubsequentToolbarsStyle" parent="Base.Toolbar">
-        <item name="titleTextColor">@color/black_0</item>
+        <item name="titleTextColor">@color/black_total</item>
         <item name="navigationIcon">@drawable/back</item>
-        <item name="navigationIconTint">@color/black_0</item>
     </style>
 
     <style name="EditTextSearchStyle">
@@ -24,7 +23,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
         <item name="android:textColorHint">@color/gray</item>
-        <item name="android:textColor">@color/black_0</item>
+        <item name="android:textColor">@color/black</item>
         <item name="android:textSize">@dimen/text_16</item>
         <item name="android:maxLength">12</item>
         <item name="maxLines">1</item>
@@ -45,7 +44,7 @@
         <item name="android:checked">false</item>
         <item name="android:paddingRight">18dp</item>
         <item name="android:paddingLeft">@dimen/margin_16</item>
-        <item name="android:textColor">@color/black_0</item>
+        <item name="android:textColor">@color/black_total</item>
         <item name="android:textSize">@dimen/text_16</item>
         <item name="thumbTint">@color/gray</item>
         <item name="trackTint">@color/track_off</item>
@@ -60,14 +59,14 @@
         <item name="android:paddingRight">@dimen/padding_12</item>
         <item name="android:paddingLeft">@dimen/margin_16</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:textColor">@color/black_0</item>
+        <item name="android:textColor">@color/black_total</item>
         <item name="android:textSize">@dimen/text_16</item>
         <item name="drawableTint">@color/gray</item>
         <item name="fontFamily">@font/ys_display_regular</item>
         <item name="fontWeight">400</item>
     </style>
 
-    <style name="ButtonNavigationStyle">
+    <style name="ButtonNavigationStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0dp</item>
         <item name="android:layout_weight">1</item>
