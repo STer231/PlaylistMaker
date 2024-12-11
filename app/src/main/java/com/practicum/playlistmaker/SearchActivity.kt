@@ -14,6 +14,7 @@ import androidx.appcompat.widget.Toolbar
 class SearchActivity : AppCompatActivity() {
 
     private lateinit var inputEditText: EditText
+    private var searchText: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +39,7 @@ class SearchActivity : AppCompatActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                searchText = s?.toString()
                 clearButton.visibility = clearButtonVisibility(s)
             }
 
@@ -46,8 +48,8 @@ class SearchActivity : AppCompatActivity() {
         inputEditText.addTextChangedListener(simpleTextWatcher)
 
         if (savedInstanceState != null) {
-            val restoredText = savedInstanceState.getString("search_text")
-            inputEditText.setText(restoredText)
+            searchText = savedInstanceState.getString("search_text")
+            inputEditText.setText(searchText)
         }
     }
 
@@ -61,12 +63,12 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString("search_text", inputEditText.text.toString())
+        outState.putString("search_text", searchText)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        val restoredText = savedInstanceState.getString("search_text")
-        inputEditText.setText(restoredText)
+        searchText = savedInstanceState.getString("search_text")
+        inputEditText.setText(searchText)
     }
 }

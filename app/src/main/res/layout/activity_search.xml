@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -23,7 +22,8 @@
         <ImageView style="@style/IconEditTextSearchStyle"
             android:layout_marginStart="14dp"
             android:layout_marginEnd="@dimen/padding_8"
-            android:src="@drawable/ic_search_edit_text"/>
+            android:src="@drawable/ic_search_edit_text"
+            android:contentDescription="@null"/>
 
         <EditText
             android:id="@+id/searchEditText"
@@ -37,7 +37,8 @@
             android:layout_marginEnd="@dimen/padding_8"
             android:background="@null"
             android:src="@drawable/ic_baseline_close"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:contentDescription="@string/clear_button_description"/>
 
     </LinearLayout>
 
