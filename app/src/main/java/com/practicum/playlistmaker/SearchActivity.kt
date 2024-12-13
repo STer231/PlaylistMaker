@@ -30,9 +30,9 @@ class SearchActivity : AppCompatActivity() {
 
         clearButton.setOnClickListener {
             inputEditText.setText("")
-            inputEditText.requestFocus()
+            inputEditText.clearFocus()
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.showSoftInput(inputEditText, InputMethodManager.SHOW_IMPLICIT)
+            imm.hideSoftInputFromWindow(inputEditText.windowToken, 0)
         }
 
         val simpleTextWatcher = object : TextWatcher {
