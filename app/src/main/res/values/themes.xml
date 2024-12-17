@@ -1,8 +1,17 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources >
     <!-- Base application theme. -->
     <style name="Base.Theme.PlaylistMaker" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+
+    <style name="Theme.FirstScreen" parent="Base.Theme.PlaylistMaker">
+        <item name="android:windowBackground">@color/blue</item>
+    </style>
+
+    <style name="Theme.SubsequentScreens" parent="Base.Theme.PlaylistMaker">
+        <item name="android:windowBackground">@color/white</item>
+        <item name="colorBackgroundEditText">@color/gray_light</item>
     </style>
 
     <style name="Theme.PlaylistMaker" parent="Base.Theme.PlaylistMaker" />

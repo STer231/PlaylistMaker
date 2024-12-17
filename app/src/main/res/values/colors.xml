@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#1A1B22</color>
-    <color name="black_0">#000000</color>
+    <color name="black_total">#000000</color>
     <color name="white">#FFFFFF</color>
     <color name="blue">#3772E7</color>
     <color name="gray">#AEAFB4</color>
+    <color name="gray_light">#E6E8EB</color>
     <color name="track_off">#E6E8EB</color>
+    <color name="thumb_on">#3772E7</color>
+    <color name="track_on">#9FBBF3</color>
 
 </resources>
