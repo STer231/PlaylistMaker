@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingVertical="@dimen/padding_8"
+    android:paddingStart="13dp">
+
+    <ImageView
+        android:id="@+id/iv_cover"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:contentDescription="Обложка трека"
+        android:scaleType="centerCrop"
+        tools:src="@drawable/nirvana_cover"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/padding_8"
+        android:paddingTop="6dp">
+
+        <TextView
+            android:id="@+id/tv_trackTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/ys_display_regular"
+            android:maxLines="1"
+            android:text="Track Title"
+            android:textColor="@color/black_total"
+            android:textFontWeight="400"
+            android:textSize="@dimen/text_16"
+            tools:text="Smells Like Teen Spirit" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_artistName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:fontFamily="@font/ys_display_regular"
+                android:maxLines="1"
+                android:text="Artist Name"
+                android:textColor="@color/gray"
+                android:textFontWeight="400"
+                android:textSize="11sp"
+                tools:text="Nirvana" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="5dp"
+                android:src="@drawable/ic_ellipse"/>
+
+            <TextView
+                android:id="@+id/tv_trackDuration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:ellipsize="end"
+                android:fontFamily="@font/ys_display_regular"
+                android:maxLines="1"
+                android:text="3:45"
+                android:textColor="@color/gray"
+                android:textFontWeight="400"
+                android:textSize="11sp"
+                tools:text="4:15" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="@dimen/margin_12"
+        android:src="@drawable/ic_user_agreement" />
+</LinearLayout>

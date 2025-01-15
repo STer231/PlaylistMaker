@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.recyclerview.widget.RecyclerView
 
 class SearchActivity : AppCompatActivity() {
 
@@ -71,4 +72,6 @@ class SearchActivity : AppCompatActivity() {
         searchText = savedInstanceState.getString("search_text")
         inputEditText.setText(searchText)
     }
+
+    val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
 }
