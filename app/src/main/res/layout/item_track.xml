@@ -4,15 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingVertical="@dimen/padding_8"
-    android:paddingStart="13dp">
+    android:paddingStart="@dimen/padding_13"
+    tools:ignore="RtlSymmetry">
 
     <ImageView
-        android:id="@+id/iv_cover"
+        android:id="@+id/ivCover"
         android:layout_width="45dp"
         android:layout_height="45dp"
-        android:contentDescription="Обложка трека"
-        android:scaleType="centerCrop"
-        tools:src="@drawable/nirvana_cover"/>
+        android:contentDescription="@string/track_cover"
+        tools:src="@drawable/placeholder" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -20,18 +20,13 @@
         android:layout_weight="1"
         android:orientation="vertical"
         android:paddingHorizontal="@dimen/padding_8"
-        android:paddingTop="6dp">
+        android:paddingTop="@dimen/padding_6">
 
         <TextView
-            android:id="@+id/tv_trackTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/tvTrackTitle"
+            style="@style/TrackTitleStyle"
             android:ellipsize="end"
-            android:fontFamily="@font/ys_display_regular"
             android:maxLines="1"
-            android:text="Track Title"
-            android:textColor="@color/black_total"
-            android:textFontWeight="400"
             android:textSize="@dimen/text_16"
             tools:text="Smells Like Teen Spirit" />
 
@@ -42,17 +37,12 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tv_artistName"
+                android:id="@+id/tvArtistName"
+                style="@style/TracksTextStyle"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ellipsize="end"
-                android:fontFamily="@font/ys_display_regular"
                 android:maxLines="1"
-                android:text="Artist Name"
-                android:textColor="@color/gray"
-                android:textFontWeight="400"
-                android:textSize="11sp"
                 tools:text="Nirvana" />
 
             <ImageView
@@ -60,20 +50,15 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="5dp"
-                android:src="@drawable/ic_ellipse"/>
+                android:contentDescription="@null"
+                android:src="@drawable/ic_ellipse" />
 
             <TextView
-                android:id="@+id/tv_trackDuration"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/tvTrackDuration"
+                style="@style/TracksTextStyle"
                 android:layout_gravity="end"
                 android:ellipsize="end"
-                android:fontFamily="@font/ys_display_regular"
                 android:maxLines="1"
-                android:text="3:45"
-                android:textColor="@color/gray"
-                android:textFontWeight="400"
-                android:textSize="11sp"
                 tools:text="4:15" />
         </LinearLayout>
     </LinearLayout>
@@ -81,7 +66,8 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/margin_10"
         android:layout_marginEnd="@dimen/margin_12"
+        android:contentDescription="@null"
         android:src="@drawable/ic_user_agreement" />
 </LinearLayout>
