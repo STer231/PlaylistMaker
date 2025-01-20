@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingVertical="@dimen/padding_8"
+    android:paddingStart="@dimen/padding_13"
+    tools:ignore="RtlSymmetry">
+
+    <ImageView
+        android:id="@+id/ivCover"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:contentDescription="@string/track_cover"
+        tools:src="@drawable/placeholder" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/padding_8"
+        android:paddingTop="@dimen/padding_6">
+
+        <TextView
+            android:id="@+id/tvTrackTitle"
+            style="@style/TrackTitleStyle"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textSize="@dimen/text_16"
+            tools:text="Smells Like Teen Spirit" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvArtistName"
+                style="@style/TracksTextStyle"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
+                tools:text="Nirvana" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="5dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_ellipse" />
+
+            <TextView
+                android:id="@+id/tvTrackDuration"
+                style="@style/TracksTextStyle"
+                android:layout_gravity="end"
+                android:ellipsize="end"
+                android:maxLines="1"
+                tools:text="4:15" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_10"
+        android:layout_marginEnd="@dimen/margin_12"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_user_agreement" />
+</LinearLayout>

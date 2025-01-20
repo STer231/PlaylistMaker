@@ -14,4 +14,5 @@
     <string name="support_email">igorrozembaum@yandex.ru</string>
     <string name="link_to_the_offer">https://yandex.ru/legal/practicum_offer/</string>
     <string name="clear_button_description">Отчисить поле ввода</string>
+    <string name="track_cover">Обложка трека</string>
 </resources>
