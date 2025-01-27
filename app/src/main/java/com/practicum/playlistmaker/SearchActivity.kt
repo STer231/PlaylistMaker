@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,7 +32,6 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var recyclerViev: RecyclerView
     private lateinit var placeholderLayout: ViewGroup
     private lateinit var placeholderText: TextView
-    private lateinit var placeholderSecondText: TextView
     private lateinit var refreshButton: Button
     private lateinit var errorPlaceholder: ImageView
 
@@ -57,7 +57,6 @@ class SearchActivity : AppCompatActivity() {
         recyclerViev = findViewById(R.id.recyclerView)
         placeholderLayout = findViewById(R.id.placeholderLayout)
         placeholderText = findViewById(R.id.tv_error_placeholder_text)
-        placeholderSecondText = findViewById(R.id.tv_error_placeholder_second_text)
         refreshButton = findViewById(R.id.bt_error_placeholder_refresh_request)
         errorPlaceholder = findViewById(R.id.iv_error_placeholder)
 
@@ -125,12 +124,24 @@ class SearchActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString("search_text", searchText)
+        outState.putString("last_query", lastQuery)
+        val gson = Gson()
+        val trackListJson = gson.toJson(trackList)
+        outState.putString("track_list", trackListJson)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         searchText = savedInstanceState.getString("search_text")
         inputEditText.setText(searchText)
+        val gson = Gson()
+        val trackListJson = savedInstanceState.getString("track_list")
+        if (!trackListJson.isNullOrEmpty()) {
+            val restoredTrackList = gson.fromJson(trackListJson, Array<Track>::class.java)
+            trackList.clear()
+            trackList.addAll(restoredTrackList)
+            adapter.notifyDataSetChanged()
+        }
     }
 
     private fun searchTracks(query: String) {
@@ -160,7 +171,6 @@ class SearchActivity : AppCompatActivity() {
                         getString(R.string.problems_with_the_internet),
                         true,
                         R.drawable.placeholder_no_internet,
-                        getString(R.string.retry_to_connect)
                     )
                 }
             }
@@ -170,7 +180,6 @@ class SearchActivity : AppCompatActivity() {
                     getString(R.string.problems_with_the_internet),
                     true,
                     R.drawable.placeholder_no_internet,
-                    getString(R.string.retry_to_connect)
                 )
             }
         })
@@ -185,7 +194,6 @@ class SearchActivity : AppCompatActivity() {
         text: String,
         isNetworkProblem: Boolean = false,
         placeholder: Int,
-        secondText: String? = null
     ) {
         placeholderLayout.visibility = View.VISIBLE
         recyclerViev.visibility = View.GONE
@@ -193,11 +201,5 @@ class SearchActivity : AppCompatActivity() {
         errorPlaceholder.setImageResource(placeholder)
         refreshButton.visibility = if (isNetworkProblem) View.VISIBLE else View.GONE
 
-        if (secondText != null) {
-            placeholderSecondText.visibility = View.VISIBLE
-            placeholderSecondText.text = secondText
-        } else {
-            placeholderSecondText.visibility = View.GONE
-        }
     }
 }
