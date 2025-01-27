@@ -15,4 +15,8 @@
     <string name="link_to_the_offer">https://yandex.ru/legal/practicum_offer/</string>
     <string name="clear_button_description">Отчисить поле ввода</string>
     <string name="track_cover">Обложка трека</string>
+    <string name="problems_with_the_internet">Проблемы со связью</string>
+    <string name="retry_to_connect">Загрузка не удалась. Проверьте подключение к интернету</string>
+    <string name="nothing_found">Ничего не нашлось</string>
+    <string name="something_went_wrong">Что-то не так</string>
 </resources>

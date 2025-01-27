@@ -23,7 +23,7 @@ class TrackViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
         println(model.artworkUrl100)
         Glide.with(itemView)
             .load(model.artworkUrl100)
-            .placeholder(R.drawable.placeholder)
+            .placeholder(R.drawable.placeholder_cover)
             .fitCenter()
             .transform(RoundedCorners(2))
             .into(ivCover)

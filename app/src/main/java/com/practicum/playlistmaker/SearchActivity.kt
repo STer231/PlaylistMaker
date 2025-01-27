@@ -5,27 +5,63 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchActivity : AppCompatActivity() {
 
+    private val itunesBaseUrl = "https://itunes.apple.com"
+
     private lateinit var inputEditText: EditText
+    private lateinit var clearButton: ImageView
+    private lateinit var recyclerViev: RecyclerView
+    private lateinit var placeholderLayout: ViewGroup
+    private lateinit var placeholderText: TextView
+    private lateinit var placeholderSecondText: TextView
+    private lateinit var refreshButton: Button
+    private lateinit var errorPlaceholder: ImageView
+
     private var searchText: String? = null
+    private var lastQuery: String? = null
+
+    private val retrofit = Retrofit.Builder()
+        .baseUrl(itunesBaseUrl)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
+    private val itunesService = retrofit.create(ItunesApi::class.java)
+
+    val trackList = ArrayList<Track>()
+    val adapter = TrackAdapter(trackList)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
+        inputEditText = findViewById(R.id.searchEditText)
+        clearButton = findViewById(R.id.clearIcon)
+        recyclerViev = findViewById(R.id.recyclerView)
+        placeholderLayout = findViewById(R.id.placeholderLayout)
+        placeholderText = findViewById(R.id.tv_error_placeholder_text)
+        placeholderSecondText = findViewById(R.id.tv_error_placeholder_second_text)
+        refreshButton = findViewById(R.id.bt_error_placeholder_refresh_request)
+        errorPlaceholder = findViewById(R.id.iv_error_placeholder)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        inputEditText = findViewById(R.id.searchEditText)
-        val clearButton = findViewById<ImageView>(R.id.clearIcon)
         toolbar.setNavigationOnClickListener {
             finish()
         }
@@ -35,6 +71,9 @@ class SearchActivity : AppCompatActivity() {
             inputEditText.clearFocus()
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(inputEditText.windowToken, 0)
+            placeholderLayout.visibility = View.GONE
+            trackList.clear()
+            adapter.notifyDataSetChanged()
         }
 
         val simpleTextWatcher = object : TextWatcher {
@@ -54,43 +93,25 @@ class SearchActivity : AppCompatActivity() {
             inputEditText.setText(searchText)
         }
 
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerViev.layoutManager = LinearLayoutManager(this)
+        recyclerViev.adapter = adapter
 
-        val trackList = listOf(
-            Track(
-                "Smells Like Teen Spirit",
-                "Nirvana",
-                "5:01",
-                "https://is5-ssl.mzstatic.com/image/thumb/Music115/v4/7b/58/c2/7b58c21a-2b51-2bb2-e59a-9bb9b96ad8c3/00602567924166.rgb.jpg/100x100bb.jpg"
-            ),
-            Track(
-                "Billie Jean",
-                "Michael Jackson",
-                "4:35",
-                "https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/3d/9d/38/3d9d3811-71f0-3a0e-1ada-3004e56ff852/827969428726.jpg/100x100bb.jpg"
-            ),
-            Track(
-                "Stayin' Alive",
-                "Bee Gees",
-                "4:10",
-                "https://is4-ssl.mzstatic.com/image/thumb/Music115/v4/1f/80/1f/1f801fc1-8c0f-ea3e-d3e5-387c6619619e/16UMGIM86640.rgb.jpg/100x100bb.jpg"
-            ),
-            Track(
-                "Whole Lotta Love",
-                "Led Zeppelin",
-                "5:33",
-                "https://is2-ssl.mzstatic.com/image/thumb/Music62/v4/7e/17/e3/7e17e33f-2efa-2a36-e916-7f808576cf6b/mzm.fyigqcbs.jpg/100x100bb.jpg"
-            ),
-            Track(
-                "Sweet Child O'Mine",
-                "Guns N' Roses",
-                "5:03",
-                "https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/a0/4d/c4/a04dc484-03cc-02aa-fa82-5334fcb4bc16/18UMGIM24878.rgb.jpg/100x100bb.jpg"
-            )
-        )
-        val adapter = TrackAdapter(trackList)
-        recyclerView.adapter = adapter
+        refreshButton.setOnClickListener {
+            lastQuery?.let { query ->
+                searchTracks(query)
+            }
+        }
+
+        inputEditText.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                val query = inputEditText.text.toString()
+                if (query.isNotEmpty()) {
+                    searchTracks(query)
+                }
+                true
+            }
+            false
+        }
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Int {
@@ -110,5 +131,73 @@ class SearchActivity : AppCompatActivity() {
         super.onRestoreInstanceState(savedInstanceState)
         searchText = savedInstanceState.getString("search_text")
         inputEditText.setText(searchText)
+    }
+
+    private fun searchTracks(query: String) {
+        lastQuery = query
+        trackList.clear()
+        adapter.notifyDataSetChanged()
+        showRecyclerView()
+        itunesService.search(query).enqueue(object : Callback<SearchResponse> {
+            override fun onResponse(
+                call: Call<SearchResponse>,
+                response: Response<SearchResponse>
+            ) {
+                if (response.isSuccessful) {
+                    if (!response.body()?.results.isNullOrEmpty()) {
+                        trackList.clear()
+                        trackList.addAll(response.body()?.results!!)
+                        adapter.notifyDataSetChanged()
+                    } else {
+                        showMessage(
+                            getString(R.string.nothing_found),
+                            false,
+                            R.drawable.placeholder_not_found
+                        )
+                    }
+                } else {
+                    showMessage(
+                        getString(R.string.problems_with_the_internet),
+                        true,
+                        R.drawable.placeholder_no_internet,
+                        getString(R.string.retry_to_connect)
+                    )
+                }
+            }
+
+            override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
+                showMessage(
+                    getString(R.string.problems_with_the_internet),
+                    true,
+                    R.drawable.placeholder_no_internet,
+                    getString(R.string.retry_to_connect)
+                )
+            }
+        })
+    }
+
+    private fun showRecyclerView() {
+        placeholderLayout.visibility = View.GONE
+        recyclerViev.visibility = View.VISIBLE
+    }
+
+    private fun showMessage(
+        text: String,
+        isNetworkProblem: Boolean = false,
+        placeholder: Int,
+        secondText: String? = null
+    ) {
+        placeholderLayout.visibility = View.VISIBLE
+        recyclerViev.visibility = View.GONE
+        placeholderText.text = text
+        errorPlaceholder.setImageResource(placeholder)
+        refreshButton.visibility = if (isNetworkProblem) View.VISIBLE else View.GONE
+
+        if (secondText != null) {
+            placeholderSecondText.visibility = View.VISIBLE
+            placeholderSecondText.text = secondText
+        } else {
+            placeholderSecondText.visibility = View.GONE
+        }
     }
 }

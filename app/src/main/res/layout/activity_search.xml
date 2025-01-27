@@ -27,6 +27,8 @@
         <EditText
             android:id="@+id/searchEditText"
             style="@style/EditTextSearchStyle"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
             android:layout_marginStart="36dp"
             android:background="@null"
             android:hint="@string/search" />
@@ -48,5 +50,56 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_16"
         tools:listitem="@layout/item_track"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:visibility="visible"/>
+
+    <LinearLayout
+        android:id="@+id/placeholderLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="102dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/iv_error_placeholder"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/placeholder_not_found"/>
+
+        <TextView
+            android:id="@+id/tv_error_placeholder_text"
+            android:layout_width="312dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16"
+            android:textSize="19sp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:fontFamily="@font/ys_display_medium"
+            android:textFontWeight="400"
+            android:text="@string/nothing_found"/>
+
+        <TextView
+            android:id="@+id/tv_error_placeholder_second_text"
+            android:layout_width="312dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16"
+            android:textSize="19sp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:fontFamily="@font/ys_display_medium"
+            android:textFontWeight="400"
+            android:visibility="gone"
+            tools:text="@string/retry_to_connect"/>
+
+        <Button
+            android:id="@+id/bt_error_placeholder_refresh_request"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Обновить"
+            android:visibility="gone"/>
+
+    </LinearLayout>
 </LinearLayout>
