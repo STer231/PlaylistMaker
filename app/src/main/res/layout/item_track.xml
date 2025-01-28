@@ -12,7 +12,7 @@
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:contentDescription="@string/track_cover"
-        tools:src="@drawable/placeholder" />
+        tools:src="@drawable/placeholder_cover" />
 
     <LinearLayout
         android:layout_width="0dp"

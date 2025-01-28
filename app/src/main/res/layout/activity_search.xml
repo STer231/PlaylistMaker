@@ -27,8 +27,11 @@
         <EditText
             android:id="@+id/searchEditText"
             style="@style/EditTextSearchStyle"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
             android:layout_marginStart="36dp"
             android:background="@null"
+            android:textCursorDrawable="@drawable/cursor"
             android:hint="@string/search" />
 
         <ImageView style="@style/IconEditTextSearchStyle"
@@ -37,8 +40,7 @@
             android:layout_marginEnd="14dp"
             android:background="@null"
             android:src="@drawable/ic_baseline_close"
-            android:visibility="gone"
-            android:contentDescription="@string/clear_button_description"/>
+            android:visibility="gone"/>
 
     </FrameLayout>
 
@@ -48,5 +50,35 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_16"
         tools:listitem="@layout/item_track"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:visibility="visible"/>
+
+    <LinearLayout
+        android:id="@+id/placeholderLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="102dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/iv_error_placeholder"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/placeholder_not_found"/>
+
+        <TextView style="@style/ErrorPlaceholderTextStyle"
+            android:id="@+id/tv_error_placeholder_text"
+            tools:text="@string/problems_with_the_internet"/>
+
+        <Button style="@style/ErrorPlaceholderButtonStyle"
+            android:id="@+id/bt_error_placeholder_refresh_request"
+            android:paddingTop="@dimen/padding_6"
+            android:paddingStart="@dimen/padding_8"
+            android:paddingEnd="@dimen/padding_6"
+            android:text="@string/refresh"
+            android:visibility="gone"/>
+
+    </LinearLayout>
 </LinearLayout>
