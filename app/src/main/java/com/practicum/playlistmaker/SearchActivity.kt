@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
@@ -145,9 +144,8 @@ class SearchActivity : AppCompatActivity() {
             searchHistory.clearTracksHistory()
         }
 
-        inputEditText.setOnFocusChangeListener { _, hasFocus ->
-            historyLayout.visibility = if (hasFocus && inputEditText.text.isEmpty()
-                && searchHistory.getTracksHistory().isNotEmpty()) View.VISIBLE else View.GONE
+        inputEditText.setOnFocusChangeListener { _, _ ->
+            updateHistoryVisibility()
         }
 
         inputEditText.addTextChangedListener(object: TextWatcher {
@@ -155,8 +153,7 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                historyLayout.visibility = if (inputEditText.hasFocus() && s?.isEmpty() == true
-                    && searchHistory.getTracksHistory().isNotEmpty()) View.VISIBLE else View.GONE
+                updateHistoryVisibility()
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -271,5 +268,17 @@ class SearchActivity : AppCompatActivity() {
         val updatedList = searchHistory.getTracksHistory()
         historyAdapter.updateData(updatedList)
         historyLayout.visibility = if (updatedList.isEmpty()) View.GONE else View.VISIBLE
+    }
+
+    private fun updateHistoryVisibility() {
+        val emptyHistory = searchHistory.getTracksHistory()
+        if (inputEditText.hasFocus() && inputEditText.text.isEmpty() && emptyHistory.isNotEmpty()) {
+                historyLayout.visibility = View.VISIBLE
+        } else {
+            historyLayout.visibility = View.GONE
+        }
+        if (inputEditText.text.isEmpty()) {
+            placeholderLayout.visibility = View.GONE
+        }
     }
 }
