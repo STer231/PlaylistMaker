@@ -8,6 +8,7 @@ class SearchHistory(private val sharedPreferences: SharedPreferences) {
     companion object PreferencesKeysHistory {
         const val PREFERENCES_HISTORY = "history_preferences"
         const val KEY_HISTORY_TRACKS = "key_for_new_track"
+        const val HISTORY_LIST_SIZE = 10
     }
 
     private val gson = Gson()
@@ -36,12 +37,11 @@ class SearchHistory(private val sharedPreferences: SharedPreferences) {
 
     fun addToHistory(track: Track) {
         val historyList = getTracksHistory().toMutableList()
+        historyList.removeAll { it.trackId == track.trackId }
+        historyList.add(0, track)
 
-        if (!historyList.any { it.trackId == track.trackId }) {
-            historyList.add(0, track)
-        }
-        if (historyList.size >10) {
-            historyList.removeLast()
+        if (historyList.size > HISTORY_LIST_SIZE) {
+            historyList.removeAt(historyList.lastIndex)
         }
         saveTracksHistory(historyList)
     }
