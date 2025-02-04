@@ -11,6 +11,7 @@
         app:title="@string/settings" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/themeSwitcher"
         style="@style/SwitchThemeStyle"
         android:layout_marginTop="24dp"
         android:text="@string/dark_theme" />

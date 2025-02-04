@@ -81,4 +81,31 @@
             android:visibility="gone"/>
 
     </LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/historyLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <TextView style="@style/HistoryListTitle"
+            android:layout_marginTop="@dimen/margin_42"
+            android:text="@string/history_list_title"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewHistory"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="@dimen/margin_20"/>
+
+        <Button style="@style/ErrorPlaceholderButtonStyle"
+            android:id="@+id/bt_clear_history"
+            android:paddingVertical="@dimen/padding_10"
+            android:paddingHorizontal="@dimen/padding_14"
+            android:text="@string/clear_history_button"
+            android:layout_marginTop="@dimen/margin_24"/>
+    </LinearLayout>
 </LinearLayout>

@@ -18,6 +18,12 @@ class SettingsActivity : AppCompatActivity() {
             finish()
         }
 
+        binding.themeSwitcher.isChecked = (applicationContext as App).isDarkTheme()
+
+        binding.themeSwitcher.setOnCheckedChangeListener { _, checked ->
+            (applicationContext as App).switchTheme(checked)
+        }
+
         binding.share.setOnClickListener {
             val linkPracticum = getString(R.string.link_to_the_practicum)
             val shareIntent = Intent(Intent.ACTION_SEND).apply {

@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -30,10 +31,16 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var inputEditText: EditText
     private lateinit var clearButton: ImageView
     private lateinit var recyclerViev: RecyclerView
+    private lateinit var recyclerViewHistory: RecyclerView
     private lateinit var placeholderLayout: ViewGroup
     private lateinit var placeholderText: TextView
     private lateinit var refreshButton: Button
     private lateinit var errorPlaceholder: ImageView
+    private lateinit var historyLayout: ViewGroup
+    private lateinit var clearHistoryButton: Button
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var searchHistory: SearchHistory
+    private lateinit var historyAdapter: TrackAdapter
 
     private var searchText: String? = null
     private var lastQuery: String? = null
@@ -44,9 +51,16 @@ class SearchActivity : AppCompatActivity() {
         .build()
 
     private val itunesService = retrofit.create(ItunesApi::class.java)
+    private val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+            if (key == SearchHistory.KEY_HISTORY_TRACKS) {
+                updateHistoryList()
+            }
+        }
 
     val trackList = ArrayList<Track>()
-    val adapter = TrackAdapter(trackList)
+    val adapter = TrackAdapter(trackList) { track ->
+        searchHistory.addToHistory(track)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,10 +69,24 @@ class SearchActivity : AppCompatActivity() {
         inputEditText = findViewById(R.id.searchEditText)
         clearButton = findViewById(R.id.clearIcon)
         recyclerViev = findViewById(R.id.recyclerView)
+        recyclerViewHistory = findViewById(R.id.recyclerViewHistory)
         placeholderLayout = findViewById(R.id.placeholderLayout)
         placeholderText = findViewById(R.id.tv_error_placeholder_text)
         refreshButton = findViewById(R.id.bt_error_placeholder_refresh_request)
         errorPlaceholder = findViewById(R.id.iv_error_placeholder)
+        historyLayout = findViewById(R.id.historyLayout)
+        clearHistoryButton = findViewById(R.id.bt_clear_history)
+
+        sharedPreferences = getSharedPreferences(SearchHistory.PREFERENCES_HISTORY, MODE_PRIVATE)
+        searchHistory = SearchHistory((sharedPreferences))
+
+        historyAdapter = TrackAdapter(arrayListOf()) { track ->
+            searchHistory.addToHistory(track)
+            updateHistoryList()
+        }
+        recyclerViewHistory.layoutManager = LinearLayoutManager(this)
+        recyclerViewHistory.adapter = historyAdapter
+
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         toolbar.setNavigationOnClickListener {
@@ -111,6 +139,39 @@ class SearchActivity : AppCompatActivity() {
             }
             false
         }
+
+        clearHistoryButton.setOnClickListener {
+            searchHistory.clearTracksHistory()
+        }
+
+        inputEditText.setOnFocusChangeListener { _, _ ->
+            updateHistoryVisibility()
+        }
+
+        inputEditText.addTextChangedListener(object: TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                updateHistoryVisibility()
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+        })
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        sharedPreferences.registerOnSharedPreferenceChangeListener(listener)
+        updateHistoryList()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(listener)
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Int {
@@ -201,5 +262,23 @@ class SearchActivity : AppCompatActivity() {
         errorPlaceholder.setImageResource(placeholder)
         refreshButton.visibility = if (isNetworkProblem) View.VISIBLE else View.GONE
 
+    }
+
+    private fun updateHistoryList() {
+        val updatedList = searchHistory.getTracksHistory()
+        historyAdapter.updateData(updatedList)
+        historyLayout.visibility = if (updatedList.isEmpty()) View.GONE else View.VISIBLE
+    }
+
+    private fun updateHistoryVisibility() {
+        val emptyHistory = searchHistory.getTracksHistory()
+        if (inputEditText.hasFocus() && inputEditText.text.isEmpty() && emptyHistory.isNotEmpty()) {
+                historyLayout.visibility = View.VISIBLE
+        } else {
+            historyLayout.visibility = View.GONE
+        }
+        if (inputEditText.text.isEmpty()) {
+            placeholderLayout.visibility = View.GONE
+        }
     }
 }
