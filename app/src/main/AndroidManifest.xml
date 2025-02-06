@@ -26,6 +26,10 @@
             android:theme="@style/Theme.SubsequentScreens"
             android:exported="false" />
         <activity
+            android:name=".AudioPlayerActivity"
+            android:theme="@style/Theme.SubsequentScreens"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:theme="@style/Theme.FirstScreen"
             android:exported="true">

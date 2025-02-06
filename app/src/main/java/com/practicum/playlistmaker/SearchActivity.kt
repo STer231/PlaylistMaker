@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
@@ -60,6 +61,10 @@ class SearchActivity : AppCompatActivity() {
     val trackList = ArrayList<Track>()
     val adapter = TrackAdapter(trackList) { track ->
         searchHistory.addToHistory(track)
+        val intentAudioPlayer = Intent(this, AudioPlayerActivity::class.java)
+        val trackJson = Gson().toJson(track)
+        intent.putExtra("track_json", trackJson)
+        startActivity(intentAudioPlayer)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
