@@ -58,7 +58,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageCover"
+        android:id="@+id/iv_Cover"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="42dp"
@@ -70,7 +70,7 @@
         app:layout_constraintTop_toBottomOf="@id/backButton" />
 
     <TextView
-        android:id="@+id/tvTrackTitle"
+        android:id="@+id/tv_TrackTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_24"
@@ -84,10 +84,10 @@
         app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toEndOf="@id/rightBorder"
         app:layout_constraintStart_toStartOf="@id/leftBorder"
-        app:layout_constraintTop_toBottomOf="@id/imageCover" />
+        app:layout_constraintTop_toBottomOf="@id/iv_Cover" />
 
     <TextView
-        android:id="@+id/tvArtistName"
+        android:id="@+id/tv_ArtistName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_12"
@@ -101,7 +101,7 @@
         app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toEndOf="@id/rightBorder"
         app:layout_constraintStart_toStartOf="@id/leftBorder"
-        app:layout_constraintTop_toBottomOf="@id/tvTrackTitle" />
+        app:layout_constraintTop_toBottomOf="@id/tv_TrackTitle" />
 
     <ImageButton
         android:id="@+id/bt_add_to_playlist"
@@ -113,7 +113,7 @@
         app:layout_constraintEnd_toStartOf="@id/bt_play"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="@id/leftBorder"
-        app:layout_constraintTop_toBottomOf="@id/tvArtistName" />
+        app:layout_constraintTop_toBottomOf="@id/tv_ArtistName" />
 
     <ImageButton
         android:id="@+id/bt_play"
@@ -138,7 +138,7 @@
         app:layout_constraintStart_toEndOf="@id/bt_play" />
 
     <TextView
-        android:id="@+id/tvTimer"
+        android:id="@+id/tv_Timer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12.33dp"
@@ -166,11 +166,11 @@
         android:textSize="13sp"
         app:layout_constraintBottom_toTopOf="@id/collectionNameTitle"
         app:layout_constraintStart_toStartOf="@id/leftBorder2"
-        app:layout_constraintTop_toBottomOf="@id/tvTimer"
+        app:layout_constraintTop_toBottomOf="@id/tv_Timer"
         app:layout_constraintVertical_chainStyle="spread_inside" />
 
     <TextView
-        android:id="@+id/tvTrackDuration"
+        android:id="@+id/tv_TrackDuration"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ellipsize="end"
@@ -199,7 +199,7 @@
         app:layout_constraintTop_toBottomOf="@id/durationTrackTitle" />
 
     <TextView
-        android:id="@+id/tvCollectionName"
+        android:id="@+id/tv_CollectionName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ellipsize="end"
@@ -227,7 +227,7 @@
         app:layout_constraintTop_toBottomOf="@id/collectionNameTitle" />
 
     <TextView
-        android:id="@+id/tvReleaseDate"
+        android:id="@+id/tv_ReleaseDate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ellipsize="end"
@@ -255,7 +255,7 @@
         app:layout_constraintTop_toBottomOf="@id/releaseDateTitle" />
 
     <TextView
-        android:id="@+id/tvPrimaryGenreName"
+        android:id="@+id/tv_PrimaryGenreName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ellipsize="end"
@@ -284,7 +284,7 @@
         tools:text="Страна" />
 
     <TextView
-        android:id="@+id/tvCountry"
+        android:id="@+id/tv_Country"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ellipsize="end"

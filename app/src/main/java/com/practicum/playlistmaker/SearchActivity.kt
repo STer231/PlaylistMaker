@@ -63,7 +63,7 @@ class SearchActivity : AppCompatActivity() {
         searchHistory.addToHistory(track)
         val intentAudioPlayer = Intent(this, AudioPlayerActivity::class.java)
         val trackJson = Gson().toJson(track)
-        intent.putExtra("track_json", trackJson)
+        intentAudioPlayer.putExtra("track_json", trackJson)
         startActivity(intentAudioPlayer)
     }
 
