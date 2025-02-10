@@ -1,5 +1,6 @@
 package com.practicum.playlistmaker
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
@@ -11,6 +12,11 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 class AudioPlayerActivity : AppCompatActivity() {
+
+    companion object PreferencesKeysState {
+        const val PREFERENCES_STATE = "player_state"
+        const val KEY_PLAYER_STATE = "is_player_screen_active"
+    }
 
     private lateinit var track: Track
 
@@ -27,6 +33,11 @@ class AudioPlayerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_audio_player)
 
+        val backButton: ImageView = findViewById(R.id.backButton)
+        backButton.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
+
         trackTitle = findViewById(R.id.tv_TrackTitle)
         artistName = findViewById(R.id.tv_ArtistName)
         trackDuration = findViewById(R.id.tv_TrackDuration)
@@ -35,12 +46,6 @@ class AudioPlayerActivity : AppCompatActivity() {
         primaryGenreName = findViewById(R.id.tv_PrimaryGenreName)
         countryTitle = findViewById(R.id.tv_Country)
         imageCover = findViewById(R.id.iv_Cover)
-//        Glide.with(this)
-//            .load(track.artworkUrl100)
-//            .placeholder(R.drawable.placeholder_cover)
-//            .fitCenter()
-//            .transform(RoundedCorners(2))
-//            .into(imageCover)
 
         val trackJson = intent.getStringExtra("track_json")
         if (!trackJson.isNullOrEmpty()) {
@@ -55,5 +60,42 @@ class AudioPlayerActivity : AppCompatActivity() {
         releaseDate.text = SimpleDateFormat("yyyy", Locale.getDefault()).format(track.releaseDate)
         primaryGenreName.text = track.primaryGenreName
         countryTitle.text = track.country
+        Glide.with(this)
+            .load(track.getCoverArtwork())
+            .placeholder(R.drawable.placeholder_cover)
+            .fitCenter()
+            .transform(RoundedCorners(8))
+            .into(imageCover)
     }
+
+    override fun onPause() {
+        super.onPause()
+        val sharedPreferences = getSharedPreferences(PREFERENCES_STATE, MODE_PRIVATE)
+        sharedPreferences.edit()
+            .putBoolean(KEY_PLAYER_STATE, true)
+            .apply()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        val sharedPreferences = getSharedPreferences(PREFERENCES_STATE, MODE_PRIVATE)
+        sharedPreferences.edit()
+            .putBoolean(KEY_PLAYER_STATE, false)
+            .apply()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val sharedPreferences = getSharedPreferences(PREFERENCES_STATE, MODE_PRIVATE)
+        val isPlayerScreenActive = sharedPreferences.getBoolean("isPlayerScreenActive", false)
+
+        if (isPlayerScreenActive) {
+            val intentAudioPlayer = Intent(this, AudioPlayerActivity::class.java)
+            startActivity(intentAudioPlayer)
+        }
+    }
+}
+
+fun Track.getCoverArtwork(): String {
+    return artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")
 }
