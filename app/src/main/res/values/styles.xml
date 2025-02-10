@@ -119,4 +119,25 @@
         <item name="fontFamily">@font/ys_display_medium</item>
         <item name="fontWeight">500</item>
     </style>
+    <style name="AudioPlayerDescriptionTitleStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:textSize">@dimen/text_13</item>
+        <item name="fontFamily">@font/ys_display_regular</item>
+        <item name="fontWeight">400</item>
+    </style>
+    <style name="AudioPlayerDescriptionStyle" parent="AudioPlayerDescriptionTitleStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="layout_constraintWidth_max">235dp</item>
+    </style>
+    <style name="AudioPlayerTrackTitle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/text_14</item>
+        <item name="fontFamily">@font/ys_display_medium</item>
+        <item name="fontWeight">400</item>
+    </style>
 </resources>
