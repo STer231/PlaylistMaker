@@ -4,7 +4,9 @@
     <dimen name="text_19">19sp</dimen>
     <dimen name="text_16">16sp</dimen>
     <dimen name="text_14">14sp</dimen>
+    <dimen name="text_13">13sp</dimen>
     <dimen name="text_11">11sp</dimen>
+    <dimen name="margin_54">54dp</dimen>
     <dimen name="margin_42">42dp</dimen>
     <dimen name="margin_24">24dp</dimen>
     <dimen name="margin_21">21dp</dimen>
@@ -21,4 +23,6 @@
     <dimen name="radius_16">16dp</dimen>
     <dimen name="width_312">312dp</dimen>
     <dimen name="height_61">61dp</dimen>
+    <dimen name="dimen_51">51dp</dimen>
+    <dimen name="dimen_24">24dp</dimen>
 </resources>

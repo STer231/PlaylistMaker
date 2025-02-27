@@ -23,7 +23,7 @@
         android:paddingTop="@dimen/padding_6">
 
         <TextView
-            android:id="@+id/tvTrackTitle"
+            android:id="@+id/tv_TrackTitle"
             style="@style/TrackTitleStyle"
             android:ellipsize="end"
             android:maxLines="1"
@@ -37,7 +37,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tvArtistName"
+                android:id="@+id/tv_ArtistName"
                 style="@style/TracksTextStyle"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -54,7 +54,7 @@
                 android:src="@drawable/ic_ellipse" />
 
             <TextView
-                android:id="@+id/tvTrackDuration"
+                android:id="@+id/tv_TrackDuration"
                 style="@style/TracksTextStyle"
                 android:layout_gravity="end"
                 android:ellipsize="end"
