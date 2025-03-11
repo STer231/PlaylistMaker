@@ -53,6 +53,12 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:visibility="visible"/>
 
+    <ProgressBar style="@style/ProgressBarStyle"
+        android:id="@+id/progressBar"
+        android:layout_marginTop="@dimen/margin_140"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+
     <LinearLayout
         android:id="@+id/placeholderLayout"
         android:layout_width="match_parent"

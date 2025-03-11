@@ -140,4 +140,9 @@
         <item name="fontFamily">@font/ys_display_medium</item>
         <item name="fontWeight">400</item>
     </style>
+    <style name="ProgressBarStyle">
+        <item name="android:layout_width">@dimen/dimen_44</item>
+        <item name="android:layout_height">@dimen/dimen_44</item>
+        <item name="android:indeterminateTint">@color/blue</item>
+    </style>
 </resources>

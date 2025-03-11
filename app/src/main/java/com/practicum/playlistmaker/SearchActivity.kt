@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -48,6 +49,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var searchHistory: SearchHistory
     private lateinit var historyAdapter: TrackAdapter
+    private lateinit var progressBar: ProgressBar
 
 
     private var searchText: String? = null
@@ -95,6 +97,7 @@ class SearchActivity : AppCompatActivity() {
         errorPlaceholder = findViewById(R.id.iv_error_placeholder)
         historyLayout = findViewById(R.id.historyLayout)
         clearHistoryButton = findViewById(R.id.bt_clear_history)
+        progressBar = findViewById(R.id.progressBar)
 
         sharedPreferences = getSharedPreferences(SearchHistory.PREFERENCES_HISTORY, MODE_PRIVATE)
         searchHistory = SearchHistory((sharedPreferences))
@@ -122,19 +125,6 @@ class SearchActivity : AppCompatActivity() {
             adapter.notifyDataSetChanged()
         }
 
-        val simpleTextWatcher = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                searchText = s?.toString()
-                clearButton.visibility = clearButtonVisibility(s)
-                searchDebounce()
-            }
-
-            override fun afterTextChanged(s: Editable?) {}
-        }
-        inputEditText.addTextChangedListener(simpleTextWatcher)
-
         if (savedInstanceState != null) {
             searchText = savedInstanceState.getString("search_text")
             inputEditText.setText(searchText)
@@ -147,17 +137,6 @@ class SearchActivity : AppCompatActivity() {
             lastQuery?.let { query ->
                 searchTracks(query)
             }
-        }
-
-        inputEditText.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                val query = inputEditText.text.toString()
-                if (query.isNotEmpty()) {
-                    searchTracks(query)
-                }
-                true
-            }
-            false
         }
 
         clearHistoryButton.setOnClickListener {
@@ -173,6 +152,9 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                searchText = s?.toString()
+                clearButton.visibility = clearButtonVisibility(s)
+                searchDebounce()
                 updateHistoryVisibility()
             }
 
@@ -227,6 +209,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun searchTracks(query: String) {
         lastQuery = query
+        progressBar.visibility = View.VISIBLE
         trackList.clear()
         adapter.notifyDataSetChanged()
         showRecyclerView()
@@ -235,6 +218,7 @@ class SearchActivity : AppCompatActivity() {
                 call: Call<SearchResponse>,
                 response: Response<SearchResponse>
             ) {
+                progressBar.visibility = View.GONE
                 if (response.isSuccessful) {
                     if (!response.body()?.results.isNullOrEmpty()) {
                         trackList.clear()
@@ -257,6 +241,7 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
+                progressBar.visibility = View.GONE
                 showMessage(
                     getString(R.string.problems_with_the_internet),
                     true,
