@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -27,6 +29,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchActivity : AppCompatActivity() {
 
+    companion object {
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
+    }
+
     private val itunesBaseUrl = "https://itunes.apple.com"
 
     private lateinit var inputEditText: EditText
@@ -43,6 +49,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var searchHistory: SearchHistory
     private lateinit var historyAdapter: TrackAdapter
 
+
     private var searchText: String? = null
     private var lastQuery: String? = null
 
@@ -57,6 +64,13 @@ class SearchActivity : AppCompatActivity() {
                 updateHistoryList()
             }
         }
+    private val handler = Handler(Looper.getMainLooper())
+    private var searchRunnable = Runnable {
+         val query = inputEditText.text.toString().trim()
+        if(query.isNotEmpty()) {
+            searchTracks(query)
+        }
+    }
 
     val trackList = ArrayList<Track>()
     val adapter = TrackAdapter(trackList) { track ->
@@ -114,6 +128,7 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 searchText = s?.toString()
                 clearButton.visibility = clearButtonVisibility(s)
+                searchDebounce()
             }
 
             override fun afterTextChanged(s: Editable?) {}
@@ -285,5 +300,10 @@ class SearchActivity : AppCompatActivity() {
         if (inputEditText.text.isEmpty()) {
             placeholderLayout.visibility = View.GONE
         }
+    }
+
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
     }
 }

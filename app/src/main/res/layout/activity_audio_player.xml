@@ -215,13 +215,9 @@
         app:layout_constraintStart_toStartOf="@id/leftBorder"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <ImageView
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/backButton"
-        android:layout_width="@dimen/dimen_24"
-        android:layout_height="@dimen/dimen_24"
-        android:layout_marginStart="@dimen/margin_16"
-        android:layout_marginTop="@dimen/margin_16"
-        android:src="@drawable/back"
+        style="@style/SubsequentToolbarsStyle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
