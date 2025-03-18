@@ -10,7 +10,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
@@ -31,7 +30,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class SearchActivity : AppCompatActivity() {
 
     companion object {
-        private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private const val SEARCH_DEBOUNCE_DELAY = 1000L
     }
 
     private val itunesBaseUrl = "https://itunes.apple.com"
@@ -174,6 +173,7 @@ class SearchActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(listener)
+        handler.removeCallbacks(searchRunnable)
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Int {
