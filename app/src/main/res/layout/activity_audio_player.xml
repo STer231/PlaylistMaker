@@ -158,6 +158,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/round_button_style"
+        android:enabled="false"
         android:src="@drawable/ic_play"
         app:layout_constraintBottom_toBottomOf="@id/bt_add_to_playlist"
         app:layout_constraintEnd_toStartOf="@id/bt_add_to_favourites"
@@ -205,23 +206,19 @@
         android:id="@+id/iv_Cover"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="@dimen/margin_24"
         android:layout_marginTop="82dp"
+        android:layout_marginBottom="@dimen/margin_24"
         android:scaleType="centerCrop"
         android:src="@drawable/placeholder_cover"
         app:layout_constraintBottom_toTopOf="@id/tv_TrackTitle"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="@id/rightBorder"
         app:layout_constraintStart_toStartOf="@id/leftBorder"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/backButton"
-        android:layout_width="@dimen/dimen_24"
-        android:layout_height="@dimen/dimen_24"
-        android:layout_marginStart="@dimen/margin_16"
-        android:layout_marginTop="@dimen/margin_16"
-        android:src="@drawable/back"
+        style="@style/SubsequentToolbarsStyle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
