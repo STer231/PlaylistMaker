@@ -26,6 +26,8 @@ class AudioPlayerActivity : AppCompatActivity() {
         private const val STATE_PREPARED = 1
         private const val STATE_PLAYING = 2
         private const val STATE_PAUSED = 3
+
+        private const val TIMER_DELAY = 300L
     }
 
     private lateinit var track: Track
@@ -38,13 +40,25 @@ class AudioPlayerActivity : AppCompatActivity() {
     private lateinit var releaseDate: TextView
     private lateinit var primaryGenreName: TextView
     private lateinit var countryTitle: TextView
-    private lateinit var play: ImageButton
+    private lateinit var playButton: ImageButton
     private lateinit var timer: TextView
     private lateinit var url: String
 
     private var mediaPlayer = MediaPlayer()
     private var playerState = STATE_DEFAULT
-    private var mainThreadHandler: Handler? = null
+    private val mainThreadHandler = Handler(Looper.getMainLooper())
+    private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
+
+    private val updateTimerRunnable = object : Runnable {
+        override fun run() {
+            if (playerState == STATE_PLAYING) {
+                val currentTime = mediaPlayer.currentPosition
+                val formattedTime = dateFormat.format(currentTime)
+                timer.text = formattedTime
+                mainThreadHandler.postDelayed(this, TIMER_DELAY)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,10 +77,8 @@ class AudioPlayerActivity : AppCompatActivity() {
         primaryGenreName = findViewById(R.id.tv_PrimaryGenreName)
         countryTitle = findViewById(R.id.tv_Country)
         imageCover = findViewById(R.id.iv_Cover)
-        play = findViewById(R.id.bt_play)
+        playButton = findViewById(R.id.bt_play)
         timer = findViewById(R.id.tv_Timer)
-
-        mainThreadHandler = Handler(Looper.getMainLooper())
 
         val trackJson = intent.getStringExtra("track_json")
         if (!trackJson.isNullOrEmpty()) {
@@ -90,7 +102,7 @@ class AudioPlayerActivity : AppCompatActivity() {
             .into(imageCover)
 
         preparePlayer()
-        play.setOnClickListener {
+        playButton.setOnClickListener {
             playbackControl()
         }
     }
@@ -113,7 +125,7 @@ class AudioPlayerActivity : AppCompatActivity() {
             .apply()
 
         mediaPlayer.release()
-        mainThreadHandler?.removeCallbacks(updateTimerRunnable())
+        mainThreadHandler.removeCallbacks(updateTimerRunnable)
     }
 
     override fun onStart() {
@@ -131,29 +143,29 @@ class AudioPlayerActivity : AppCompatActivity() {
         mediaPlayer.setDataSource(url)
         mediaPlayer.prepareAsync()
         mediaPlayer.setOnPreparedListener {
-            play.isEnabled = true
+            playButton.isEnabled = true
             playerState = STATE_PREPARED
         }
         mediaPlayer.setOnCompletionListener {
-            play.setImageResource(R.drawable.ic_play)
+            playButton.setImageResource(R.drawable.ic_play)
             playerState = STATE_PREPARED
-            mainThreadHandler?.removeCallbacks(updateTimerRunnable())
+            mainThreadHandler.removeCallbacks(updateTimerRunnable)
             timer.text = "00:00"
         }
     }
 
     private fun startPlayer() {
         mediaPlayer.start()
-        play.setImageResource(R.drawable.ic_pause)
+        playButton.setImageResource(R.drawable.ic_pause)
         playerState = STATE_PLAYING
-        mainThreadHandler?.post(updateTimerRunnable())
+        mainThreadHandler.post(updateTimerRunnable)
     }
 
     private fun pausePlayer() {
         mediaPlayer.pause()
-        play.setImageResource(R.drawable.ic_play)
+        playButton.setImageResource(R.drawable.ic_play)
         playerState = STATE_PAUSED
-        mainThreadHandler?.removeCallbacks(updateTimerRunnable())
+        mainThreadHandler.removeCallbacks(updateTimerRunnable)
     }
 
     private fun playbackControl() {
@@ -164,20 +176,6 @@ class AudioPlayerActivity : AppCompatActivity() {
 
             STATE_PREPARED, STATE_PAUSED -> {
                 startPlayer()
-            }
-        }
-    }
-
-    private fun updateTimerRunnable(): Runnable {
-        return object : Runnable {
-            override fun run() {
-                if (playerState == STATE_PLAYING) {
-                    val currentTime = mediaPlayer.currentPosition
-                    val formattedTime =
-                        SimpleDateFormat("mm:ss", Locale.getDefault()).format(currentTime)
-                    timer.text = formattedTime
-                    mainThreadHandler?.postDelayed(this, 300)
-                }
             }
         }
     }
