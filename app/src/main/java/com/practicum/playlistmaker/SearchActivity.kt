@@ -31,6 +31,7 @@ class SearchActivity : AppCompatActivity() {
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 1000L
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 
     private val itunesBaseUrl = "https://itunes.apple.com"
@@ -73,13 +74,17 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+    private var isClickAllowed = true
+
     val trackList = ArrayList<Track>()
     val adapter = TrackAdapter(trackList) { track ->
-        searchHistory.addToHistory(track)
-        val intentAudioPlayer = Intent(this, AudioPlayerActivity::class.java)
-        val trackJson = Gson().toJson(track)
-        intentAudioPlayer.putExtra("track_json", trackJson)
-        startActivity(intentAudioPlayer)
+        if (clickDebounce()) {
+            searchHistory.addToHistory(track)
+            val intentAudioPlayer = Intent(this, AudioPlayerActivity::class.java)
+            val trackJson = Gson().toJson(track)
+            intentAudioPlayer.putExtra("track_json", trackJson)
+            startActivity(intentAudioPlayer)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -290,5 +295,14 @@ class SearchActivity : AppCompatActivity() {
     private fun searchDebounce() {
         handler.removeCallbacks(searchRunnable)
         handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+    }
+
+    private fun clickDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({isClickAllowed = true}, CLICK_DEBOUNCE_DELAY)
+        }
+        return current
     }
 }
