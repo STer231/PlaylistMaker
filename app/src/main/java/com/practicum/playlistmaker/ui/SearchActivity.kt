@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.ui
 
 import android.content.Context
 import android.content.Intent
@@ -21,6 +21,12 @@ import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
+import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.SearchHistory
+import com.practicum.playlistmaker.data.dto.SearchResponse
+import com.practicum.playlistmaker.data.mapper.TrackMapper
+import com.practicum.playlistmaker.data.network.ItunesApi
+import com.practicum.playlistmaker.domain.entity.Track
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -227,7 +233,7 @@ class SearchActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     if (!response.body()?.results.isNullOrEmpty()) {
                         trackList.clear()
-                        trackList.addAll(response.body()?.results!!)
+                        trackList.addAll(response.body()?.results?.map { TrackMapper.mapToDomain(it) } ?: emptyList())
                         adapter.notifyDataSetChanged()
                     } else {
                         showMessage(

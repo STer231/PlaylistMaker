@@ -1,7 +1,8 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.ui
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.practicum.playlistmaker.domain.entity.Track
 
 class TrackAdapter(
     private val tracks: ArrayList<Track>,

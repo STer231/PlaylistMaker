@@ -15,22 +15,22 @@
         android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
         tools:targetApi="31">
         <activity
-            android:name=".SearchActivity"
+            android:name=".ui.SearchActivity"
             android:theme="@style/Theme.SubsequentScreens"
             android:exported="false" />
         <activity
-            android:name=".MediaLibraryActivity"
+            android:name=".ui.MediaLibraryActivity"
             android:exported="false" />
         <activity
-            android:name=".SettingsActivity"
+            android:name=".ui.SettingsActivity"
             android:theme="@style/Theme.SubsequentScreens"
             android:exported="false" />
         <activity
-            android:name=".AudioPlayerActivity"
+            android:name=".ui.AudioPlayerActivity"
             android:theme="@style/Theme.SubsequentScreens"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:theme="@style/Theme.FirstScreen"
             android:exported="true">
             <intent-filter>
