@@ -1,9 +1,9 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.data.dto
 
 import com.google.gson.annotations.SerializedName
 import java.util.Date
 
-data class Track(
+data class TrackDto(
     @SerializedName("trackId") val trackId: Int,
     @SerializedName("trackName") val trackName: String,
     @SerializedName("artistName") val artistName: String,

@@ -1,8 +1,8 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.data.dto
 
 import com.google.gson.annotations.SerializedName
 
 class SearchResponse(
     @SerializedName("resultCount") val resultCount: Int,
-    @SerializedName("results") val results: ArrayList<Track>
-)
+    @SerializedName("results") val results: ArrayList<TrackDto>
+) : Response()
