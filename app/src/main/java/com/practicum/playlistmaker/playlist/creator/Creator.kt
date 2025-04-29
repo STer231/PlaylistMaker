@@ -1,9 +1,10 @@
-package com.practicum.playlistmaker.presentation
+package com.practicum.playlistmaker.playlist.creator
 
 import android.content.Context
+import com.practicum.playlistmaker.App
 import com.practicum.playlistmaker.data.network.RetrofitNetworkClient
 import com.practicum.playlistmaker.data.repository.AudioPlayerStateRepositoryImpl
-import com.practicum.playlistmaker.data.repository.SettingsRepositoryImpl
+import com.practicum.playlistmaker.playlist.settings.data.impl.SettingsRepositoryImpl
 import com.practicum.playlistmaker.data.repository.TrackRepositoryImpl
 import com.practicum.playlistmaker.domain.repository.TrackRepository
 import com.practicum.playlistmaker.domain.usecase.AudioPlayerInteractor
@@ -13,8 +14,13 @@ import com.practicum.playlistmaker.data.repository.SearchHistoryRepositoryImpl
 import com.practicum.playlistmaker.domain.repository.AudioPlayerStateRepository
 import com.practicum.playlistmaker.domain.usecase.SearchTracksInteractor
 import com.practicum.playlistmaker.domain.usecase.SearchTracksInteractorImpl
-import com.practicum.playlistmaker.domain.usecase.ThemeUseCase
-import com.practicum.playlistmaker.domain.usecase.ThemeUseCaseImpl
+import com.practicum.playlistmaker.playlist.settings.domain.SettingsInteractor
+import com.practicum.playlistmaker.playlist.settings.domain.impl.SettingsInteractorImpl
+import com.practicum.playlistmaker.playlist.sharing.data.impl.SharingConfig
+import com.practicum.playlistmaker.playlist.sharing.data.impl.ExternalNavigatorImpl
+import com.practicum.playlistmaker.playlist.sharing.domain.ExternalNavigator
+import com.practicum.playlistmaker.playlist.sharing.domain.SharingInteractor
+import com.practicum.playlistmaker.playlist.sharing.domain.impl.SharingInteractorImpl
 
 object Creator {
     private fun getTrackRepository(): TrackRepository {
@@ -25,11 +31,11 @@ object Creator {
         return SearchTracksInteractorImpl(getTrackRepository())
     }
 
-    fun provideThemeUseCase(context: Context): ThemeUseCase {
+    fun provideThemeUseCase(context: Context): SettingsInteractor {
         val sharedPreferences =
             context.getSharedPreferences("theme_preferences", Context.MODE_PRIVATE)
         val settingsRepository = SettingsRepositoryImpl(sharedPreferences)
-        return ThemeUseCaseImpl(settingsRepository)
+        return SettingsInteractorImpl(settingsRepository)
     }
 
     fun provideAudioPlayerInteractor(): AudioPlayerInteractor {
@@ -46,5 +52,21 @@ object Creator {
         val sharedPreferences =
             context.getSharedPreferences("history_preferences", Context.MODE_PRIVATE)
         return SearchHistoryRepositoryImpl(sharedPreferences)
+    }
+
+    fun provideSettingsInteractor(context: Context): SettingsInteractor {
+        val sharedPreferences =
+            context.getSharedPreferences(App.PREFERENCES_NAME, Context.MODE_PRIVATE)
+        val settingsRepository = SettingsRepositoryImpl(sharedPreferences)
+        return SettingsInteractorImpl(settingsRepository)
+    }
+
+    fun provideExternalNavigator(context: Context): ExternalNavigator {
+        return ExternalNavigatorImpl(context.applicationContext)
+    }
+
+    fun provideSharingInteractor(context: Context): SharingInteractor {
+        val config = SharingConfig(context.applicationContext)
+        return SharingInteractorImpl(provideExternalNavigator(context), config)
     }
 }

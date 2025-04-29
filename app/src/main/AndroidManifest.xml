@@ -22,7 +22,7 @@
             android:name=".ui.MediaLibraryActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.SettingsActivity"
+            android:name=".playlist.settings.ui.activity.SettingsActivity"
             android:theme="@style/Theme.SubsequentScreens"
             android:exported="false" />
         <activity
