@@ -25,7 +25,7 @@
             android:contentDescription="@null"/>
 
         <EditText
-            android:id="@+id/searchEditText"
+            android:id="@+id/inputEditText"
             style="@style/EditTextSearchStyle"
             android:imeOptions="actionDone"
             android:singleLine="true"
@@ -35,7 +35,7 @@
             android:hint="@string/search" />
 
         <ImageView style="@style/IconEditTextSearchStyle"
-            android:id="@+id/clearIcon"
+            android:id="@+id/clearButton"
             android:layout_gravity="end|center_vertical"
             android:layout_marginEnd="14dp"
             android:background="@null"
@@ -69,17 +69,17 @@
         android:visibility="gone">
 
         <ImageView
-            android:id="@+id/iv_error_placeholder"
+            android:id="@+id/errorPlaceholderImage"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:src="@drawable/placeholder_not_found"/>
+            tools:src="@drawable/placeholder_not_found"/>
 
         <TextView style="@style/ErrorPlaceholderTextStyle"
-            android:id="@+id/tv_error_placeholder_text"
+            android:id="@+id/placeholderText"
             tools:text="@string/problems_with_the_internet"/>
 
         <Button style="@style/ErrorPlaceholderButtonStyle"
-            android:id="@+id/bt_error_placeholder_refresh_request"
+            android:id="@+id/refreshButton"
             android:paddingTop="@dimen/padding_6"
             android:paddingStart="@dimen/padding_8"
             android:paddingEnd="@dimen/padding_6"
@@ -108,7 +108,7 @@
             android:layout_marginTop="@dimen/margin_20"/>
 
         <Button style="@style/ErrorPlaceholderButtonStyle"
-            android:id="@+id/bt_clear_history"
+            android:id="@+id/clearHistoryButton"
             android:paddingVertical="@dimen/padding_10"
             android:paddingHorizontal="@dimen/padding_14"
             android:text="@string/clear_history_button"

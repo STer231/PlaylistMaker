@@ -1,6 +1,6 @@
 package com.practicum.playlistmaker.domain.usecase
 
-import com.practicum.playlistmaker.domain.entity.Track
+import com.practicum.playlistmaker.playlist.search.domain.entity.Track
 
 interface AudioPlayerInteractor {
     fun prepare(track: Track, onPrepared: () -> Unit)

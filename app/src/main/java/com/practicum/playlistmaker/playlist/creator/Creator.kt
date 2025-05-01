@@ -2,18 +2,20 @@ package com.practicum.playlistmaker.playlist.creator
 
 import android.content.Context
 import com.practicum.playlistmaker.App
-import com.practicum.playlistmaker.data.network.RetrofitNetworkClient
+import com.practicum.playlistmaker.playlist.search.data.network.RetrofitNetworkClient
 import com.practicum.playlistmaker.data.repository.AudioPlayerStateRepositoryImpl
 import com.practicum.playlistmaker.playlist.settings.data.impl.SettingsRepositoryImpl
-import com.practicum.playlistmaker.data.repository.TrackRepositoryImpl
-import com.practicum.playlistmaker.domain.repository.TrackRepository
+import com.practicum.playlistmaker.playlist.search.data.repository.TrackRepositoryImpl
+import com.practicum.playlistmaker.playlist.search.domain.repository.TrackRepository
 import com.practicum.playlistmaker.domain.usecase.AudioPlayerInteractor
 import com.practicum.playlistmaker.domain.usecase.AudioPlayerInteractorImpl
-import com.practicum.playlistmaker.domain.repository.SearchHistoryRepository
-import com.practicum.playlistmaker.data.repository.SearchHistoryRepositoryImpl
+import com.practicum.playlistmaker.playlist.search.domain.repository.SearchHistoryRepository
+import com.practicum.playlistmaker.playlist.search.data.repository.SearchHistoryRepositoryImpl
 import com.practicum.playlistmaker.domain.repository.AudioPlayerStateRepository
-import com.practicum.playlistmaker.domain.usecase.SearchTracksInteractor
-import com.practicum.playlistmaker.domain.usecase.SearchTracksInteractorImpl
+import com.practicum.playlistmaker.playlist.search.domain.impl.SearchHistoryInteractor
+import com.practicum.playlistmaker.playlist.search.domain.impl.SearchHistoryInteractorImpl
+import com.practicum.playlistmaker.playlist.search.domain.impl.SearchTracksInteractor
+import com.practicum.playlistmaker.playlist.search.domain.impl.SearchTracksInteractorImpl
 import com.practicum.playlistmaker.playlist.settings.domain.SettingsInteractor
 import com.practicum.playlistmaker.playlist.settings.domain.impl.SettingsInteractorImpl
 import com.practicum.playlistmaker.playlist.sharing.data.impl.SharingConfig
@@ -23,12 +25,12 @@ import com.practicum.playlistmaker.playlist.sharing.domain.SharingInteractor
 import com.practicum.playlistmaker.playlist.sharing.domain.impl.SharingInteractorImpl
 
 object Creator {
-    private fun getTrackRepository(): TrackRepository {
-        return TrackRepositoryImpl(RetrofitNetworkClient())
+    private fun getTrackRepository(context: Context): TrackRepository {
+        return TrackRepositoryImpl(RetrofitNetworkClient(context))
     }
 
-    fun provideSearchTracksInteractor(): SearchTracksInteractor {
-        return SearchTracksInteractorImpl(getTrackRepository())
+    fun provideSearchTracksInteractor(context: Context): SearchTracksInteractor {
+        return SearchTracksInteractorImpl(getTrackRepository(context))
     }
 
     fun provideThemeUseCase(context: Context): SettingsInteractor {
@@ -50,8 +52,12 @@ object Creator {
 
     fun provideSearchHistoryRepository(context: Context): SearchHistoryRepository {
         val sharedPreferences =
-            context.getSharedPreferences("history_preferences", Context.MODE_PRIVATE)
+            context.getSharedPreferences(SearchHistoryRepositoryImpl.PREFERENCES_HISTORY, Context.MODE_PRIVATE)
         return SearchHistoryRepositoryImpl(sharedPreferences)
+    }
+
+    fun provideSearchHistoryInteractor(context: Context): SearchHistoryInteractor {
+        return SearchHistoryInteractorImpl(provideSearchHistoryRepository(context))
     }
 
     fun provideSettingsInteractor(context: Context): SettingsInteractor {

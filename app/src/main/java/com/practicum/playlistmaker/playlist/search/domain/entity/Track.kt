@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.domain.entity
+package com.practicum.playlistmaker.playlist.search.domain.entity
 
 import java.util.Date
 

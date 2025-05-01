@@ -1,15 +1,9 @@
 package com.practicum.playlistmaker.playlist.settings.ui.activity
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.lifecycle.ViewModelProvider
-import com.practicum.playlistmaker.App
-import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivitySettingsBinding
 import com.practicum.playlistmaker.playlist.creator.Creator
 import com.practicum.playlistmaker.playlist.settings.ui.viewModel.SettingsViewModel

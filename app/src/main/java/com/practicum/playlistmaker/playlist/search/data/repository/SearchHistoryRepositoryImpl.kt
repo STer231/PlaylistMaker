@@ -1,15 +1,16 @@
-package com.practicum.playlistmaker.data.repository
+package com.practicum.playlistmaker.playlist.search.data.repository
 
 import android.content.SharedPreferences
 import com.google.gson.Gson
-import com.practicum.playlistmaker.domain.entity.Track
-import com.practicum.playlistmaker.domain.repository.SearchHistoryRepository
+import com.practicum.playlistmaker.playlist.search.domain.entity.Track
+import com.practicum.playlistmaker.playlist.search.domain.repository.SearchHistoryRepository
 
 class SearchHistoryRepositoryImpl(
     private val sharedPreferences: SharedPreferences
 ) : SearchHistoryRepository {
 
     companion object {
+        const val PREFERENCES_HISTORY = "history_preferences"
         private const val KEY_HISTORY_TRACKS = "key_for_new_track"
         private const val HISTORY_LIST_SIZE = 10
     }
