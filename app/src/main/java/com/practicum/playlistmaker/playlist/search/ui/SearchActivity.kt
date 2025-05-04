@@ -17,7 +17,7 @@ import com.google.gson.Gson
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 import com.practicum.playlistmaker.playlist.search.SearchState
-import com.practicum.playlistmaker.ui.AudioPlayerActivity
+import com.practicum.playlistmaker.playlist.player.ui.AudioPlayerActivity
 
 class SearchActivity : AppCompatActivity() {
 

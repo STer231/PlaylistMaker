@@ -20,18 +20,18 @@
             android:theme="@style/Theme.SubsequentScreens"
             android:exported="false" />
         <activity
-            android:name=".ui.MediaLibraryActivity"
+            android:name=".playlist.mediaLibrary.ui.MediaLibraryActivity"
             android:exported="false" />
         <activity
             android:name=".playlist.settings.ui.activity.SettingsActivity"
             android:theme="@style/Theme.SubsequentScreens"
             android:exported="false" />
         <activity
-            android:name=".ui.AudioPlayerActivity"
+            android:name=".playlist.player.ui.AudioPlayerActivity"
             android:theme="@style/Theme.SubsequentScreens"
             android:exported="false" />
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".playlist.main.ui.MainActivity"
             android:theme="@style/Theme.FirstScreen"
             android:exported="true">
             <intent-filter>

@@ -14,10 +14,10 @@ class TrackViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(model: Track) {
-        binding.tvTrackTitle.text = model.trackName
-        binding.tvArtistName.text = model.artistName
-        binding.tvArtistName.requestLayout()
-        binding.tvTrackDuration.text =
+        binding.trackTitle.text = model.trackName
+        binding.artistName.text = model.artistName
+        binding.artistName.requestLayout()
+        binding.trackDuration.text =
             SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTime)
         println(model.artworkUrl100)
         Glide.with(itemView)

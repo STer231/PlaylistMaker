@@ -50,7 +50,7 @@
         app:layout_constraintTop_toBottomOf="@id/primaryGenreNameTitle" />
 
     <TextView
-        android:id="@+id/tv_Country"
+        android:id="@+id/countryName"
         style="@style/AudioPlayerDescriptionStyle"
         android:ellipsize="end"
         android:maxLines="1"
@@ -67,7 +67,7 @@
         app:layout_constraintTop_toBottomOf="@id/releaseDateTitle" />
 
     <TextView
-        android:id="@+id/tv_PrimaryGenreName"
+        android:id="@+id/primaryGenreName"
         style="@style/AudioPlayerDescriptionStyle"
         android:ellipsize="end"
         android:maxLines="1"
@@ -84,7 +84,7 @@
         app:layout_constraintTop_toBottomOf="@id/collectionNameTitle" />
 
     <TextView
-        android:id="@+id/tv_ReleaseDate"
+        android:id="@+id/releaseDate"
         style="@style/AudioPlayerDescriptionStyle"
         android:ellipsize="end"
         android:maxLines="1"
@@ -101,7 +101,7 @@
         app:layout_constraintTop_toBottomOf="@id/durationTrackTitle" />
 
     <TextView
-        android:id="@+id/tv_CollectionName"
+        android:id="@+id/collectionName"
         style="@style/AudioPlayerDescriptionStyle"
         android:ellipsize="end"
         android:maxLines="1"
@@ -119,7 +119,7 @@
         app:layout_constraintVertical_chainStyle="spread_inside" />
 
     <TextView
-        android:id="@+id/tv_TrackDuration"
+        android:id="@+id/trackDuration"
         style="@style/AudioPlayerDescriptionStyle"
         android:ellipsize="end"
         android:maxLines="1"
@@ -128,7 +128,7 @@
         tools:text="5:35" />
 
     <TextView
-        android:id="@+id/tv_Timer"
+        android:id="@+id/timer"
         style="@style/AudioPlayerTrackTitle"
         android:layout_width="wrap_content"
         android:layout_marginBottom="39dp"
@@ -148,13 +148,13 @@
         android:layout_marginBottom="29dp"
         android:background="@drawable/round_button_style"
         android:src="@drawable/ic_add_to_playlists"
-        app:layout_constraintBottom_toTopOf="@id/tv_Timer"
-        app:layout_constraintEnd_toStartOf="@id/bt_play"
+        app:layout_constraintBottom_toTopOf="@id/timer"
+        app:layout_constraintEnd_toStartOf="@id/playButton"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="@id/leftBorder" />
 
     <ImageButton
-        android:id="@+id/bt_play"
+        android:id="@+id/playButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/round_button_style"
@@ -174,10 +174,10 @@
         android:src="@drawable/ic_favourites"
         app:layout_constraintBottom_toBottomOf="@id/bt_add_to_playlist"
         app:layout_constraintEnd_toEndOf="@id/rightBorder"
-        app:layout_constraintStart_toEndOf="@id/bt_play" />
+        app:layout_constraintStart_toEndOf="@id/playButton" />
 
     <TextView
-        android:id="@+id/tv_ArtistName"
+        android:id="@+id/artistName"
         style="@style/AudioPlayerTrackTitle"
         android:layout_marginBottom="@dimen/margin_54"
         android:ellipsize="end"
@@ -189,28 +189,28 @@
         tools:text="The Beatles" />
 
     <TextView
-        android:id="@+id/tv_TrackTitle"
+        android:id="@+id/trackTitle"
         style="@style/AudioPlayerTrackTitle"
         android:layout_marginBottom="@dimen/margin_12"
         android:ellipsize="end"
         android:maxLines="1"
         android:textSize="@dimen/primary_text_size"
         app:layout_constrainedWidth="true"
-        app:layout_constraintBottom_toTopOf="@id/tv_ArtistName"
+        app:layout_constraintBottom_toTopOf="@id/artistName"
         app:layout_constraintEnd_toEndOf="@id/rightBorder"
         app:layout_constraintStart_toStartOf="@id/leftBorder"
         app:layout_constraintTag="TrackTitleTag"
         tools:text="Yesterday (Remastered 2009)" />
 
     <ImageView
-        android:id="@+id/iv_Cover"
+        android:id="@+id/imageCover"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="82dp"
         android:layout_marginBottom="@dimen/margin_24"
         android:scaleType="centerCrop"
         android:src="@drawable/placeholder_cover"
-        app:layout_constraintBottom_toTopOf="@id/tv_TrackTitle"
+        app:layout_constraintBottom_toTopOf="@id/trackTitle"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="@id/rightBorder"
         app:layout_constraintStart_toStartOf="@id/leftBorder"

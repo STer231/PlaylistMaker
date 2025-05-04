@@ -49,35 +49,5 @@ class SettingsActivity : AppCompatActivity() {
         binding.userAgreement.setOnClickListener {
             viewModel.openUserAgreement()
         }
-
-
-
-//        binding.share.setOnClickListener {
-//            val linkPracticum = getString(R.string.link_to_the_practicum)
-//            val shareIntent = Intent(Intent.ACTION_SEND).apply {
-//                type = "text/plain"
-//                putExtra(Intent.EXTRA_TEXT, linkPracticum)
-//            }
-//            startActivity(Intent.createChooser(shareIntent, null))
-//        }
-//
-//        binding.support.setOnClickListener {
-//            val message = getString(R.string.support_message)
-//            val messageSubject = getString(R.string.support_subject)
-//            val supportIntent = Intent(Intent.ACTION_SENDTO).apply {
-//                data = Uri.parse("mailto:")
-//                putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.support_email)))
-//                putExtra(Intent.EXTRA_SUBJECT, messageSubject)
-//                putExtra(Intent.EXTRA_TEXT, message)
-//            }
-//            startActivity(supportIntent)
-//        }
-//
-//        binding.userAgreement.setOnClickListener {
-//            val linkOffer = getString(R.string.link_to_the_offer)
-//            val userAgreementIntent =
-//                Intent(Intent.ACTION_VIEW, Uri.parse(linkOffer))
-//            startActivity(userAgreementIntent)
-//        }
     }
 }

@@ -2,16 +2,14 @@ package com.practicum.playlistmaker.playlist.creator
 
 import android.content.Context
 import com.practicum.playlistmaker.App
+import com.practicum.playlistmaker.playlist.player.data.impl.AudioPlayerInteractorImpl
 import com.practicum.playlistmaker.playlist.search.data.network.RetrofitNetworkClient
-import com.practicum.playlistmaker.data.repository.AudioPlayerStateRepositoryImpl
+import com.practicum.playlistmaker.playlist.player.domain.usecase.AudioPlayerInteractor
 import com.practicum.playlistmaker.playlist.settings.data.impl.SettingsRepositoryImpl
-import com.practicum.playlistmaker.playlist.search.data.repository.TrackRepositoryImpl
+import com.practicum.playlistmaker.playlist.search.data.impl.TrackRepositoryImpl
 import com.practicum.playlistmaker.playlist.search.domain.repository.TrackRepository
-import com.practicum.playlistmaker.domain.usecase.AudioPlayerInteractor
-import com.practicum.playlistmaker.domain.usecase.AudioPlayerInteractorImpl
 import com.practicum.playlistmaker.playlist.search.domain.repository.SearchHistoryRepository
-import com.practicum.playlistmaker.playlist.search.data.repository.SearchHistoryRepositoryImpl
-import com.practicum.playlistmaker.domain.repository.AudioPlayerStateRepository
+import com.practicum.playlistmaker.playlist.search.data.impl.SearchHistoryRepositoryImpl
 import com.practicum.playlistmaker.playlist.search.domain.impl.SearchHistoryInteractor
 import com.practicum.playlistmaker.playlist.search.domain.impl.SearchHistoryInteractorImpl
 import com.practicum.playlistmaker.playlist.search.domain.impl.SearchTracksInteractor
@@ -33,21 +31,8 @@ object Creator {
         return SearchTracksInteractorImpl(getTrackRepository(context))
     }
 
-    fun provideThemeUseCase(context: Context): SettingsInteractor {
-        val sharedPreferences =
-            context.getSharedPreferences("theme_preferences", Context.MODE_PRIVATE)
-        val settingsRepository = SettingsRepositoryImpl(sharedPreferences)
-        return SettingsInteractorImpl(settingsRepository)
-    }
-
     fun provideAudioPlayerInteractor(): AudioPlayerInteractor {
         return AudioPlayerInteractorImpl()
-    }
-
-    fun provideAudioPlayerStateRepository(context: Context): AudioPlayerStateRepository {
-        val sharedPreferences =
-            context.getSharedPreferences("player_state", Context.MODE_PRIVATE)
-        return AudioPlayerStateRepositoryImpl(sharedPreferences)
     }
 
     fun provideSearchHistoryRepository(context: Context): SearchHistoryRepository {

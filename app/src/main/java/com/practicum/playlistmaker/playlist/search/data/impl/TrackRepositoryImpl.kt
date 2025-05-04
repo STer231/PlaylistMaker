@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.playlist.search.data.repository
+package com.practicum.playlistmaker.playlist.search.data.impl
 
 import com.practicum.playlistmaker.playlist.creator.Resource
 import com.practicum.playlistmaker.playlist.search.data.NetworkClient
