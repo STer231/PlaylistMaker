@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.practicum.playlistmaker.playlist.creator.Creator
+import com.practicum.playlistmaker.playlist.player.domain.model.PlayerModel
 import com.practicum.playlistmaker.playlist.player.domain.usecase.AudioPlayerInteractor
 import com.practicum.playlistmaker.playlist.player.domain.model.TrackToPlayerModelMapper
 import com.practicum.playlistmaker.playlist.search.domain.entity.Track
@@ -39,42 +40,37 @@ class AudioPlayerViewModel(
             }
     }
 
-    private val _playerState = MutableLiveData<PlayerViewState>()
-    val playerState: LiveData<PlayerViewState> = _playerState
+    private val _playerState = MutableLiveData<PlayerState>()
+    val playerState: LiveData<PlayerState> = _playerState
+
+    private lateinit var currentTrack: PlayerModel
 
     private val updateTimerRunnable = object : Runnable {
         override fun run() {
-            val position = interactor.getCurrentPosition()
-            _playerState.value = _playerState.value
-                ?.copy(currentPosition = position)
             if (isPlaying) {
+                _playerState.postValue(
+                    PlayerState.Playing(
+                        currentTrack,
+                        interactor.getCurrentPosition()
+                    )
+                )
                 handler.postDelayed(this, TIMER_DELAY)
             }
         }
     }
 
     fun loadTrack(track: Track) {
+
         interactor.prepare(
             track,
             onPrepared = {
-                _playerState.postValue(
-                    PlayerViewState(
-                        track = TrackToPlayerModelMapper.map(track),
-                        isPlayEnabled = true,
-                        isPlaying = false,
-                        currentPosition = 0
-                    )
-                )
+                currentTrack = TrackToPlayerModelMapper.map(track)
+                _playerState.postValue(PlayerState.Ready(currentTrack))
             },
             onCompletion = {
                 isPlaying = false
                 handler.removeCallbacks(updateTimerRunnable)
-                _playerState.postValue(
-                    _playerState.value?.copy(
-                        isPlaying = false,
-                        currentPosition = 0
-                    )
-                )
+                _playerState.postValue(PlayerState.Completed(currentTrack))
             }
         )
     }
@@ -86,7 +82,7 @@ class AudioPlayerViewModel(
     private fun start() {
         isPlaying = true
         interactor.startPlayback()
-        _playerState.value = _playerState.value?.copy(isPlaying = true)
+        _playerState.postValue(PlayerState.Playing(currentTrack, interactor.getCurrentPosition()))
         handler.post(updateTimerRunnable)
     }
 
@@ -94,7 +90,7 @@ class AudioPlayerViewModel(
         isPlaying = false
         interactor.pausePlayback()
         handler.removeCallbacks(updateTimerRunnable)
-        _playerState.value = _playerState.value?.copy(isPlaying = false)
+        _playerState.postValue(PlayerState.Paused(currentTrack, interactor.getCurrentPosition()))
     }
 
     override fun onCleared() {

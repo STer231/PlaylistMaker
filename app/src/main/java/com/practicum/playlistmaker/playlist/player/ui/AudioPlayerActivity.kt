@@ -8,6 +8,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivityAudioPlayerBinding
+import com.practicum.playlistmaker.playlist.player.domain.model.PlayerModel
 import com.practicum.playlistmaker.playlist.player.domain.model.TrackToPlayerModelMapper
 import com.practicum.playlistmaker.playlist.search.domain.entity.Track
 import java.text.SimpleDateFormat
@@ -61,30 +62,51 @@ class AudioPlayerActivity : AppCompatActivity() {
         viewModel.pause()
     }
 
-    private fun renderPlayerState(state: PlayerViewState) {
-        state.track?.let { playerModel ->
-            binding.trackTitle.text = playerModel.trackName
-            binding.artistName.text = playerModel.artistName
-            binding.trackDuration.text = playerModel.formattedDuration
-            binding.collectionName.text = playerModel.collectionName
-            binding.releaseDate.text = playerModel.formattedReleaseYear
-            binding.primaryGenreName.text = playerModel.primaryGenreName
-            binding.countryName.text = playerModel.country
+    private fun renderPlayerState(state: PlayerState) {
+        when (state) {
 
-            Glide.with(this)
-                .load(playerModel.artworkUrl)
-                .placeholder(R.drawable.placeholder_cover)
-                .fitCenter()
-                .transform(RoundedCorners(8))
-                .into(binding.imageCover)
+            is PlayerState.Ready -> {
+                renderTrack(state.track)
+                binding.playButton.setImageResource(R.drawable.ic_play)
+                binding.playButton.isEnabled = true
+                binding.timer.text = getText(R.string.timer)
+            }
+
+            is PlayerState.Playing -> {
+                renderTrack(state.track)
+                binding.playButton.setImageResource(R.drawable.ic_pause)
+                binding.playButton.isEnabled = true
+                binding.timer.text = TrackToPlayerModelMapper.mapDuration(state.currentPosition)
+            }
+
+            is PlayerState.Paused -> {
+                renderTrack(state.track)
+                binding.playButton.setImageResource(R.drawable.ic_play)
+                binding.timer.text = TrackToPlayerModelMapper.mapDuration(state.currentPosition)
+            }
+
+            is PlayerState.Completed -> {
+                renderTrack(state.track)
+                binding.playButton.setImageResource(R.drawable.ic_play)
+                binding.timer.text = getText(R.string.timer_start)
+            }
         }
+    }
 
-        binding.timer.text = TrackToPlayerModelMapper
-            .mapDuration(state.currentPosition)
+    private fun renderTrack(track: PlayerModel) {
+        binding.trackTitle.text = track.trackName
+        binding.artistName.text = track.artistName
+        binding.trackDuration.text = track.formattedDuration
+        binding.collectionName.text = track.collectionName
+        binding.releaseDate.text = track.formattedReleaseYear
+        binding.primaryGenreName.text = track.primaryGenreName
+        binding.countryName.text = track.country
 
-        binding.playButton.isEnabled = state.isPlayEnabled
-        binding.playButton.setImageResource(
-            if (state.isPlaying) R.drawable.ic_pause else R.drawable.ic_play
-        )
+        Glide.with(this)
+            .load(track.artworkUrl)
+            .placeholder(R.drawable.placeholder_cover)
+            .fitCenter()
+            .transform(RoundedCorners(8))
+            .into(binding.imageCover)
     }
 }

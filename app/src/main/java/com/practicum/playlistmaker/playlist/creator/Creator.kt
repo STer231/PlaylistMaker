@@ -35,7 +35,7 @@ object Creator {
         return AudioPlayerInteractorImpl()
     }
 
-    fun provideSearchHistoryRepository(context: Context): SearchHistoryRepository {
+    private fun provideSearchHistoryRepository(context: Context): SearchHistoryRepository {
         val sharedPreferences =
             context.getSharedPreferences(SearchHistoryRepositoryImpl.PREFERENCES_HISTORY, Context.MODE_PRIVATE)
         return SearchHistoryRepositoryImpl(sharedPreferences)
@@ -52,7 +52,7 @@ object Creator {
         return SettingsInteractorImpl(settingsRepository)
     }
 
-    fun provideExternalNavigator(context: Context): ExternalNavigator {
+    private fun provideExternalNavigator(context: Context): ExternalNavigator {
         return ExternalNavigatorImpl(context.applicationContext)
     }
 
