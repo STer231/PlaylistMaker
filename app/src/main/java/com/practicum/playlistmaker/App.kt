@@ -1,9 +1,8 @@
 package com.practicum.playlistmaker
 
 import android.app.Application
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
-import com.practicum.playlistmaker.playlist.creator.Creator
+import com.practicum.playlistmaker.creator.Creator
 
 class App : Application() {
 
