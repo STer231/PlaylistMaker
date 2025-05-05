@@ -18,6 +18,7 @@ import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 import com.practicum.playlistmaker.search.SearchState
 import com.practicum.playlistmaker.player.ui.AudioPlayerActivity
+import com.practicum.playlistmaker.search.domain.entity.Track
 
 class SearchActivity : AppCompatActivity() {
 
@@ -43,7 +44,7 @@ class SearchActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(
             this,
-            SearchViewModel.getViewModelFactory()
+            SearchViewModel.getViewModelFactory(applicationContext)
         )[SearchViewModel::class.java]
 
         adapter = TrackAdapter(TrackAdapter.TrackClickListener { track ->
@@ -134,43 +135,52 @@ class SearchActivity : AppCompatActivity() {
 
     private fun renderState(state: SearchState) {
         when (state) {
-            is SearchState.Initial -> {
-                binding.progressBar.visibility = View.GONE
-                binding.recyclerView.visibility = View.GONE
-                binding.placeholderLayout.visibility = View.GONE
-            }
-
-            is SearchState.Loading -> {
-                binding.progressBar.visibility = View.VISIBLE
-                binding.recyclerView.visibility = View.GONE
-                binding.placeholderLayout.visibility = View.GONE
-            }
-
-            is SearchState.Content -> {
-                binding.progressBar.visibility = View.GONE
-                binding.placeholderLayout.visibility = View.GONE
-                binding.recyclerView.visibility = View.VISIBLE
-                adapter.updateData(state.tracks)
-            }
-
-            is SearchState.Empty -> {
-                binding.progressBar.visibility = View.GONE
-                binding.recyclerView.visibility = View.GONE
-                binding.placeholderLayout.visibility = View.VISIBLE
-                binding.errorPlaceholderImage.setImageResource(R.drawable.placeholder_not_found)
-                binding.placeholderText.text = state.message
-                binding.refreshButton.visibility = View.GONE
-            }
-
-            is SearchState.Error -> {
-                binding.progressBar.visibility = View.GONE
-                binding.recyclerView.visibility = View.GONE
-                binding.placeholderLayout.visibility = View.VISIBLE
-                binding.errorPlaceholderImage.setImageResource(R.drawable.placeholder_no_internet)
-                binding.placeholderText.text = state.errorMessage
-                binding.refreshButton.visibility = View.VISIBLE
-            }
+            is SearchState.Initial -> showInitial()
+            is SearchState.Loading -> showLoading()
+            is SearchState.Content -> showContent(state.tracks)
+            is SearchState.Empty -> showEmpty(state.message)
+            is SearchState.Error -> showError(state.errorMessage)
         }
+    }
+
+    private fun showInitial() {
+        hideAll()
+    }
+
+    private fun showLoading() {
+        hideAll()
+        binding.progressBar.visibility = View.VISIBLE
+    }
+
+    private fun showContent(tracks: List<Track>) {
+        binding.progressBar.visibility = View.GONE
+        binding.placeholderLayout.visibility = View.GONE
+        binding.recyclerView.visibility = View.VISIBLE
+        adapter.updateData(tracks)
+    }
+
+    private fun showEmpty(message: String) {
+        binding.progressBar.visibility = View.GONE
+        binding.recyclerView.visibility = View.GONE
+        binding.placeholderLayout.visibility = View.VISIBLE
+        binding.errorPlaceholderImage.setImageResource(R.drawable.placeholder_not_found)
+        binding.placeholderText.text = message
+        binding.refreshButton.visibility = View.GONE
+    }
+
+    private fun showError(errorMessage: String) {
+        binding.progressBar.visibility = View.GONE
+        binding.recyclerView.visibility = View.GONE
+        binding.placeholderLayout.visibility = View.VISIBLE
+        binding.errorPlaceholderImage.setImageResource(R.drawable.placeholder_no_internet)
+        binding.placeholderText.text = errorMessage
+        binding.refreshButton.visibility = View.VISIBLE
+    }
+
+    private fun hideAll() {
+        binding.progressBar.visibility = View.GONE
+        binding.recyclerView.visibility = View.GONE
+        binding.placeholderLayout.visibility = View.GONE
     }
 
     private fun hideKeyboard() {

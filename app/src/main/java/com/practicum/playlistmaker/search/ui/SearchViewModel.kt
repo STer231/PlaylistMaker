@@ -1,39 +1,46 @@
 package com.practicum.playlistmaker.search.ui
 
-import android.app.Application
+import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.creator.Creator
 import com.practicum.playlistmaker.search.SearchState
 import com.practicum.playlistmaker.search.domain.entity.Track
+import com.practicum.playlistmaker.search.domain.impl.SearchHistoryInteractor
 import com.practicum.playlistmaker.search.domain.impl.SearchTracksInteractor
 
-class SearchViewModel (application: Application) : AndroidViewModel(application) {
+class SearchViewModel(
+    private val searchInteractor: SearchTracksInteractor,
+    private val searchHistoryInteractor: SearchHistoryInteractor,
+    private val errorMessageProvider: ErrorMessageProvider
+) : ViewModel() {
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 1000L
         private val SEARCH_REQUEST_TOKEN = Any()
 
-        fun getViewModelFactory(): ViewModelProvider.Factory =
+        fun getViewModelFactory(context: Context): ViewModelProvider.Factory =
             viewModelFactory {
                 initializer {
-                    SearchViewModel(this[APPLICATION_KEY] as Application)
+                    val searchInteractor = Creator.provideSearchTracksInteractor(context)
+                    val historyInteractor = Creator.provideSearchHistoryInteractor(context)
+                    val errorMessageProvider = ErrorMessageProviderImpl(context)
+
+                    SearchViewModel(
+                        searchInteractor = searchInteractor,
+                        searchHistoryInteractor = historyInteractor,
+                        errorMessageProvider = errorMessageProvider
+                    )
                 }
             }
     }
-
-    private val searchInteractor = Creator.provideSearchTracksInteractor(getApplication())
-
-    private val searchHistoryInteractor = Creator.provideSearchHistoryInteractor(getApplication())
 
     private val _state = MutableLiveData<SearchState>(SearchState.Initial)
     val state: LiveData<SearchState> = _state
@@ -98,19 +105,19 @@ class SearchViewModel (application: Application) : AndroidViewModel(application)
                     errorMessage != null -> {
                         renderState(
                             SearchState.Error(
-                                errorMessage = getApplication<Application>()
-                                    .getString(R.string.problems_with_the_internet)
+                                errorMessage = errorMessageProvider.noInternet()
                             )
                         )
                     }
+
                     foundTracks.isNullOrEmpty() -> {
                         renderState(
                             SearchState.Empty(
-                                message = getApplication<Application>()
-                                    .getString(R.string.nothing_found)
+                                message = errorMessageProvider.nothingFound()
                             )
                         )
                     }
+
                     else -> {
                         renderState(SearchState.Content(foundTracks))
                     }

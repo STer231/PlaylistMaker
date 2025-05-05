@@ -1,13 +1,11 @@
 package com.practicum.playlistmaker.player.ui
 
-import android.app.Application
 import android.os.Handler
 import android.os.Looper
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.practicum.playlistmaker.creator.Creator
@@ -18,9 +16,8 @@ import com.practicum.playlistmaker.player.domain.model.TrackToPlayerModelMapper
 import com.practicum.playlistmaker.search.domain.entity.Track
 
 class AudioPlayerViewModel(
-    application: Application,
     private val interactor: AudioPlayerInteractor
-) : AndroidViewModel(application) {
+) : ViewModel() {
 
     private val handler = Handler(Looper.getMainLooper())
 
@@ -34,7 +31,6 @@ class AudioPlayerViewModel(
             viewModelFactory {
                 initializer {
                     AudioPlayerViewModel(
-                        this[APPLICATION_KEY] as Application,
                         Creator.provideAudioPlayerInteractor()
                     )
                 }
@@ -60,20 +56,14 @@ class AudioPlayerViewModel(
         }
     }
 
-    fun loadTrack(track: Track) {
+    init {
+        interactor.onPrepared.observeForever { onPrepared() }
+        interactor.onCompletion.observeForever { onCompletion() }
+    }
 
-        interactor.prepare(
-            track,
-            onPrepared = {
-                currentTrack = TrackToPlayerModelMapper.map(track)
-                _playerState.postValue(PlayerState.Ready(currentTrack))
-            },
-            onCompletion = {
-                isPlaying = false
-                handler.removeCallbacks(updateTimerRunnable)
-                _playerState.postValue(PlayerState.Completed(currentTrack))
-            }
-        )
+    fun loadTrack(track: Track) {
+        currentTrack = TrackToPlayerModelMapper.map(track)
+        interactor.prepare(track)
     }
 
     fun playbackControl() {
@@ -94,9 +84,21 @@ class AudioPlayerViewModel(
         _playerState.postValue(PlayerState.Paused(currentTrack, interactor.getCurrentPosition()))
     }
 
+    private fun onPrepared() {
+        _playerState.postValue(PlayerState.Ready(currentTrack))
+    }
+
+    private fun onCompletion() {
+        isPlaying = false
+        handler.removeCallbacks(updateTimerRunnable)
+        _playerState.postValue(PlayerState.Completed(currentTrack))
+    }
+
     override fun onCleared() {
         super.onCleared()
         interactor.releasePlayer()
         handler.removeCallbacks(updateTimerRunnable)
+        interactor.onPrepared.removeObserver { onPrepared() }
+        interactor.onCompletion.removeObserver { onCompletion() }
     }
 }
