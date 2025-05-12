@@ -26,4 +26,5 @@
     <string name="primaryGenreName">Жанр</string>
     <string name="country">Страна</string>
     <string name="timer">0:30</string>
+    <string name="timer_start">00:00</string>
 </resources>
