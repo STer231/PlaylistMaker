@@ -2,7 +2,6 @@ package com.practicum.playlistmaker.player.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
@@ -12,11 +11,12 @@ import com.practicum.playlistmaker.player.PlayerState
 import com.practicum.playlistmaker.player.domain.model.PlayerModel
 import com.practicum.playlistmaker.player.domain.model.TrackToPlayerModelMapper
 import com.practicum.playlistmaker.search.domain.entity.Track
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AudioPlayerActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: AudioPlayerViewModel
     private lateinit var binding: ActivityAudioPlayerBinding
+    private val viewModel: AudioPlayerViewModel by viewModel()
 
     companion object {
         private const val EXTRA_TRACK_JSON = "track_json"
@@ -26,11 +26,6 @@ class AudioPlayerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAudioPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        viewModel = ViewModelProvider(
-            this,
-            AudioPlayerViewModel.getViewModelFactory()
-        )[AudioPlayerViewModel::class.java]
 
         val trackJson = intent.getStringExtra(EXTRA_TRACK_JSON)
         if (!trackJson.isNullOrEmpty()) {
