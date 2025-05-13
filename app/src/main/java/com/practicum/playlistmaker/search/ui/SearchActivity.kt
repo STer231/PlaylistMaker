@@ -11,7 +11,6 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.practicum.playlistmaker.R
@@ -19,10 +18,10 @@ import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 import com.practicum.playlistmaker.search.SearchState
 import com.practicum.playlistmaker.player.ui.AudioPlayerActivity
 import com.practicum.playlistmaker.search.domain.entity.Track
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: SearchViewModel
     private lateinit var binding: ActivitySearchBinding
 
     companion object {
@@ -30,6 +29,8 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private lateinit var historyAdapter: TrackAdapter
+
+    private val viewModel: SearchViewModel by viewModel()
 
     private var isClickAllowed = true
 
@@ -41,11 +42,6 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        viewModel = ViewModelProvider(
-            this,
-            SearchViewModel.getViewModelFactory(applicationContext)
-        )[SearchViewModel::class.java]
 
         adapter = TrackAdapter(TrackAdapter.TrackClickListener { track ->
             if (clickDebounce()) {

@@ -23,26 +23,9 @@ import com.practicum.playlistmaker.sharing.domain.SharingInteractor
 import com.practicum.playlistmaker.sharing.domain.impl.SharingInteractorImpl
 
 object Creator {
-    private fun getTrackRepository(context: Context): TrackRepository {
-        return TrackRepositoryImpl(RetrofitNetworkClient(context))
-    }
-
-    fun provideSearchTracksInteractor(context: Context): SearchTracksInteractor {
-        return SearchTracksInteractorImpl(getTrackRepository(context))
-    }
 
     fun provideAudioPlayerInteractor(): AudioPlayerInteractor {
         return AudioPlayerInteractorImpl()
-    }
-
-    private fun provideSearchHistoryRepository(context: Context): SearchHistoryRepository {
-        val sharedPreferences =
-            context.getSharedPreferences(SearchHistoryRepositoryImpl.PREFERENCES_HISTORY, Context.MODE_PRIVATE)
-        return SearchHistoryRepositoryImpl(sharedPreferences)
-    }
-
-    fun provideSearchHistoryInteractor(context: Context): SearchHistoryInteractor {
-        return SearchHistoryInteractorImpl(provideSearchHistoryRepository(context))
     }
 
     fun provideSettingsInteractor(context: Context): SettingsInteractor {
