@@ -6,8 +6,6 @@ import android.net.NetworkCapabilities
 import com.practicum.playlistmaker.search.data.NetworkClient
 import com.practicum.playlistmaker.search.data.dto.Response
 import com.practicum.playlistmaker.search.data.dto.SearchTracksRequest
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class RetrofitNetworkClient(
     private val itunesApi: ItunesApi,

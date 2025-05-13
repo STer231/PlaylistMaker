@@ -1,16 +1,11 @@
 package com.practicum.playlistmaker.search.ui
 
-import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.practicum.playlistmaker.creator.Creator
 import com.practicum.playlistmaker.search.SearchState
 import com.practicum.playlistmaker.search.domain.entity.Track
 import com.practicum.playlistmaker.search.domain.impl.SearchHistoryInteractor
