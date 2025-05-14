@@ -1,5 +1,7 @@
 package com.practicum.playlistmaker.di
 
+import com.practicum.playlistmaker.player.data.impl.AudioPlayerRepositoryImpl
+import com.practicum.playlistmaker.player.data.repository.AudioPlayerRepository
 import com.practicum.playlistmaker.search.data.impl.SearchHistoryRepositoryImpl
 import com.practicum.playlistmaker.search.data.impl.TrackRepositoryImpl
 import com.practicum.playlistmaker.search.domain.repository.SearchHistoryRepository
@@ -30,5 +32,10 @@ val repositoryModule = module {
 
     single<ExternalNavigator> {
         ExternalNavigatorImpl(androidContext())
+    }
+
+    // зависимости для экрана аудиоплеер
+    factory<AudioPlayerRepository> {
+        AudioPlayerRepositoryImpl(get())
     }
 }

@@ -1,6 +1,6 @@
 package com.practicum.playlistmaker.di
 
-import com.practicum.playlistmaker.player.data.impl.AudioPlayerInteractorImpl
+import com.practicum.playlistmaker.player.domain.usecase.AudioPlayerInteractorImpl
 import com.practicum.playlistmaker.player.domain.usecase.AudioPlayerInteractor
 import com.practicum.playlistmaker.search.domain.impl.SearchHistoryInteractor
 import com.practicum.playlistmaker.search.domain.impl.SearchHistoryInteractorImpl
@@ -40,7 +40,7 @@ val interactorModule = module {
     }
 
     // зависимости для экрана аудиоплеер
-    single<AudioPlayerInteractor> {
-        AudioPlayerInteractorImpl()
+    factory<AudioPlayerInteractor> {
+        AudioPlayerInteractorImpl(get())
     }
 }

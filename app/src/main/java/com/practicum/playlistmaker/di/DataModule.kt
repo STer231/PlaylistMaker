@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker.di
 
 import android.content.Context
+import android.media.MediaPlayer
 import com.google.gson.Gson
 import com.practicum.playlistmaker.search.data.NetworkClient
 import com.practicum.playlistmaker.search.data.impl.SearchHistoryRepositoryImpl
@@ -49,4 +50,7 @@ val dataModule = module {
     single {
         SharingConfig(androidContext())
     }
+
+    // зависимости для экрана аудиоплеера
+    factory { MediaPlayer() }
 }
