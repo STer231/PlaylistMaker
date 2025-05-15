@@ -10,5 +10,3 @@ data class PlayerModel(
     val country: String,
     val artworkUrl: String
 )
-
-

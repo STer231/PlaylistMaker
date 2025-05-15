@@ -9,6 +9,7 @@ class SettingsRepositoryImpl(
 ) : SettingsRepository {
 
     companion object {
+        const val PREFERENCES_NAME = "theme_preferences"
         private const val PREFERENCES_DARK_THEME = "dark_theme"
     }
 
