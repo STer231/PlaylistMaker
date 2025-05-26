@@ -10,6 +10,7 @@ import com.practicum.playlistmaker.search.SearchState
 import com.practicum.playlistmaker.search.domain.entity.Track
 import com.practicum.playlistmaker.search.domain.impl.SearchHistoryInteractor
 import com.practicum.playlistmaker.search.domain.impl.SearchTracksInteractor
+import com.practicum.playlistmaker.util.ErrorMessageProvider
 
 class SearchViewModel(
     private val searchInteractor: SearchTracksInteractor,
@@ -85,7 +86,7 @@ class SearchViewModel(
                     errorMessage != null -> {
                         renderState(
                             SearchState.Error(
-                                errorMessage = errorMessageProvider.noInternet()
+                                errorMessage = errorMessageProvider.serverError()
                             )
                         )
                     }

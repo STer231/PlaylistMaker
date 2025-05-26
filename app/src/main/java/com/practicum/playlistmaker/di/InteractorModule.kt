@@ -6,8 +6,8 @@ import com.practicum.playlistmaker.search.domain.impl.SearchHistoryInteractor
 import com.practicum.playlistmaker.search.domain.impl.SearchHistoryInteractorImpl
 import com.practicum.playlistmaker.search.domain.impl.SearchTracksInteractor
 import com.practicum.playlistmaker.search.domain.impl.SearchTracksInteractorImpl
-import com.practicum.playlistmaker.search.ui.ErrorMessageProvider
-import com.practicum.playlistmaker.search.ui.ErrorMessageProviderImpl
+import com.practicum.playlistmaker.util.ErrorMessageProvider
+import com.practicum.playlistmaker.util.ErrorMessageProviderImpl
 import com.practicum.playlistmaker.settings.domain.SettingsInteractor
 import com.practicum.playlistmaker.settings.domain.impl.SettingsInteractorImpl
 import com.practicum.playlistmaker.sharing.domain.SharingInteractor

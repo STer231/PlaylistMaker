@@ -21,6 +21,7 @@
             android:exported="false" />
         <activity
             android:name=".mediaLibrary.ui.MediaLibraryActivity"
+            android:theme="@style/Theme.SubsequentScreens"
             android:exported="false" />
         <activity
             android:name=".settings.ui.SettingsActivity"

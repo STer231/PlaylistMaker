@@ -1,15 +1,23 @@
-package com.practicum.playlistmaker.search.ui
+package com.practicum.playlistmaker.util
 
 import android.content.Context
 import com.practicum.playlistmaker.R
 
 class ErrorMessageProviderImpl(private val context: Context): ErrorMessageProvider {
-    override fun noInternet(): String {
+    override fun serverError(): String {
         return context.getString(R.string.problems_with_the_internet)
     }
 
     override fun nothingFound(): String {
         return context.getString(R.string.nothing_found)
+    }
+
+    override fun emptyFavourites(): String {
+       return context.getString(R.string.empty_library)
+    }
+
+    override fun emptyPlaylist(): String {
+        return context.getString(R.string.empty_playlist)
     }
 
 }
