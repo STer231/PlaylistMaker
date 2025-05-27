@@ -32,4 +32,5 @@
     <string name="empty_favourites">Ваша медиатека пуста</string>
     <string name="empty_playlists">Вы не создали\nни одного плейлиста</string>
     <string name="new_playlist">Новый плейлист</string>
+    <string name="no_internet">Проверьте подключение к интернету</string>
 </resources>

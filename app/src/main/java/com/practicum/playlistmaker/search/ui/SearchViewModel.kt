@@ -84,11 +84,12 @@ class SearchViewModel(
             override fun consume(foundTracks: List<Track>?, errorMessage: String?) {
                 when {
                     errorMessage != null -> {
-                        renderState(
-                            SearchState.Error(
-                                errorMessage = errorMessageProvider.serverError()
-                            )
-                        )
+                        val displayMessage = if (errorMessage == "Проверьте подключение к интернету") {
+                            errorMessageProvider.noInternet()
+                        } else {
+                            errorMessageProvider.serverError()
+                        }
+                        renderState(SearchState.Error(displayMessage))
                     }
 
                     foundTracks.isNullOrEmpty() -> {
