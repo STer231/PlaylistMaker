@@ -9,13 +9,10 @@ import androidx.fragment.app.Fragment
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentFavouritesBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 
 class FavouritesFragment : Fragment() {
 
     companion object {
-        private const val FAVOURITES_LIST = "favourites_list"
-
         fun newInstance() = FavouritesFragment().apply {
             arguments = bundleOf()
         }
@@ -23,9 +20,7 @@ class FavouritesFragment : Fragment() {
 
     private lateinit var binding: FragmentFavouritesBinding
 
-    private val favouritesViewModel: FavouritesViewModel by viewModel {
-        parametersOf(requireArguments().getString(FAVOURITES_LIST))
-    }
+    private val favouritesViewModel: FavouritesViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,22 +34,22 @@ class FavouritesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        favouritesViewModel.observeFavouritesLiveData().observe(viewLifecycleOwner) {
+        favouritesViewModel.observeFavouritesState().observe(viewLifecycleOwner) {
             renderState(it)
         }
     }
 
     private fun showError(message: String) {
         binding.apply {
-            placeholderLayout.visibility = View.VISIBLE
-            placeholderImage.setImageResource(R.drawable.placeholder_not_found)
-            placeholderMessage.text = message
+            favouritePlaceholderLayout.visibility = View.VISIBLE
+            favouritePlaceholderImage.setImageResource(R.drawable.placeholder_not_found)
+            favouritePlaceholderMessage.text = message
         }
     }
 
-    private fun renderState(state: FavouriteState) {
+    private fun renderState(state: FavouritesState) {
         when(state) {
-            is FavouriteState.Error -> showError(state.message)
+            is FavouritesState.Error -> showError(state.message)
         }
     }
 }

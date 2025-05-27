@@ -13,11 +13,10 @@ class ErrorMessageProviderImpl(private val context: Context): ErrorMessageProvid
     }
 
     override fun emptyFavourites(): String {
-       return context.getString(R.string.empty_library)
+       return context.getString(R.string.empty_favourites)
     }
 
-    override fun emptyPlaylist(): String {
-        return context.getString(R.string.empty_playlist)
+    override fun emptyPlaylists(): String {
+        return context.getString(R.string.empty_playlists)
     }
-
 }

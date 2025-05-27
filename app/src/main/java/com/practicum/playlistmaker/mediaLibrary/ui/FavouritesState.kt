@@ -1,8 +1,7 @@
 package com.practicum.playlistmaker.mediaLibrary.ui
 
-sealed interface FavouriteState {
-
+sealed interface FavouritesState {
     data class Error(
         val message: String
-    ) : FavouriteState
+    ) : FavouritesState
 }

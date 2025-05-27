@@ -5,14 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.practicum.playlistmaker.util.ErrorMessageProvider
 
-class FavouritesViewModel(
+class  FavouritesViewModel(
     private val errorMessageProvider: ErrorMessageProvider
 ) : ViewModel() {
 
-    private val favouritesLiveData = MutableLiveData<FavouriteState>()
-    fun observeFavouritesLiveData(): LiveData<FavouriteState> = favouritesLiveData
+    private val favouritesState = MutableLiveData<FavouritesState>()
+    fun observeFavouritesState(): LiveData<FavouritesState> = favouritesState
 
     init {
-        favouritesLiveData.postValue(FavouriteState.Error(errorMessageProvider.emptyFavourites()))
+        favouritesState.postValue(FavouritesState.Error(errorMessageProvider.emptyFavourites()))
     }
 }

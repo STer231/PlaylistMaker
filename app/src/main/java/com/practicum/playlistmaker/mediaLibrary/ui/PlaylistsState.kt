@@ -1,4 +1,7 @@
 package com.practicum.playlistmaker.mediaLibrary.ui
 
-interface PlaylistsState {
+sealed interface PlaylistsState {
+    data class Error(
+        val message: String
+    ) : PlaylistsState
 }

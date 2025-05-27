@@ -29,7 +29,7 @@
     <string name="timer_start">00:00</string>
     <string name="favourites_tracks">Избранные треки</string>
     <string name="playlists">Плейлисты</string>
-    <string name="empty_library">Ваша медиатека пуста</string>
-    <string name="empty_playlist">Вы не создали\nни одного плейлиста</string>
+    <string name="empty_favourites">Ваша медиатека пуста</string>
+    <string name="empty_playlists">Вы не создали\nни одного плейлиста</string>
     <string name="new_playlist">Новый плейлист</string>
 </resources>

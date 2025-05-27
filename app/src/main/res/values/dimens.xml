@@ -27,4 +27,5 @@
     <dimen name="dimen_51">51dp</dimen>
     <dimen name="dimen_44">44dp</dimen>
     <dimen name="dimen_24">24dp</dimen>
+    <dimen name="tabIndicatorHeight">2dp</dimen>
 </resources>

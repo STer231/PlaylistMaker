@@ -12,6 +12,7 @@
     <style name="Theme.SubsequentScreens" parent="Base.Theme.PlaylistMaker">
         <item name="android:windowBackground">@color/white</item>
         <item name="colorBackgroundEditText">@color/gray_light</item>
+        <item name="colorViewPagerBackground">@color/white</item>
     </style>
 
     <style name="Theme.PlaylistMaker" parent="Base.Theme.PlaylistMaker" />

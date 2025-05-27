@@ -13,14 +13,13 @@
         app:navigationIcon="@drawable/back"/>
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:tabTextColor="@color/black"
-        app:tabIndicatorColor="@color/black" />
+        style="@style/TabTextStyle"
+        android:id="@+id/tabLayout"/>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="?attr/colorViewPagerBackground"/>
 </LinearLayout>

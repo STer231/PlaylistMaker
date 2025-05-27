@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <attr name="colorBackgroundEditText" format="color" />
+    <attr name="colorViewPagerBackground" format="color"/>
 </resources>

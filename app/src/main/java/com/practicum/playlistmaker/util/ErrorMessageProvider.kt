@@ -4,5 +4,5 @@ interface ErrorMessageProvider {
     fun serverError(): String
     fun nothingFound(): String
     fun emptyFavourites(): String
-    fun emptyPlaylist(): String
+    fun emptyPlaylists(): String
 }
