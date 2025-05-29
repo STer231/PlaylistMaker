@@ -10,6 +10,7 @@ import com.practicum.playlistmaker.search.SearchState
 import com.practicum.playlistmaker.search.domain.entity.Track
 import com.practicum.playlistmaker.search.domain.impl.SearchHistoryInteractor
 import com.practicum.playlistmaker.search.domain.impl.SearchTracksInteractor
+import com.practicum.playlistmaker.util.ErrorMessageProvider
 
 class SearchViewModel(
     private val searchInteractor: SearchTracksInteractor,
@@ -83,11 +84,12 @@ class SearchViewModel(
             override fun consume(foundTracks: List<Track>?, errorMessage: String?) {
                 when {
                     errorMessage != null -> {
-                        renderState(
-                            SearchState.Error(
-                                errorMessage = errorMessageProvider.noInternet()
-                            )
-                        )
+                        val displayMessage = if (errorMessage == "Проверьте подключение к интернету") {
+                            errorMessageProvider.noInternet()
+                        } else {
+                            errorMessageProvider.serverError()
+                        }
+                        renderState(SearchState.Error(displayMessage))
                     }
 
                     foundTracks.isNullOrEmpty() -> {

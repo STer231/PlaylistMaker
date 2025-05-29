@@ -141,4 +141,16 @@
         <item name="fontFamily">@font/ys_display_medium</item>
         <item name="fontWeight">400</item>
     </style>
+    <style name="TabTextStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="tabIndicatorHeight">@dimen/tabIndicatorHeight</item>
+        <item name="tabIndicatorFullWidth">true</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="fontWeight">500</item>
+        <item name="tabTextColor">@color/white</item>
+        <item name="tabIndicatorColor">@color/white</item>
+        <item name="tabBackground">@color/black</item>
+    </style>
 </resources>
