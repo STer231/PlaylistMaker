@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".search.ui.SearchFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -18,29 +19,31 @@
         android:layout_marginTop="@dimen/padding_8"
         android:background="@drawable/ed_style">
 
-        <ImageView style="@style/IconEditTextSearchStyle"
+        <ImageView
+            style="@style/IconEditTextSearchStyle"
             android:layout_marginStart="13dp"
             android:layout_marginTop="11dp"
-            android:src="@drawable/ic_search_edit_text"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null"
+            android:src="@drawable/ic_search_edit_text" />
 
         <EditText
             android:id="@+id/inputEditText"
             style="@style/EditTextSearchStyle"
-            android:imeOptions="actionDone"
-            android:singleLine="true"
             android:layout_marginStart="36dp"
             android:background="@null"
-            android:textCursorDrawable="@drawable/cursor"
-            android:hint="@string/search" />
+            android:hint="@string/search"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
+            android:textCursorDrawable="@drawable/cursor" />
 
-        <ImageView style="@style/IconEditTextSearchStyle"
+        <ImageView
             android:id="@+id/clearButton"
+            style="@style/IconEditTextSearchStyle"
             android:layout_gravity="end|center_vertical"
             android:layout_marginEnd="14dp"
             android:background="@null"
             android:src="@drawable/ic_baseline_close"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
     </FrameLayout>
 
@@ -49,69 +52,74 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_16"
-        tools:listitem="@layout/item_track"
+        android:visibility="visible"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:visibility="visible"/>
+        tools:listitem="@layout/item_track" />
 
-    <ProgressBar style="@style/ProgressBarStyle"
+    <ProgressBar
         android:id="@+id/progressBar"
-        android:layout_marginTop="@dimen/margin_140"
+        style="@style/ProgressBarStyle"
         android:layout_gravity="center"
-        android:visibility="gone"/>
+        android:layout_marginTop="@dimen/margin_140"
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/placeholderLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="102dp"
-        android:orientation="vertical"
         android:gravity="center"
+        android:orientation="vertical"
         android:visibility="gone">
 
         <ImageView
             android:id="@+id/errorPlaceholderImage"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            tools:src="@drawable/placeholder_not_found"/>
+            tools:src="@drawable/placeholder_not_found" />
 
-        <TextView style="@style/ErrorPlaceholderTextStyle"
+        <TextView
             android:id="@+id/placeholderText"
-            tools:text="@string/problems_with_the_internet"/>
+            style="@style/ErrorPlaceholderTextStyle"
+            tools:text="@string/problems_with_the_internet" />
 
-        <Button style="@style/ErrorPlaceholderButtonStyle"
+        <Button
             android:id="@+id/refreshButton"
-            android:paddingTop="@dimen/padding_6"
+            style="@style/ErrorPlaceholderButtonStyle"
             android:paddingStart="@dimen/padding_8"
+            android:paddingTop="@dimen/padding_6"
             android:paddingEnd="@dimen/padding_6"
             android:text="@string/refresh"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
     </LinearLayout>
-    
+
     <LinearLayout
         android:id="@+id/historyLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:gravity="center"
+        android:orientation="vertical"
         android:visibility="gone">
 
-        <TextView style="@style/HistoryListTitle"
+        <TextView
+            style="@style/HistoryListTitle"
             android:layout_marginTop="@dimen/margin_42"
-            android:text="@string/history_list_title"/>
+            android:text="@string/history_list_title" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewHistory"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginTop="@dimen/margin_20"/>
+            android:layout_marginTop="@dimen/margin_20"
+            android:layout_weight="1" />
 
-        <Button style="@style/ErrorPlaceholderButtonStyle"
+        <Button
             android:id="@+id/clearHistoryButton"
-            android:paddingVertical="@dimen/padding_10"
+            style="@style/ErrorPlaceholderButtonStyle"
+            android:layout_marginTop="@dimen/margin_24"
             android:paddingHorizontal="@dimen/padding_14"
-            android:text="@string/clear_history_button"
-            android:layout_marginTop="@dimen/margin_24"/>
+            android:paddingVertical="@dimen/padding_10"
+            android:text="@string/clear_history_button" />
     </LinearLayout>
 </LinearLayout>

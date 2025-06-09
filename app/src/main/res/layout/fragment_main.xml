@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:theme="@style/Theme.FirstScreen">
+    tools:theme="@style/Theme.FirstScreen"
+    tools:context=".main.ui.MainFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"

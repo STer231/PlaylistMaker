@@ -1,17 +1,13 @@
 package com.practicum.playlistmaker.main.ui
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
+import androidx.navigation.fragment.findNavController
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentMainBinding
-import com.practicum.playlistmaker.search.ui.SearchFragment
-import com.practicum.playlistmaker.settings.ui.SettingsFragment
-import com.practicum.playlistmaker.mediaLibrary.ui.MediaLibraryFragment
 
 
 class MainFragment : Fragment() {
@@ -30,24 +26,15 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.search.setOnClickListener {
-            parentFragmentManager.commit {
-                replace(R.id.fragmentContainerView, SearchFragment())
-                addToBackStack(null)
-            }
+            findNavController().navigate(R.id.action_mainFragment_to_searchFragment)
         }
 
         binding.media.setOnClickListener {
-            parentFragmentManager.commit {
-                replace(R.id.fragmentContainerView, MediaLibraryFragment())
-                addToBackStack(null)
-            }
+            findNavController().navigate(R.id.action_mainFragment_to_mediaLibraryFragment)
         }
 
         binding.settings.setOnClickListener {
-            parentFragmentManager.commit {
-                replace(R.id.fragmentContainerView, SettingsFragment())
-                addToBackStack(null)
-            }
+            findNavController().navigate(R.id.action_mainFragment_to_settingsFragment)
         }
     }
 }

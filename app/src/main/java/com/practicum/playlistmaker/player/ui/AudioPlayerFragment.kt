@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
@@ -27,11 +28,8 @@ class AudioPlayerFragment : Fragment() {
     companion object {
         private const val ARGS_TRACK_JSON = "track_json"
 
-        fun newInstance(trackJson: String): AudioPlayerFragment {
-            return AudioPlayerFragment().apply {
-                arguments = bundleOf(ARGS_TRACK_JSON to trackJson)
-            }
-        }
+        fun createArgs(track: String): Bundle =
+            bundleOf(ARGS_TRACK_JSON to track)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,7 +49,7 @@ class AudioPlayerFragment : Fragment() {
 
         val json = trackJson
         if (json.isNullOrEmpty()) {
-            parentFragmentManager.popBackStack()
+            findNavController().navigateUp()
             return
         }
 
@@ -69,7 +67,7 @@ class AudioPlayerFragment : Fragment() {
         }
 
         binding.backButton.setNavigationOnClickListener {
-            parentFragmentManager.popBackStack()
+            findNavController().navigateUp()
         }
     }
 
