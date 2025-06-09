@@ -1,44 +1,66 @@
 package com.practicum.playlistmaker.player.ui
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.databinding.ActivityAudioPlayerBinding
+import com.practicum.playlistmaker.databinding.FragmentAudioPlayerBinding
 import com.practicum.playlistmaker.player.PlayerState
 import com.practicum.playlistmaker.player.domain.model.PlayerModel
 import com.practicum.playlistmaker.player.domain.model.TrackToPlayerModelMapper
 import com.practicum.playlistmaker.search.domain.entity.Track
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class AudioPlayerActivity : AppCompatActivity() {
+class AudioPlayerFragment : Fragment() {
 
-    private lateinit var binding: ActivityAudioPlayerBinding
+    private lateinit var binding: FragmentAudioPlayerBinding
     private val viewModel: AudioPlayerViewModel by viewModel()
 
+    private var trackJson: String? = null
+
     companion object {
-        private const val EXTRA_TRACK_JSON = "track_json"
+        private const val ARGS_TRACK_JSON = "track_json"
+
+        fun newInstance(trackJson: String): AudioPlayerFragment {
+            return AudioPlayerFragment().apply {
+                arguments = bundleOf(ARGS_TRACK_JSON to trackJson)
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAudioPlayerBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        trackJson = requireArguments().getString(ARGS_TRACK_JSON)
+    }
 
-        val trackJson = intent.getStringExtra(EXTRA_TRACK_JSON)
-        if (!trackJson.isNullOrEmpty()) {
-            val track = Gson().fromJson(trackJson, Track::class.java)
-            if (savedInstanceState == null) {
-                viewModel.loadTrack(track)
-            }
-        } else {
-            finish()
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentAudioPlayerBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val json = trackJson
+        if (json.isNullOrEmpty()) {
+            parentFragmentManager.popBackStack()
             return
         }
 
-        viewModel.playerState.observe(this) { state ->
+        val track = Gson().fromJson(json, Track::class.java)
+        if (savedInstanceState == null) {
+            viewModel.loadTrack(track)
+        }
+
+        viewModel.playerState.observe(viewLifecycleOwner) { state ->
             renderPlayerState(state)
         }
 
@@ -47,7 +69,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         }
 
         binding.backButton.setNavigationOnClickListener {
-            finish()
+            parentFragmentManager.popBackStack()
         }
     }
 
@@ -63,7 +85,7 @@ class AudioPlayerActivity : AppCompatActivity() {
                 renderTrack(state.track)
                 binding.playButton.setImageResource(R.drawable.ic_play)
                 binding.playButton.isEnabled = true
-                binding.timer.text = getText(R.string.timer)
+                binding.timer.text = requireContext().getString(R.string.timer)
             }
 
             is PlayerState.Playing -> {
@@ -82,7 +104,7 @@ class AudioPlayerActivity : AppCompatActivity() {
             is PlayerState.Completed -> {
                 renderTrack(state.track)
                 binding.playButton.setImageResource(R.drawable.ic_play)
-                binding.timer.text = getText(R.string.timer_start)
+                binding.timer.text = requireContext().getString(R.string.timer_start)
             }
         }
     }
@@ -96,11 +118,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         binding.primaryGenreName.text = track.primaryGenreName
         binding.countryName.text = track.country
 
-        Glide.with(this)
-            .load(track.artworkUrl)
-            .placeholder(R.drawable.placeholder_cover)
-            .fitCenter()
-            .transform(RoundedCorners(8))
-            .into(binding.imageCover)
+        Glide.with(this).load(track.artworkUrl).placeholder(R.drawable.placeholder_cover)
+            .fitCenter().transform(RoundedCorners(8)).into(binding.imageCover)
     }
 }

@@ -15,7 +15,6 @@
 
     <style name="SubsequentToolbarsStyle" parent="Base.Toolbar">
         <item name="titleTextColor">@color/white</item>
-        <item name="navigationIcon">@drawable/back</item>
     </style>
 
     <style name="EditTextSearchStyle">

@@ -220,6 +220,7 @@
         android:id="@+id/backButton"
         style="@style/SubsequentToolbarsStyle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/back"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

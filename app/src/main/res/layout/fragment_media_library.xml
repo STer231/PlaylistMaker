@@ -9,8 +9,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="@string/media_library"
-        app:navigationIcon="@drawable/back"/>
+        app:title="@string/media_library"/>
 
     <com.google.android.material.tabs.TabLayout
         style="@style/TabTextStyle"
