@@ -1,10 +1,10 @@
 package com.practicum.playlistmaker.di
 
-import com.practicum.playlistmaker.mediaLibrary.ui.FavouritesViewModel
-import com.practicum.playlistmaker.mediaLibrary.ui.PlaylistsViewModel
-import com.practicum.playlistmaker.player.ui.AudioPlayerViewModel
-import com.practicum.playlistmaker.search.ui.SearchViewModel
-import com.practicum.playlistmaker.settings.ui.SettingsViewModel
+import com.practicum.playlistmaker.mediaLibrary.presentation.FavouritesViewModel
+import com.practicum.playlistmaker.mediaLibrary.presentation.PlaylistsViewModel
+import com.practicum.playlistmaker.player.presentation.AudioPlayerViewModel
+import com.practicum.playlistmaker.search.presentation.SearchViewModel
+import com.practicum.playlistmaker.settings.presentation.SettingsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

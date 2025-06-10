@@ -8,6 +8,8 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentFavouritesBinding
+import com.practicum.playlistmaker.mediaLibrary.presentation.FavouritesState
+import com.practicum.playlistmaker.mediaLibrary.presentation.FavouritesViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavouritesFragment : Fragment() {
@@ -18,7 +20,9 @@ class FavouritesFragment : Fragment() {
         }
     }
 
-    private lateinit var binding: FragmentFavouritesBinding
+    private var _binding: FragmentFavouritesBinding? = null
+    private val binding: FragmentFavouritesBinding
+        get() = _binding!!
 
     private val favouritesViewModel: FavouritesViewModel by viewModel()
 
@@ -27,7 +31,7 @@ class FavouritesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentFavouritesBinding.inflate(inflater, container, false)
+        _binding = FragmentFavouritesBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -37,6 +41,11 @@ class FavouritesFragment : Fragment() {
         favouritesViewModel.observeFavouritesState().observe(viewLifecycleOwner) {
             renderState(it)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun showError(message: String) {

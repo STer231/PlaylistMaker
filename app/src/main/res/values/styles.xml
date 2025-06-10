@@ -15,7 +15,6 @@
 
     <style name="SubsequentToolbarsStyle" parent="Base.Toolbar">
         <item name="titleTextColor">@color/black_total</item>
-        <item name="navigationIcon">@drawable/back</item>
     </style>
 
     <style name="EditTextSearchStyle">
@@ -156,5 +155,10 @@
         <item name="tabTextColor">@color/black</item>
         <item name="tabIndicatorColor">@color/black</item>
         <item name="tabBackground">@color/white</item>
+    </style>
+    <style name="BottomNavLabelStyle">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="fontFamily">@font/ys_display_regular</item>
     </style>
 </resources>

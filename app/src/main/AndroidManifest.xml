@@ -15,26 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
         tools:targetApi="31">
-        <activity
-            android:name=".search.ui.SearchActivity"
+        <activity android:name=".main.ui.RootActivity"
             android:theme="@style/Theme.SubsequentScreens"
-            android:exported="false" />
-        <activity
-            android:name=".mediaLibrary.ui.MediaLibraryActivity"
-            android:theme="@style/Theme.SubsequentScreens"
-            android:exported="false" />
-        <activity
-            android:name=".settings.ui.SettingsActivity"
-            android:theme="@style/Theme.SubsequentScreens"
-            android:exported="false" />
-        <activity
-            android:name=".player.ui.AudioPlayerActivity"
-            android:theme="@style/Theme.SubsequentScreens"
-            android:exported="false" />
-        <activity
-            android:name=".main.ui.MainActivity"
-            android:theme="@style/Theme.FirstScreen"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

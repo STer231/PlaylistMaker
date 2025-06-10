@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.search.ui
+package com.practicum.playlistmaker.search.presentation
 
 import android.os.Handler
 import android.os.Looper
@@ -6,7 +6,6 @@ import android.os.SystemClock
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.practicum.playlistmaker.search.SearchState
 import com.practicum.playlistmaker.search.domain.entity.Track
 import com.practicum.playlistmaker.search.domain.impl.SearchHistoryInteractor
 import com.practicum.playlistmaker.search.domain.impl.SearchTracksInteractor
@@ -49,6 +48,8 @@ class SearchViewModel(
     }
 
     fun clearSearch() {
+        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
+        latestSearchText = null
         _state.postValue(SearchState.Initial)
     }
 

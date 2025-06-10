@@ -1,29 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".mediaLibrary.ui.FavouritesFragment">
 
     <LinearLayout
         android:id="@+id/favouritePlaceholderLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_gravity="center"
+        android:layout_marginTop="116dp"
         android:gravity="center"
-        android:layout_marginTop="116dp">
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/favouritePlaceholderImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:src="@drawable/placeholder_not_found"/>
+            tools:src="@drawable/placeholder_not_found" />
 
-        <TextView android:id="@+id/favouritePlaceholderMessage"
+        <TextView
+            android:id="@+id/favouritePlaceholderMessage"
             style="@style/ErrorPlaceholderTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="@string/empty_favourites"/>
+            tools:text="@string/empty_favourites" />
     </LinearLayout>
 </LinearLayout>
