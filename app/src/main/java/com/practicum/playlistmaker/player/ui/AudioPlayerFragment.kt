@@ -20,7 +20,10 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AudioPlayerFragment : Fragment() {
 
-    private lateinit var binding: FragmentAudioPlayerBinding
+    private var _binding: FragmentAudioPlayerBinding? = null
+    private val binding: FragmentAudioPlayerBinding
+        get() = _binding!!
+
     private val viewModel: AudioPlayerViewModel by viewModel()
 
     private var trackJson: String? = null
@@ -40,7 +43,7 @@ class AudioPlayerFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentAudioPlayerBinding.inflate(inflater, container, false)
+        _binding = FragmentAudioPlayerBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -74,6 +77,11 @@ class AudioPlayerFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         viewModel.pause()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun renderPlayerState(state: PlayerState) {

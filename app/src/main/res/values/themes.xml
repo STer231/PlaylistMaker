@@ -13,6 +13,17 @@
         <item name="android:windowBackground">@color/white</item>
         <item name="colorBackgroundEditText">@color/gray_light</item>
         <item name="colorViewPagerBackground">@color/white</item>
+        <item name="bottomNavigationStyle">@style/Widget.PlaylistMaker.BottomNavigationView</item>
+    </style>
+
+    <style name="Widget.PlaylistMaker.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="itemBackground">@null</item>
+        <item name="itemRippleColor">@android:color/transparent</item>
+        <item name="android:background">@color/white</item>
+        <item name="itemIconTint">@color/bottom_nav_color_state</item>
+        <item name="itemTextColor">@color/bottom_nav_color_state</item>
+        <item name="itemTextAppearanceActive">@style/BottomNavLabelStyle</item>
+        <item name="itemTextAppearanceInactive">@style/BottomNavLabelStyle</item>
     </style>
 
     <style name="Theme.PlaylistMaker" parent="Base.Theme.PlaylistMaker" />

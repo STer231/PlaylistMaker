@@ -156,4 +156,9 @@
         <item name="tabIndicatorColor">@color/black</item>
         <item name="tabBackground">@color/white</item>
     </style>
+    <style name="BottomNavLabelStyle">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="fontFamily">@font/ys_display_regular</item>
+    </style>
 </resources>

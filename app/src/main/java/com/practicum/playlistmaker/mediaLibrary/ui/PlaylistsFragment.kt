@@ -18,7 +18,9 @@ class PlaylistsFragment : Fragment() {
         }
     }
 
-    private lateinit var binding: FragmentPlaylistsBinding
+    private var _binding: FragmentPlaylistsBinding? = null
+    private val binding: FragmentPlaylistsBinding
+        get() = _binding!!
 
     private val playlistsViewModel: PlaylistsViewModel by viewModel()
 
@@ -27,7 +29,7 @@ class PlaylistsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentPlaylistsBinding.inflate(inflater, container, false)
+        _binding = FragmentPlaylistsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -36,6 +38,11 @@ class PlaylistsFragment : Fragment() {
         playlistsViewModel.observePlaylistsState().observe(viewLifecycleOwner) {
             renderState(it)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun showError(message: String) {
