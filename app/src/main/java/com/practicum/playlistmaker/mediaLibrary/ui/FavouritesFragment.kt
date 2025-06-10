@@ -8,6 +8,8 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentFavouritesBinding
+import com.practicum.playlistmaker.mediaLibrary.presentation.FavouritesState
+import com.practicum.playlistmaker.mediaLibrary.presentation.FavouritesViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavouritesFragment : Fragment() {

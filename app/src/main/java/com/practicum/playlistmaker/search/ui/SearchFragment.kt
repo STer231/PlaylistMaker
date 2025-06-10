@@ -16,9 +16,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentSearchBinding
-import com.practicum.playlistmaker.search.SearchState
+import com.practicum.playlistmaker.search.presentation.SearchState
 import com.practicum.playlistmaker.player.ui.AudioPlayerFragment
 import com.practicum.playlistmaker.search.domain.entity.Track
+import com.practicum.playlistmaker.search.presentation.SearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
@@ -78,8 +79,7 @@ class SearchFragment : Fragment() {
 
         viewModel.history.observe(viewLifecycleOwner) { historyList ->
             historyAdapter.updateData(historyList)
-            binding.historyLayout.visibility =
-                if (historyList.isEmpty()) View.GONE else View.VISIBLE
+            updateHistoryVisibility()
         }
 
         binding.clearButton.setOnClickListener {
@@ -101,7 +101,6 @@ class SearchFragment : Fragment() {
             if (hasFocus && binding.inputEditText.text.isEmpty()) {
                 viewModel.loadHistory()
             }
-            updateHistoryVisibility()
         }
 
         binding.inputEditText.addTextChangedListener(object : TextWatcher {
@@ -110,8 +109,12 @@ class SearchFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val text = s?.toString().orEmpty().trim()
                 binding.clearButton.visibility = if (text.isEmpty()) View.GONE else View.VISIBLE
-                viewModel.searchDebounce(text)
-                updateHistoryVisibility()
+                if (text.isEmpty()) {
+                    viewModel.clearSearch()
+                    adapter.updateData(emptyList())
+                } else {
+                    viewModel.searchDebounce(text)
+                }
             }
 
             override fun afterTextChanged(s: Editable?) {}
@@ -125,9 +128,12 @@ class SearchFragment : Fragment() {
 
     private fun updateHistoryVisibility() {
         val historyList = viewModel.history.value.orEmpty()
-        binding.historyLayout.visibility =
-            if (binding.inputEditText.hasFocus() && binding.inputEditText.text.isEmpty() && historyList.isNotEmpty())
-                View.VISIBLE else View.GONE
+        val isInitialState = viewModel.state.value is SearchState.Initial
+        val isInputEmpty = binding.inputEditText.text.isEmpty()
+        val hasFocus = binding.inputEditText.hasFocus()
+
+        val shouldShow = isInitialState && hasFocus && isInputEmpty && historyList.isNotEmpty()
+        binding.historyLayout.visibility = if (shouldShow) View.VISIBLE else View.GONE
     }
 
     private fun clickDebounce(): Boolean {
@@ -140,6 +146,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun renderState(state: SearchState) {
+        hideAll()
         when (state) {
             is SearchState.Initial -> showInitial()
             is SearchState.Loading -> showLoading()
@@ -151,6 +158,7 @@ class SearchFragment : Fragment() {
 
     private fun showInitial() {
         hideAll()
+        updateHistoryVisibility()
     }
 
     private fun showLoading() {
@@ -194,6 +202,7 @@ class SearchFragment : Fragment() {
             progressBar.visibility = View.GONE
             recyclerView.visibility = View.GONE
             placeholderLayout.visibility = View.GONE
+            binding.historyLayout.visibility = View.GONE
         }
     }
 

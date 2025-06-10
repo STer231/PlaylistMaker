@@ -12,9 +12,10 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentAudioPlayerBinding
-import com.practicum.playlistmaker.player.PlayerState
+import com.practicum.playlistmaker.player.presentation.PlayerState
 import com.practicum.playlistmaker.player.domain.model.PlayerModel
 import com.practicum.playlistmaker.player.domain.model.TrackToPlayerModelMapper
+import com.practicum.playlistmaker.player.presentation.AudioPlayerViewModel
 import com.practicum.playlistmaker.search.domain.entity.Track
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
