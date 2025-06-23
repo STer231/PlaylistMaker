@@ -1,11 +1,10 @@
-package com.practicum.playlistmaker.player.ui
+package com.practicum.playlistmaker.player.presentation
 
 import android.os.Handler
 import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.practicum.playlistmaker.player.PlayerState
 import com.practicum.playlistmaker.player.domain.model.PlayerModel
 import com.practicum.playlistmaker.player.domain.usecase.AudioPlayerInteractor
 import com.practicum.playlistmaker.player.domain.model.TrackToPlayerModelMapper

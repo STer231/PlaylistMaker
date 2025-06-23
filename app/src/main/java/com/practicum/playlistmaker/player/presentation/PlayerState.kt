@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.player
+package com.practicum.playlistmaker.player.presentation
 
 import com.practicum.playlistmaker.player.domain.model.PlayerModel
 
