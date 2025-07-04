@@ -1,8 +1,5 @@
 package com.practicum.playlistmaker.search.presentation
 
-import android.os.Handler
-import android.os.Looper
-import android.os.SystemClock
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -34,7 +31,6 @@ class SearchViewModel(
     private var latestSearchText: String? = null
 
     private var searchJob: Job? = null
-
 
     fun loadHistory() {
         val list = searchHistoryInteractor.getHistory()
@@ -80,11 +76,12 @@ class SearchViewModel(
             override fun consume(foundTracks: List<Track>?, errorMessage: String?) {
                 when {
                     errorMessage != null -> {
-                        val displayMessage = if (errorMessage == "Проверьте подключение к интернету") {
-                            errorMessageProvider.noInternet()
-                        } else {
-                            errorMessageProvider.serverError()
-                        }
+                        val displayMessage =
+                            if (errorMessage == "Проверьте подключение к интернету") {
+                                errorMessageProvider.noInternet()
+                            } else {
+                                errorMessageProvider.serverError()
+                            }
                         renderState(SearchState.Error(displayMessage))
                     }
 
@@ -95,7 +92,6 @@ class SearchViewModel(
                             )
                         )
                     }
-
                     else -> {
                         renderState(SearchState.Content(foundTracks))
                     }

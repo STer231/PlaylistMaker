@@ -2,8 +2,6 @@ package com.practicum.playlistmaker.search.ui
 
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -17,12 +15,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentSearchBinding
+import com.practicum.playlistmaker.main.ui.RootActivity
 import com.practicum.playlistmaker.search.presentation.SearchState
 import com.practicum.playlistmaker.player.ui.AudioPlayerFragment
 import com.practicum.playlistmaker.search.domain.entity.Track
 import com.practicum.playlistmaker.search.presentation.SearchViewModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.practicum.playlistmaker.util.debounce
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
@@ -32,16 +30,16 @@ class SearchFragment : Fragment() {
         get() = _binding!!
 
     companion object {
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
+        private const val CLICK_DEBOUNCE_DELAY = 300L
     }
 
     private lateinit var historyAdapter: TrackAdapter
 
     private val viewModel: SearchViewModel by viewModel()
 
-    private var isClickAllowed = true
+    private var adapter: TrackAdapter? = null
 
-    private lateinit var adapter: TrackAdapter
+    private lateinit var onTrackClickDebounce: (Track) -> Unit
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,14 +53,22 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        onTrackClickDebounce = debounce<Track>(
+            CLICK_DEBOUNCE_DELAY,
+            viewLifecycleOwner.lifecycleScope,
+            false
+        ) { track ->
+            viewModel.addToHistory(track)
+            val trackJson = Gson().toJson(track)
+            findNavController().navigate(
+                R.id.action_searchFragment_to_audioPlayerFragment,
+                AudioPlayerFragment.createArgs(trackJson)
+            )
+        }
+
         adapter = TrackAdapter(TrackAdapter.TrackClickListener { track ->
-            if (clickDebounce()) {
-                viewModel.addToHistory(track)
-                val trackJson = Gson().toJson(track)
-                findNavController().navigate(
-                    R.id.action_searchFragment_to_audioPlayerFragment,
-                    AudioPlayerFragment.createArgs(trackJson))
-            }
+            (activity as RootActivity).animateBottomNavigationView()
+            onTrackClickDebounce(track)
         })
 
         historyAdapter = TrackAdapter { track ->
@@ -112,7 +118,7 @@ class SearchFragment : Fragment() {
                 binding.clearButton.visibility = if (text.isEmpty()) View.GONE else View.VISIBLE
                 if (text.isEmpty()) {
                     viewModel.clearSearch()
-                    adapter.updateData(emptyList())
+                    adapter?.updateData(emptyList())
                 } else {
                     viewModel.searchDebounce(text)
                 }
@@ -125,6 +131,7 @@ class SearchFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        adapter = null
     }
 
     private fun updateHistoryVisibility() {
@@ -135,18 +142,6 @@ class SearchFragment : Fragment() {
 
         val shouldShow = isInitialState && hasFocus && isInputEmpty && historyList.isNotEmpty()
         binding.historyLayout.visibility = if (shouldShow) View.VISIBLE else View.GONE
-    }
-
-    private fun clickDebounce(): Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            lifecycleScope.launch {
-                delay(CLICK_DEBOUNCE_DELAY)
-                isClickAllowed = true
-            }
-        }
-        return current
     }
 
     private fun renderState(state: SearchState) {
@@ -176,7 +171,7 @@ class SearchFragment : Fragment() {
             placeholderLayout.visibility = View.GONE
             recyclerView.visibility = View.VISIBLE
         }
-        adapter.updateData(tracks)
+        adapter?.updateData(tracks)
     }
 
     private fun showEmpty(message: String) {
