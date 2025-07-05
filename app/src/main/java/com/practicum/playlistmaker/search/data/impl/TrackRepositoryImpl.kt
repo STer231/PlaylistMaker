@@ -7,23 +7,28 @@ import com.practicum.playlistmaker.search.data.dto.SearchTracksRequest
 import com.practicum.playlistmaker.search.data.mapper.TrackMapper
 import com.practicum.playlistmaker.search.domain.entity.Track
 import com.practicum.playlistmaker.search.domain.repository.TrackRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class TrackRepositoryImpl(private val networkClient: NetworkClient) : TrackRepository {
-    override fun searchTracks(expression: String): Resource<List<Track>> {
+    override fun searchTracks(expression: String): Flow<Resource<List<Track>>> = flow {
         val response = networkClient.doRequest(SearchTracksRequest(expression))
-        return when (response.resultCode) {
-            // Оставил логику с "-1" на случай, если потребуется по-разному реагировать на отсутствие интернета и проблему с сервером
+        when (response.resultCode) {
             -1 -> {
-                Resource.Error("Проверьте подключение к интернету")
+                emit(Resource.Error("Проверьте подключение к интернету"))
             }
 
             200 -> {
-                Resource.Success((response as SearchResponse).results.map {
-                    TrackMapper.mapToDomain(it) })
+                with(response as SearchResponse) {
+                    val data = results.map {
+                        TrackMapper.mapToDomain(it)
+                    }
+                    emit(Resource.Success(data))
+                }
             }
 
             else -> {
-                Resource.Error("Ошибка сервера")
+                emit(Resource.Error("Ошибка сервера"))
             }
         }
     }

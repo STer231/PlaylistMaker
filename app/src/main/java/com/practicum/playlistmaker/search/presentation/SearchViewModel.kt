@@ -70,34 +70,40 @@ class SearchViewModel(
 
     private fun searchRequest(query: String) {
         if (query.isBlank()) return
-        _state.postValue(SearchState.Loading)
+        renderState(SearchState.Loading)
 
-        searchInteractor.search(query, object : SearchTracksInteractor.TrackConsumer {
-            override fun consume(foundTracks: List<Track>?, errorMessage: String?) {
-                when {
-                    errorMessage != null -> {
-                        val displayMessage =
-                            if (errorMessage == "Проверьте подключение к интернету") {
-                                errorMessageProvider.noInternet()
-                            } else {
-                                errorMessageProvider.serverError()
-                            }
-                        renderState(SearchState.Error(displayMessage))
-                    }
-
-                    foundTracks.isNullOrEmpty() -> {
-                        renderState(
-                            SearchState.Empty(
-                                message = errorMessageProvider.nothingFound()
-                            )
-                        )
-                    }
-                    else -> {
-                        renderState(SearchState.Content(foundTracks))
-                    }
+        viewModelScope.launch {
+            searchInteractor
+                .search(query)
+                .collect { pair ->
+                    processResult(pair.first, pair.second)
                 }
+        }
+    }
+
+    private fun processResult(foundTracks: List<Track>?, errorMessage: String?) {
+        when {
+            errorMessage != null -> {
+                val displayMessage =
+                    if (errorMessage == "Проверьте подключение к интернету") {
+                        errorMessageProvider.noInternet()
+                    } else {
+                        errorMessageProvider.serverError()
+                    }
+                renderState(SearchState.Error(displayMessage))
             }
-        })
+
+            foundTracks.isNullOrEmpty() -> {
+                renderState(
+                    SearchState.Empty(
+                        message = errorMessageProvider.nothingFound()
+                    )
+                )
+            }
+            else -> {
+                renderState(SearchState.Content(foundTracks))
+            }
+        }
     }
 
     private fun renderState(state: SearchState) {
