@@ -8,7 +8,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivityRootBinding
 
-class RootActivity: AppCompatActivity() {
+class RootActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRootBinding
 
@@ -35,5 +35,9 @@ class RootActivity: AppCompatActivity() {
                 }
             }
         }
+    }
+
+    fun animateBottomNavigationView() {
+        binding.bottomNavigationView.visibility = View.GONE
     }
 }
