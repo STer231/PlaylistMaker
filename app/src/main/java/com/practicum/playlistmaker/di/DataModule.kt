@@ -56,6 +56,7 @@ val dataModule = module {
     // зависимости для экрана аудиоплеера
     factory { MediaPlayer() }
 
+    // зависимости для базы данных
     single {
         Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db").build()
     }

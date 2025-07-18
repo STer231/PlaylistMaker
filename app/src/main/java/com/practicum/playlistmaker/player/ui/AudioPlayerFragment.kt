@@ -73,6 +73,14 @@ class AudioPlayerFragment : Fragment() {
         binding.backButton.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
+
+        viewModel.isFavourite.observe(viewLifecycleOwner) { favourite ->
+            renderFavouriteButton(favourite)
+        }
+
+        binding.btAddToFavourites.setOnClickListener {
+            viewModel.onFavouriteClicked()
+        }
     }
 
     override fun onPause() {
@@ -127,5 +135,14 @@ class AudioPlayerFragment : Fragment() {
 
         Glide.with(this).load(track.artworkUrl).placeholder(R.drawable.placeholder_cover)
             .fitCenter().transform(RoundedCorners(8)).into(binding.imageCover)
+    }
+
+    private fun renderFavouriteButton(isFavourite: Boolean) {
+        val icon = if (isFavourite) {
+            R.drawable.ic_favourites
+        } else {
+            R.drawable.ic_not_favourites
+        }
+        binding.btAddToFavourites.setImageResource(icon)
     }
 }
