@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "favourite_tracks")
 data class FavouriteTrackEntity(
-    @PrimaryKey
+    @PrimaryKey()
     val trackId: Int,
     val artworkUrl: String,
     val trackName: String,
@@ -15,5 +15,6 @@ data class FavouriteTrackEntity(
     val primaryGenreName: String,
     val country: String,
     val trackTime: Int,
-    val previewUrl: String
+    val previewUrl: String,
+    val lastAdded: Long = System.currentTimeMillis()
 )

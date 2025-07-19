@@ -5,6 +5,7 @@ import android.media.MediaPlayer
 import androidx.room.Room
 import com.google.gson.Gson
 import com.practicum.playlistmaker.player.data.db.AppDatabase
+import com.practicum.playlistmaker.player.data.db.AppDatabase.Companion.MIGRATION_1_2
 import com.practicum.playlistmaker.search.data.NetworkClient
 import com.practicum.playlistmaker.search.data.impl.SearchHistoryRepositoryImpl
 import com.practicum.playlistmaker.search.data.network.ItunesApi
@@ -58,6 +59,8 @@ val dataModule = module {
 
     // зависимости для базы данных
     single {
-        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db").build()
+        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
+            .addMigrations(MIGRATION_1_2)
+            .build()
     }
 }
