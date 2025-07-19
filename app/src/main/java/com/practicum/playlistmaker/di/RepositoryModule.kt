@@ -25,7 +25,7 @@ val repositoryModule = module {
     }
 
     single<SearchHistoryRepository> {
-        SearchHistoryRepositoryImpl(get(named("history_preferences")), get())
+        SearchHistoryRepositoryImpl(get(named("history_preferences")), get(), get())
     }
 
     // зависимости для экрана настроек
