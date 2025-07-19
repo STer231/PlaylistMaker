@@ -172,7 +172,7 @@
         android:layout_height="@dimen/dimen_51"
         android:layout_marginTop="@dimen/margin_54"
         android:background="@drawable/round_button_style"
-        android:src="@drawable/ic_favourites"
+        android:src="@drawable/ic_not_favourites"
         app:layout_constraintBottom_toBottomOf="@id/bt_add_to_playlist"
         app:layout_constraintEnd_toEndOf="@id/rightBorder"
         app:layout_constraintStart_toEndOf="@id/playButton" />

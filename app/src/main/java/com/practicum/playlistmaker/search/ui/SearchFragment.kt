@@ -72,7 +72,7 @@ class SearchFragment : Fragment() {
         })
 
         historyAdapter = TrackAdapter { track ->
-            viewModel.addToHistory(track)
+            onTrackClickDebounce(track)
         }
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
