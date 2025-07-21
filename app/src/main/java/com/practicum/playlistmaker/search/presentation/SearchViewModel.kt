@@ -33,10 +33,8 @@ class SearchViewModel(
     private var searchJob: Job? = null
 
     fun loadHistory() {
-        viewModelScope.launch {
             val list = searchHistoryInteractor.getTrackHistory()
             _history.postValue(list)
-        }
     }
 
     fun addToHistory(track: Track) {

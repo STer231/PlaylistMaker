@@ -21,11 +21,11 @@ val repositoryModule = module {
 
     // зависимости для экрана поиск
     single<TrackRepository> {
-        TrackRepositoryImpl(get(), get())
+        TrackRepositoryImpl(get())
     }
 
     single<SearchHistoryRepository> {
-        SearchHistoryRepositoryImpl(get(named("history_preferences")), get(), get())
+        SearchHistoryRepositoryImpl(get(named("history_preferences")), get())
     }
 
     // зависимости для экрана настроек

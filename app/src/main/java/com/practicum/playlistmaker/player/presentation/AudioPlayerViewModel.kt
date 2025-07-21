@@ -44,7 +44,11 @@ class AudioPlayerViewModel(
     fun loadTrack(track: Track) {
         currentDomainTrack = track
         currentPlayerTrack = TrackToPlayerModelMapper.map(track)
-        _isFavourite.postValue(track.isFavourite)
+        viewModelScope.launch {
+            val favourite = favouriteInteractor.isTrackFavourite(track.trackId)
+            currentDomainTrack.isFavourite = favourite
+            _isFavourite.postValue(favourite)
+        }
         playerInteractor.prepare(track)
     }
 

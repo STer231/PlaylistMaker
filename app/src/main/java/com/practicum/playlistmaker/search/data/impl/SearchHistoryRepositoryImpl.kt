@@ -2,14 +2,12 @@ package com.practicum.playlistmaker.search.data.impl
 
 import android.content.SharedPreferences
 import com.google.gson.Gson
-import com.practicum.playlistmaker.player.data.db.AppDatabase
 import com.practicum.playlistmaker.search.domain.entity.Track
 import com.practicum.playlistmaker.search.domain.repository.SearchHistoryRepository
 
 class SearchHistoryRepositoryImpl(
     private val sharedPreferences: SharedPreferences,
     private val gson: Gson,
-    private val appDatabase: AppDatabase,
 ) : SearchHistoryRepository {
 
     companion object {
@@ -18,7 +16,7 @@ class SearchHistoryRepositoryImpl(
         private const val HISTORY_LIST_SIZE = 10
     }
 
-    private fun getTrackListFromSP(): List<Track> {
+    override fun getTrackHistory(): List<Track> {
         val json = sharedPreferences.getString(KEY_HISTORY_TRACKS, null)
         return if (json.isNullOrEmpty()) {
             emptyList()
@@ -27,17 +25,8 @@ class SearchHistoryRepositoryImpl(
         }
     }
 
-    override suspend fun getTrackHistory(): List<Track> {
-        val historyList = getTrackListFromSP().toMutableList()
-        val favouriteId = appDatabase.favouriteTrackDao().getTracksId()
-        historyList.forEach { track ->
-            track.isFavourite = track.trackId in favouriteId
-        }
-        return historyList
-    }
-
     override fun addToHistory(track: Track) {
-        val historyList = getTrackListFromSP().toMutableList()
+        val historyList = getTrackHistory().toMutableList()
         historyList.removeAll { it.trackId == track.trackId }
         historyList.add(0, track)
 

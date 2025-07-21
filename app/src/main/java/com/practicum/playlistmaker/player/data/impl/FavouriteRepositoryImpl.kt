@@ -24,4 +24,8 @@ class FavouriteRepositoryImpl(
             entityList.map { trackEntity -> trackDbConvertor.mapToDomain(trackEntity) }
         }
     }
+
+    override suspend fun getFavouriteId(): List<Int> {
+        return appDatabase.favouriteTrackDao().getTracksId()
+    }
 }

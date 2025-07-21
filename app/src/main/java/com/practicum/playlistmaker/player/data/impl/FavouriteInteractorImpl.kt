@@ -19,4 +19,9 @@ class FavouriteInteractorImpl(
     override fun getFavouritesTrack(): Flow<List<Track>> {
         return favouriteRepository.getFavouritesTrack()
     }
+
+    override suspend fun isTrackFavourite(trackId: Int): Boolean {
+        val ids = favouriteRepository.getFavouriteId()
+        return trackId in ids
+    }
 }

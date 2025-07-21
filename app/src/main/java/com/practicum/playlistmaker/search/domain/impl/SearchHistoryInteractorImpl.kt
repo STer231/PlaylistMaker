@@ -7,7 +7,7 @@ class SearchHistoryInteractorImpl(
     private val historyRepository: SearchHistoryRepository
 ) : SearchHistoryInteractor {
 
-    override suspend fun getTrackHistory(): List<Track> {
+    override fun getTrackHistory(): List<Track> {
         return historyRepository.getTrackHistory()
     }
 
