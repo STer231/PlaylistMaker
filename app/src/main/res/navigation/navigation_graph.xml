@@ -32,5 +32,9 @@
         android:id="@+id/audioPlayerFragment"
         android:name="com.practicum.playlistmaker.player.ui.AudioPlayerFragment"
         android:label="fragment_audio_player"
-        tools:layout="@layout/fragment_audio_player" />
+        tools:layout="@layout/fragment_audio_player" >
+        <argument
+            android:name="track_arg"
+            app:argType="com.practicum.playlistmaker.search.domain.entity.Track"/>
+    </fragment>
 </navigation>

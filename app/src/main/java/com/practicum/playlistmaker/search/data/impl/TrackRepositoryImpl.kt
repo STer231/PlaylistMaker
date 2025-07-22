@@ -25,10 +25,6 @@ class TrackRepositoryImpl(
                     val data = results.map {
                         TrackMapper.mapToDomain(it)
                     }
-//                    val favouriteId: List<Int> = appDatabase.favouriteTrackDao().getTracksId()
-//                    data.forEach { track ->
-//                        track.isFavourite = favouriteId.contains(track.trackId)
-//                    }
                     emit(Resource.Success(data))
                 }
             }

@@ -9,13 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.gson.Gson
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentFavouritesBinding
 import com.practicum.playlistmaker.main.ui.RootActivity
 import com.practicum.playlistmaker.mediaLibrary.presentation.FavouritesState
 import com.practicum.playlistmaker.mediaLibrary.presentation.FavouritesViewModel
-import com.practicum.playlistmaker.player.ui.AudioPlayerFragment
 import com.practicum.playlistmaker.search.domain.entity.Track
 import com.practicum.playlistmaker.search.ui.TrackAdapter
 import com.practicum.playlistmaker.util.debounce
@@ -59,10 +57,9 @@ class FavouritesFragment : Fragment() {
             viewLifecycleOwner.lifecycleScope,
             false
         ) { track ->
-            val trackJson = Gson().toJson(track)
             findNavController().navigate(
                 R.id.action_mediaLibraryFragment_to_audioPlayerFragment,
-                AudioPlayerFragment.createArgs(trackJson)
+                bundleOf("track_arg" to track)
             )
         }
 

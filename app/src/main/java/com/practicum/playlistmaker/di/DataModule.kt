@@ -6,6 +6,7 @@ import androidx.room.Room
 import com.google.gson.Gson
 import com.practicum.playlistmaker.player.data.db.AppDatabase
 import com.practicum.playlistmaker.player.data.db.AppDatabase.Companion.MIGRATION_1_2
+import com.practicum.playlistmaker.player.data.db.FavouriteTrackDao
 import com.practicum.playlistmaker.search.data.NetworkClient
 import com.practicum.playlistmaker.search.data.impl.SearchHistoryRepositoryImpl
 import com.practicum.playlistmaker.search.data.network.ItunesApi
@@ -36,7 +37,7 @@ val dataModule = module {
         )
     }
 
-    factory { Gson() }
+    single<Gson> { Gson() }
 
     single<NetworkClient> {
         RetrofitNetworkClient(get(), androidContext())
@@ -62,5 +63,9 @@ val dataModule = module {
         Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
             .addMigrations(MIGRATION_1_2)
             .build()
+    }
+
+    single<FavouriteTrackDao> {
+        get<AppDatabase>().favouriteTrackDao()
     }
 }

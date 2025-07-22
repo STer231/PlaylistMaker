@@ -4,12 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
+import androidx.core.os.BundleCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.google.gson.Gson
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentAudioPlayerBinding
 import com.practicum.playlistmaker.player.presentation.PlayerState
@@ -27,18 +26,19 @@ class AudioPlayerFragment : Fragment() {
 
     private val viewModel: AudioPlayerViewModel by viewModel()
 
-    private var trackJson: String? = null
+    private lateinit var track: Track
 
     companion object {
-        private const val ARGS_TRACK_JSON = "track_json"
-
-        fun createArgs(track: String): Bundle =
-            bundleOf(ARGS_TRACK_JSON to track)
+        private const val ARGS_TRACK = "track_arg"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        trackJson = requireArguments().getString(ARGS_TRACK_JSON)
+        track = BundleCompat.getParcelable(
+            requireArguments(),
+            ARGS_TRACK,
+            Track::class.java
+        ) ?: throw IllegalStateException("Track не передан в аргументах")
     }
 
     override fun onCreateView(
@@ -51,13 +51,6 @@ class AudioPlayerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val json = trackJson
-        if (json.isNullOrEmpty()) {
-            findNavController().navigateUp()
-            return
-        }
-
-        val track = Gson().fromJson(json, Track::class.java)
         if (savedInstanceState == null) {
             viewModel.loadTrack(track)
         }
