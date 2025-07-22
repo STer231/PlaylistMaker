@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.BundleCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
@@ -26,19 +26,13 @@ class AudioPlayerFragment : Fragment() {
 
     private val viewModel: AudioPlayerViewModel by viewModel()
 
-    private lateinit var track: Track
+    private val args: AudioPlayerFragmentArgs by navArgs()
 
-    companion object {
-        private const val ARGS_TRACK = "track_arg"
-    }
+    private lateinit var track: Track
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        track = BundleCompat.getParcelable(
-            requireArguments(),
-            ARGS_TRACK,
-            Track::class.java
-        ) ?: throw IllegalStateException("Track не передан в аргументах")
+        track = args.trackArg
     }
 
     override fun onCreateView(

@@ -57,10 +57,8 @@ class FavouritesFragment : Fragment() {
             viewLifecycleOwner.lifecycleScope,
             false
         ) { track ->
-            findNavController().navigate(
-                R.id.action_mediaLibraryFragment_to_audioPlayerFragment,
-                bundleOf("track_arg" to track)
-            )
+            val action = MediaLibraryFragmentDirections.actionMediaLibraryFragmentToAudioPlayerFragment(track)
+            findNavController().navigate(action)
         }
 
         adapter = TrackAdapter(TrackAdapter.TrackClickListener { track ->

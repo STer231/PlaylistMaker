@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -58,10 +57,8 @@ class SearchFragment : Fragment() {
             false
         ) { track ->
             viewModel.addToHistory(track)
-            findNavController().navigate(
-                R.id.action_searchFragment_to_audioPlayerFragment,
-                bundleOf("track_arg" to track)
-            )
+            val action = SearchFragmentDirections.actionSearchFragmentToAudioPlayerFragment(track)
+            findNavController().navigate(action)
         }
 
         adapter = TrackAdapter(TrackAdapter.TrackClickListener { track ->
