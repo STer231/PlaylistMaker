@@ -4,12 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.google.gson.Gson
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentAudioPlayerBinding
 import com.practicum.playlistmaker.player.presentation.PlayerState
@@ -27,18 +26,13 @@ class AudioPlayerFragment : Fragment() {
 
     private val viewModel: AudioPlayerViewModel by viewModel()
 
-    private var trackJson: String? = null
+    private val args: AudioPlayerFragmentArgs by navArgs()
 
-    companion object {
-        private const val ARGS_TRACK_JSON = "track_json"
-
-        fun createArgs(track: String): Bundle =
-            bundleOf(ARGS_TRACK_JSON to track)
-    }
+    private lateinit var track: Track
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        trackJson = requireArguments().getString(ARGS_TRACK_JSON)
+        track = args.trackArg
     }
 
     override fun onCreateView(
@@ -51,13 +45,6 @@ class AudioPlayerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val json = trackJson
-        if (json.isNullOrEmpty()) {
-            findNavController().navigateUp()
-            return
-        }
-
-        val track = Gson().fromJson(json, Track::class.java)
         if (savedInstanceState == null) {
             viewModel.loadTrack(track)
         }
@@ -72,6 +59,14 @@ class AudioPlayerFragment : Fragment() {
 
         binding.backButton.setNavigationOnClickListener {
             findNavController().navigateUp()
+        }
+
+        viewModel.isFavourite.observe(viewLifecycleOwner) { favourite ->
+            renderFavouriteButton(favourite)
+        }
+
+        binding.btAddToFavourites.setOnClickListener {
+            viewModel.onFavouriteClicked()
         }
     }
 
@@ -127,5 +122,14 @@ class AudioPlayerFragment : Fragment() {
 
         Glide.with(this).load(track.artworkUrl).placeholder(R.drawable.placeholder_cover)
             .fitCenter().transform(RoundedCorners(8)).into(binding.imageCover)
+    }
+
+    private fun renderFavouriteButton(isFavourite: Boolean) {
+        val icon = if (isFavourite) {
+            R.drawable.ic_favourites
+        } else {
+            R.drawable.ic_not_favourites
+        }
+        binding.btAddToFavourites.setImageResource(icon)
     }
 }

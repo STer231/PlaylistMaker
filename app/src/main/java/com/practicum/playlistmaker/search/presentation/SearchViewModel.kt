@@ -33,8 +33,8 @@ class SearchViewModel(
     private var searchJob: Job? = null
 
     fun loadHistory() {
-        val list = searchHistoryInteractor.getHistory()
-        _history.postValue(list)
+            val list = searchHistoryInteractor.getTrackHistory()
+            _history.postValue(list)
     }
 
     fun addToHistory(track: Track) {

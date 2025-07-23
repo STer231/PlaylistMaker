@@ -1,5 +1,7 @@
 package com.practicum.playlistmaker.di
 
+import com.practicum.playlistmaker.player.data.impl.FavouriteInteractorImpl
+import com.practicum.playlistmaker.player.data.repository.FavouriteInteractor
 import com.practicum.playlistmaker.player.domain.usecase.AudioPlayerInteractorImpl
 import com.practicum.playlistmaker.player.domain.usecase.AudioPlayerInteractor
 import com.practicum.playlistmaker.search.domain.impl.SearchHistoryInteractor
@@ -42,5 +44,10 @@ val interactorModule = module {
     // зависимости для экрана аудиоплеер
     factory<AudioPlayerInteractor> {
         AudioPlayerInteractorImpl(get())
+    }
+
+    // зависимости для базы данных
+    single<FavouriteInteractor> {
+        FavouriteInteractorImpl(get())
     }
 }

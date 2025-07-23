@@ -12,12 +12,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.gson.Gson
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentSearchBinding
 import com.practicum.playlistmaker.main.ui.RootActivity
 import com.practicum.playlistmaker.search.presentation.SearchState
-import com.practicum.playlistmaker.player.ui.AudioPlayerFragment
 import com.practicum.playlistmaker.search.domain.entity.Track
 import com.practicum.playlistmaker.search.presentation.SearchViewModel
 import com.practicum.playlistmaker.util.debounce
@@ -59,11 +57,8 @@ class SearchFragment : Fragment() {
             false
         ) { track ->
             viewModel.addToHistory(track)
-            val trackJson = Gson().toJson(track)
-            findNavController().navigate(
-                R.id.action_searchFragment_to_audioPlayerFragment,
-                AudioPlayerFragment.createArgs(trackJson)
-            )
+            val action = SearchFragmentDirections.actionSearchFragmentToAudioPlayerFragment(track)
+            findNavController().navigate(action)
         }
 
         adapter = TrackAdapter(TrackAdapter.TrackClickListener { track ->
@@ -72,7 +67,7 @@ class SearchFragment : Fragment() {
         })
 
         historyAdapter = TrackAdapter { track ->
-            viewModel.addToHistory(track)
+            onTrackClickDebounce(track)
         }
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter

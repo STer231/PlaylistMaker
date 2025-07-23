@@ -1,7 +1,10 @@
 package com.practicum.playlistmaker.di
 
+import com.practicum.playlistmaker.player.data.converters.TrackDbConvertor
 import com.practicum.playlistmaker.player.data.impl.AudioPlayerRepositoryImpl
+import com.practicum.playlistmaker.player.data.impl.FavouriteRepositoryImpl
 import com.practicum.playlistmaker.player.data.repository.AudioPlayerRepository
+import com.practicum.playlistmaker.player.data.repository.FavouriteRepository
 import com.practicum.playlistmaker.search.data.impl.SearchHistoryRepositoryImpl
 import com.practicum.playlistmaker.search.data.impl.TrackRepositoryImpl
 import com.practicum.playlistmaker.search.domain.repository.SearchHistoryRepository
@@ -37,5 +40,12 @@ val repositoryModule = module {
     // зависимости для экрана аудиоплеер
     factory<AudioPlayerRepository> {
         AudioPlayerRepositoryImpl(get())
+    }
+
+    // зависимости для базы данных
+    factory { TrackDbConvertor() }
+
+    single<FavouriteRepository> {
+        FavouriteRepositoryImpl(get(), get())
     }
 }

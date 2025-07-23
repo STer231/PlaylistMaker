@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.practicum.playlistmaker.player.data.repository.FavouriteInteractor
 import com.practicum.playlistmaker.player.domain.model.PlayerModel
 import com.practicum.playlistmaker.player.domain.usecase.AudioPlayerInteractor
 import com.practicum.playlistmaker.player.domain.model.TrackToPlayerModelMapper
@@ -13,8 +14,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class AudioPlayerViewModel(
-    private val interactor: AudioPlayerInteractor
-) : ViewModel() {
+    private val playerInteractor: AudioPlayerInteractor,
+    private val favouriteInteractor: FavouriteInteractor,
+    ) : ViewModel() {
 
     private var isPlaying = false
 
@@ -27,16 +29,27 @@ class AudioPlayerViewModel(
     private val _playerState = MutableLiveData<PlayerState>()
     val playerState: LiveData<PlayerState> = _playerState
 
-    private lateinit var currentTrack: PlayerModel
+    private val _isFavourite = MutableLiveData<Boolean>()
+    val isFavourite: LiveData<Boolean> = _isFavourite
+
+    private lateinit var currentPlayerTrack: PlayerModel
+
+    private lateinit var currentDomainTrack: Track
 
     init {
-        interactor.onPrepared.observeForever { onPrepared() }
-        interactor.onCompletion.observeForever { onCompletion() }
+        playerInteractor.onPrepared.observeForever { onPrepared() }
+        playerInteractor.onCompletion.observeForever { onCompletion() }
     }
 
     fun loadTrack(track: Track) {
-        currentTrack = TrackToPlayerModelMapper.map(track)
-        interactor.prepare(track)
+        currentDomainTrack = track
+        currentPlayerTrack = TrackToPlayerModelMapper.map(track)
+        viewModelScope.launch {
+            val favourite = favouriteInteractor.isTrackFavourite(track.trackId)
+            currentDomainTrack.isFavourite = favourite
+            _isFavourite.postValue(favourite)
+        }
+        playerInteractor.prepare(track)
     }
 
     fun playbackControl() {
@@ -45,42 +58,54 @@ class AudioPlayerViewModel(
 
     private fun start() {
         isPlaying = true
-        interactor.startPlayback()
-        _playerState.postValue(PlayerState.Playing(currentTrack, interactor.getCurrentPosition()))
+        playerInteractor.startPlayback()
+        _playerState.postValue(PlayerState.Playing(currentPlayerTrack, playerInteractor.getCurrentPosition()))
         startTimer()
     }
 
     fun pause() {
         isPlaying = false
-        interactor.pausePlayback()
+        playerInteractor.pausePlayback()
         timerJob?.cancel()
-        _playerState.postValue(PlayerState.Paused(currentTrack, interactor.getCurrentPosition()))
+        _playerState.postValue(PlayerState.Paused(currentPlayerTrack, playerInteractor.getCurrentPosition()))
     }
 
     private fun onPrepared() {
-        _playerState.postValue(PlayerState.Ready(currentTrack))
+        _playerState.postValue(PlayerState.Ready(currentPlayerTrack))
     }
 
     private fun onCompletion() {
         isPlaying = false
         timerJob?.cancel()
-        _playerState.postValue(PlayerState.Completed(currentTrack))
+        _playerState.postValue(PlayerState.Completed(currentPlayerTrack))
     }
 
     override fun onCleared() {
         super.onCleared()
-        interactor.releasePlayer()
+        playerInteractor.releasePlayer()
         timerJob?.cancel()
-        interactor.onPrepared.removeObserver { onPrepared() }
-        interactor.onCompletion.removeObserver { onCompletion() }
+        playerInteractor.onPrepared.removeObserver { onPrepared() }
+        playerInteractor.onCompletion.removeObserver { onCompletion() }
     }
 
     private fun startTimer() {
         timerJob = viewModelScope.launch {
             while (isPlaying) {
                 delay(TIMER_DELAY)
-                _playerState.postValue(PlayerState.Playing(currentTrack, interactor.getCurrentPosition()))
+                _playerState.postValue(PlayerState.Playing(currentPlayerTrack, playerInteractor.getCurrentPosition()))
             }
+        }
+    }
+
+    fun onFavouriteClicked() {
+        viewModelScope.launch {
+            val currentFavourite = _isFavourite.value == true
+            if (currentFavourite) {
+                favouriteInteractor.deleteFromFavourite(currentDomainTrack)
+            } else {
+                favouriteInteractor.addToFavourite(currentDomainTrack)
+            }
+            _isFavourite.postValue(!currentFavourite)
         }
     }
 }
