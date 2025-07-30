@@ -33,4 +33,7 @@
     <string name="empty_playlists">Вы не создали\nни одного плейлиста</string>
     <string name="new_playlist">Новый плейлист</string>
     <string name="no_internet">Проверьте подключение к интернету</string>
+    <string name="create">Создать</string>
+    <string name="create_playlist_title">Название*</string>
+    <string name="create_playlist_description">Описание</string>
 </resources>

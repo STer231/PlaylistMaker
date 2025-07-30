@@ -204,21 +204,18 @@
         tools:text="Yesterday (Remastered 2009)" />
 
     <ImageView
+        style="@style/ImageViewCoverStyle"
         android:id="@+id/imageCover"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="82dp"
         android:layout_marginBottom="@dimen/margin_24"
         android:scaleType="centerCrop"
         android:src="@drawable/placeholder_cover"
         app:layout_constraintBottom_toTopOf="@id/trackTitle"
-        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="@id/rightBorder"
         app:layout_constraintStart_toStartOf="@id/leftBorder"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/backButton"
+        android:id="@+id/back_button"
         style="@style/SubsequentToolbarsStyle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
