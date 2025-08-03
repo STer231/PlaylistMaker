@@ -1,13 +1,15 @@
 package com.practicum.playlistmaker.di
 
+import com.practicum.playlistmaker.mediaLibrary.domain.repository.CreatePlaylistInteractor
+import com.practicum.playlistmaker.mediaLibrary.domain.usecase.CreatePlaylistInteractorImpl
 import com.practicum.playlistmaker.player.data.impl.FavouriteInteractorImpl
 import com.practicum.playlistmaker.player.data.repository.FavouriteInteractor
 import com.practicum.playlistmaker.player.domain.usecase.AudioPlayerInteractorImpl
 import com.practicum.playlistmaker.player.domain.usecase.AudioPlayerInteractor
-import com.practicum.playlistmaker.search.domain.impl.SearchHistoryInteractor
-import com.practicum.playlistmaker.search.domain.impl.SearchHistoryInteractorImpl
-import com.practicum.playlistmaker.search.domain.impl.SearchTracksInteractor
-import com.practicum.playlistmaker.search.domain.impl.SearchTracksInteractorImpl
+import com.practicum.playlistmaker.search.domain.usecase.SearchHistoryInteractor
+import com.practicum.playlistmaker.search.domain.usecase.SearchHistoryInteractorImpl
+import com.practicum.playlistmaker.search.domain.usecase.SearchTracksInteractor
+import com.practicum.playlistmaker.search.domain.usecase.SearchTracksInteractorImpl
 import com.practicum.playlistmaker.util.ErrorMessageProvider
 import com.practicum.playlistmaker.util.ErrorMessageProviderImpl
 import com.practicum.playlistmaker.settings.domain.SettingsInteractor
@@ -49,5 +51,9 @@ val interactorModule = module {
     // зависимости для базы данных
     single<FavouriteInteractor> {
         FavouriteInteractorImpl(get())
+    }
+
+    single<CreatePlaylistInteractor> {
+        CreatePlaylistInteractorImpl(get())
     }
 }

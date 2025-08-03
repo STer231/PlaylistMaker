@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.search.domain.entity.Track
-import com.practicum.playlistmaker.search.domain.impl.SearchHistoryInteractor
-import com.practicum.playlistmaker.search.domain.impl.SearchTracksInteractor
+import com.practicum.playlistmaker.search.domain.usecase.SearchHistoryInteractor
+import com.practicum.playlistmaker.search.domain.usecase.SearchTracksInteractor
 import com.practicum.playlistmaker.util.ErrorMessageProvider
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay

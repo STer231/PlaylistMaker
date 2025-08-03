@@ -172,4 +172,8 @@
         <item name="android:textSize">@dimen/text_16</item>
         <item name="android:textColor">@color/white</item>
     </style>
+    <style name="PlaylistTextStyle" parent="TracksTextStyle">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/text_12</item>
+    </style>
 </resources>

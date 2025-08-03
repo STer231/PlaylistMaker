@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.search.domain.impl
+package com.practicum.playlistmaker.search.domain.usecase
 
 import com.practicum.playlistmaker.search.domain.entity.Track
 import com.practicum.playlistmaker.util.Resource
