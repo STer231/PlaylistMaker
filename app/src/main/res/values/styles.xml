@@ -184,6 +184,18 @@
     </style>
     <style name="PlaylistTextStyle" parent="TracksTextStyle">
         <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">@dimen/text_12</item>
+        <item name="android:textSize">@dimen/text_16</item>
+    </style>
+    <style name="PlaylistTitleStyle" parent="TrackTitleStyle">
+        <item name="android:textSize">@dimen/text_16</item>
+    </style>
+    <style name="BottomSheetTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/margin_30</item>
+        <item name="android:textSize">@dimen/text_19</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="fontWeight">500</item>
     </style>
 </resources>

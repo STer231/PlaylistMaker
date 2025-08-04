@@ -23,7 +23,7 @@ val viewModelModule = module {
 
     // зависимости для экрана аудиоплеер
     viewModel {
-        AudioPlayerViewModel(get(), get())
+        AudioPlayerViewModel(get(), get(), get(), get())
     }
 
     // зависимости для экрана медиаплеер

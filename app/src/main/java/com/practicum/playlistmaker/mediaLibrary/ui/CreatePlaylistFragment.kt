@@ -2,8 +2,6 @@ package com.practicum.playlistmaker.mediaLibrary.ui
 
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,11 +18,10 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentCreatePlaylistBinding
+import com.practicum.playlistmaker.mediaLibrary.domain.repository.PlaylistCoverStorageRepository
 import com.practicum.playlistmaker.mediaLibrary.presentation.CreatePlaylistViewModel
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
 
 class CreatePlaylistFragment : Fragment() {
 
@@ -37,6 +34,8 @@ class CreatePlaylistFragment : Fragment() {
     private lateinit var confirmDialog: MaterialAlertDialogBuilder
 
     private val createPlaylistViewModel: CreatePlaylistViewModel by viewModel()
+
+    private val playlistCoverStorage: PlaylistCoverStorageRepository by inject()
 
     private val pickPhoto = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()
@@ -106,28 +105,9 @@ class CreatePlaylistFragment : Fragment() {
         }
     }
 
-    private fun saveImageToPrivateStorage(uri: Uri): String? {
-        val filePath = File(
-            requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-            "playlist_cover"
-        )
-        if (!filePath.exists()) {
-            filePath.mkdirs()
-        }
-
-        val file = File(filePath, "cover_${System.currentTimeMillis()}.jpg")
-
-        return try {
-            requireContext().contentResolver.openInputStream(uri)?.use { input ->
-                FileOutputStream(file).use { output ->
-                    input.copyTo(output)
-                }
-            }
-            file.absolutePath
-        } catch (e: IOException) {
-            Log.e("CreatePlaylistFragment", "Ошибка копирования обложки", e)
-            null
-        }
+    override fun onDestroyView() {
+        super.onDestroyView()
+         _binding = null
     }
 
     private fun hasUnsavedData(): Boolean {
@@ -147,7 +127,7 @@ class CreatePlaylistFragment : Fragment() {
 
     private fun savePlaylistCover():Boolean {
         selectedCoverUri?.let { uri ->
-            val savePath = saveImageToPrivateStorage(uri)
+            val savePath = playlistCoverStorage.saveImageToPrivateStorage(uri)
             return if (savePath != null) {
                 createPlaylistViewModel.onCoverSelected(savePath)
                 true

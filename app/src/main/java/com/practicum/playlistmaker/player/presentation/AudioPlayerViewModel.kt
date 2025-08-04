@@ -4,11 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.practicum.playlistmaker.mediaLibrary.domain.repository.CreatePlaylistInteractor
+import com.practicum.playlistmaker.mediaLibrary.presentation.PlaylistsState
 import com.practicum.playlistmaker.player.data.repository.FavouriteInteractor
 import com.practicum.playlistmaker.player.domain.model.PlayerModel
 import com.practicum.playlistmaker.player.domain.usecase.AudioPlayerInteractor
 import com.practicum.playlistmaker.player.domain.model.TrackToPlayerModelMapper
 import com.practicum.playlistmaker.search.domain.entity.Track
+import com.practicum.playlistmaker.util.ErrorMessageProvider
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -16,6 +19,8 @@ import kotlinx.coroutines.launch
 class AudioPlayerViewModel(
     private val playerInteractor: AudioPlayerInteractor,
     private val favouriteInteractor: FavouriteInteractor,
+    private val createPlaylistInteractor: CreatePlaylistInteractor,
+    private val errorMessageProvider: ErrorMessageProvider,
     ) : ViewModel() {
 
     private var isPlaying = false
@@ -32,6 +37,9 @@ class AudioPlayerViewModel(
     private val _isFavourite = MutableLiveData<Boolean>()
     val isFavourite: LiveData<Boolean> = _isFavourite
 
+    private val playlistsState = MutableLiveData<PlaylistsState>()
+    fun observePlaylistsState(): LiveData<PlaylistsState> = playlistsState
+
     private lateinit var currentPlayerTrack: PlayerModel
 
     private lateinit var currentDomainTrack: Track
@@ -39,6 +47,17 @@ class AudioPlayerViewModel(
     init {
         playerInteractor.onPrepared.observeForever { onPrepared() }
         playerInteractor.onCompletion.observeForever { onCompletion() }
+
+        viewModelScope.launch {
+            createPlaylistInteractor.getPlaylists()
+                .collect { list ->
+                    if (list.isEmpty()) {
+                        playlistsState.postValue(PlaylistsState.Error(errorMessageProvider.emptyPlaylists()))
+                    } else {
+                        playlistsState.postValue(PlaylistsState.Content(list))
+                    }
+                }
+        }
     }
 
     fun loadTrack(track: Track) {
