@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 class CreatePlaylistInteractorImpl(
     private val createPlaylistRepository: CreatePlaylistRepository
 ) : CreatePlaylistInteractor {
-    override suspend fun createPlaylist(playlist: Playlist): Long {
+    override suspend fun createPlaylist(playlist: Playlist) {
         return createPlaylistRepository.createPlaylist(playlist)
     }
 

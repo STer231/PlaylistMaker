@@ -44,7 +44,7 @@ class CreatePlaylistViewModel(
         val playlistCoverPath = _playlistCoverPath.value
 
         viewModelScope.launch {
-            val newId = createPlaylistInteractor.createPlaylist(
+            createPlaylistInteractor.createPlaylist(
                 Playlist(
                     name = name,
                     description = description,

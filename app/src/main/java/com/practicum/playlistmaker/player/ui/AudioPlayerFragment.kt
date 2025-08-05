@@ -84,6 +84,14 @@ class AudioPlayerFragment : Fragment() {
         setupBottomSheet()
 
         binding.btAddToPlaylist.setOnClickListener {
+            binding.overlay.apply {
+                alpha = 0f
+                visibility = View.VISIBLE
+                animate()
+                    .alpha(1f)
+                    .setDuration(300)
+                    .start()
+            }
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
 
@@ -194,14 +202,6 @@ class AudioPlayerFragment : Fragment() {
                             .alpha(0f)
                             .setDuration(150)
                             .withEndAction { binding.overlay.visibility = View.GONE }
-                            .start()
-                    }
-
-                    BottomSheetBehavior.STATE_COLLAPSED -> {
-                        binding.overlay.visibility = View.VISIBLE
-                        binding.overlay.animate()
-                            .alpha(1f)
-                            .setDuration(150)
                             .start()
                     }
                 }

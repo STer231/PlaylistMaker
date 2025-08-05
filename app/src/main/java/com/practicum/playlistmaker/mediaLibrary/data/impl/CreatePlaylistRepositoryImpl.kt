@@ -19,7 +19,7 @@ class CreatePlaylistRepositoryImpl(
     private val playlistTrackDao: PlaylistTrackDao,
     private val playlistTrackDbConvertor: PlaylistTrackDbConvertor
 ) : CreatePlaylistRepository {
-    override suspend fun createPlaylist(playlist: Playlist): Long {
+    override suspend fun createPlaylist(playlist: Playlist) {
         return playlistDao.insertPlaylist(playlistDbConvertor.mapToEntity(playlist))
     }
 

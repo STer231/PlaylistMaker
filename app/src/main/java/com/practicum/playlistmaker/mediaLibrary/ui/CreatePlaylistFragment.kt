@@ -89,16 +89,21 @@ class CreatePlaylistFragment : Fragment() {
             if (!savePlaylistCover()) return@setOnClickListener
             createPlaylistViewModel.createPlaylist {
                 findNavController().navigateUp()
+                Toast.makeText(
+                    requireContext(),
+                    "Плейлист ${createPlaylistViewModel.playlistName.value} создан",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
         confirmDialog = MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Завершить создание плейлиста?")
-            .setMessage("Все несохраненные данные будут потеряны")
-            .setNegativeButton("Завершить") {_, _ ->
+            .setTitle(R.string.confirm_dialog_title)
+            .setMessage(R.string.confirm_dialog_message)
+            .setNegativeButton(R.string.complete) { _, _ ->
                 findNavController().navigateUp()
             }
-            .setNeutralButton("Отмена") { _, _ -> }
+            .setNeutralButton(R.string.cansel) { _, _ -> }
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             backNavigation()
@@ -107,7 +112,7 @@ class CreatePlaylistFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-         _binding = null
+        _binding = null
     }
 
     private fun hasUnsavedData(): Boolean {
@@ -125,14 +130,15 @@ class CreatePlaylistFragment : Fragment() {
         }
     }
 
-    private fun savePlaylistCover():Boolean {
+    private fun savePlaylistCover(): Boolean {
         selectedCoverUri?.let { uri ->
             val savePath = playlistCoverStorage.saveImageToPrivateStorage(uri)
             return if (savePath != null) {
                 createPlaylistViewModel.onCoverSelected(savePath)
                 true
             } else {
-                Toast.makeText(requireContext(),
+                Toast.makeText(
+                    requireContext(),
                     "Не удалось сохранить обложку", Toast.LENGTH_SHORT
                 ).show()
                 false

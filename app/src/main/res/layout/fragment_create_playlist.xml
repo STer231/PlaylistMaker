@@ -15,15 +15,15 @@
         app:title="@string/new_playlist" />
 
     <ImageView
-        style="@style/ImageViewCoverStyle"
         android:id="@+id/iv_cover"
+        style="@style/ImageViewCoverStyle"
         android:layout_marginHorizontal="@dimen/margin_24"
+        android:clickable="true"
         android:scaleType="centerCrop"
         android:src="@drawable/create_playlist_cover_layer_list"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:clickable="true"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/title_text_input_layout"
@@ -38,7 +38,12 @@
             style="@style/CreatePlaylistTextInputHint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/create_playlist_title" />
+            android:hint="@string/create_playlist_title"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLines="1"
+            android:scrollHorizontally="false"
+            android:singleLine="true" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -55,7 +60,11 @@
             style="@style/CreatePlaylistTextInputHint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/create_playlist_description" />
+            android:hint="@string/create_playlist_description"
+            android:inputType="textMultiLine"
+            android:maxLines="3"
+            android:scrollHorizontally="false"
+            android:singleLine="false" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
