@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.practicum.playlistmaker.mediaLibrary.domain.model.Playlist
 import com.practicum.playlistmaker.mediaLibrary.domain.repository.CreatePlaylistInteractor
 import com.practicum.playlistmaker.mediaLibrary.presentation.PlaylistsState
 import com.practicum.playlistmaker.player.data.repository.FavouriteInteractor
@@ -21,7 +22,7 @@ class AudioPlayerViewModel(
     private val favouriteInteractor: FavouriteInteractor,
     private val createPlaylistInteractor: CreatePlaylistInteractor,
     private val errorMessageProvider: ErrorMessageProvider,
-    ) : ViewModel() {
+) : ViewModel() {
 
     private var isPlaying = false
 
@@ -37,8 +38,11 @@ class AudioPlayerViewModel(
     private val _isFavourite = MutableLiveData<Boolean>()
     val isFavourite: LiveData<Boolean> = _isFavourite
 
-    private val playlistsState = MutableLiveData<PlaylistsState>()
-    fun observePlaylistsState(): LiveData<PlaylistsState> = playlistsState
+    private val _playlistsState = MutableLiveData<PlaylistsState>()
+    val playlistsState: LiveData<PlaylistsState> = _playlistsState
+
+    private val _addTrackToPlaylistResult = MutableLiveData<AddTrackResultState>()
+    val addTrackToPlaylistResult: LiveData<AddTrackResultState> = _addTrackToPlaylistResult
 
     private lateinit var currentPlayerTrack: PlayerModel
 
@@ -52,9 +56,9 @@ class AudioPlayerViewModel(
             createPlaylistInteractor.getPlaylists()
                 .collect { list ->
                     if (list.isEmpty()) {
-                        playlistsState.postValue(PlaylistsState.Error(errorMessageProvider.emptyPlaylists()))
+                        _playlistsState.postValue(PlaylistsState.Error(errorMessageProvider.emptyPlaylists()))
                     } else {
-                        playlistsState.postValue(PlaylistsState.Content(list))
+                        _playlistsState.postValue(PlaylistsState.Content(list))
                     }
                 }
         }
@@ -78,7 +82,12 @@ class AudioPlayerViewModel(
     private fun start() {
         isPlaying = true
         playerInteractor.startPlayback()
-        _playerState.postValue(PlayerState.Playing(currentPlayerTrack, playerInteractor.getCurrentPosition()))
+        _playerState.postValue(
+            PlayerState.Playing(
+                currentPlayerTrack,
+                playerInteractor.getCurrentPosition()
+            )
+        )
         startTimer()
     }
 
@@ -86,7 +95,12 @@ class AudioPlayerViewModel(
         isPlaying = false
         playerInteractor.pausePlayback()
         timerJob?.cancel()
-        _playerState.postValue(PlayerState.Paused(currentPlayerTrack, playerInteractor.getCurrentPosition()))
+        _playerState.postValue(
+            PlayerState.Paused(
+                currentPlayerTrack,
+                playerInteractor.getCurrentPosition()
+            )
+        )
     }
 
     private fun onPrepared() {
@@ -111,7 +125,12 @@ class AudioPlayerViewModel(
         timerJob = viewModelScope.launch {
             while (isPlaying) {
                 delay(TIMER_DELAY)
-                _playerState.postValue(PlayerState.Playing(currentPlayerTrack, playerInteractor.getCurrentPosition()))
+                _playerState.postValue(
+                    PlayerState.Playing(
+                        currentPlayerTrack,
+                        playerInteractor.getCurrentPosition()
+                    )
+                )
             }
         }
     }
@@ -125,6 +144,17 @@ class AudioPlayerViewModel(
                 favouriteInteractor.addToFavourite(currentDomainTrack)
             }
             _isFavourite.postValue(!currentFavourite)
+        }
+    }
+
+    fun checkAddResult(playlist: Playlist) {
+        if (currentDomainTrack.trackId.toLong() in playlist.trackIds) {
+            _addTrackToPlaylistResult.postValue(AddTrackResultState.AlreadyHas(playlist.name))
+        } else {
+            viewModelScope.launch {
+                createPlaylistInteractor.addTrackToPlaylist(currentDomainTrack, playlist)
+                _addTrackToPlaylistResult.postValue(AddTrackResultState.Added(playlist.name))
+            }
         }
     }
 }

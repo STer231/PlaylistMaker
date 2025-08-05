@@ -18,10 +18,10 @@ import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentAudioPlayerBinding
 import com.practicum.playlistmaker.mediaLibrary.domain.model.Playlist
 import com.practicum.playlistmaker.mediaLibrary.presentation.PlaylistsState
-import com.practicum.playlistmaker.mediaLibrary.ui.PlaylistAdapter
 import com.practicum.playlistmaker.player.presentation.PlayerState
 import com.practicum.playlistmaker.player.domain.model.PlayerModel
 import com.practicum.playlistmaker.player.domain.model.TrackToPlayerModelMapper
+import com.practicum.playlistmaker.player.presentation.AddTrackResultState
 import com.practicum.playlistmaker.player.presentation.AudioPlayerViewModel
 import com.practicum.playlistmaker.search.domain.entity.Track
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -93,14 +93,19 @@ class AudioPlayerFragment : Fragment() {
             )
         }
 
-        adapter = PlaylistBottomSheetAdapter(PlaylistBottomSheetAdapter.PlaylistClickListener{ palylist ->
-            Toast.makeText(requireContext(), "НАжал на кноку", Toast.LENGTH_LONG).show()
-        })
+        viewModel.addTrackToPlaylistResult.observe(viewLifecycleOwner) { result ->
+            handleAddTrackToPlaylistResult(result)
+        }
+
+        adapter =
+            PlaylistBottomSheetAdapter(PlaylistBottomSheetAdapter.PlaylistClickListener { palylist ->
+                viewModel.checkAddResult(palylist)
+            })
 
         binding.playlistsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.playlistsRecyclerView.adapter = adapter
 
-        viewModel.observePlaylistsState().observe(viewLifecycleOwner) {
+        viewModel.playlistsState.observe(viewLifecycleOwner) {
             renderPlaylistsState(it)
         }
 
@@ -159,7 +164,10 @@ class AudioPlayerFragment : Fragment() {
         Glide.with(this)
             .load(track.artworkUrl)
             .placeholder(R.drawable.placeholder_cover)
-            .transform(CenterCrop(), RoundedCorners(resources.getDimensionPixelSize(R.dimen.cover_radius_8)))
+            .transform(
+                CenterCrop(),
+                RoundedCorners(resources.getDimensionPixelSize(R.dimen.cover_radius_8))
+            )
             .into(binding.imageCover)
     }
 
@@ -177,7 +185,8 @@ class AudioPlayerFragment : Fragment() {
             state = BottomSheetBehavior.STATE_HIDDEN
         }
 
-        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+        bottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_HIDDEN -> {
@@ -187,6 +196,7 @@ class AudioPlayerFragment : Fragment() {
                             .withEndAction { binding.overlay.visibility = View.GONE }
                             .start()
                     }
+
                     BottomSheetBehavior.STATE_COLLAPSED -> {
                         binding.overlay.visibility = View.VISIBLE
                         binding.overlay.animate()
@@ -196,6 +206,7 @@ class AudioPlayerFragment : Fragment() {
                     }
                 }
             }
+
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
                 binding.overlay.alpha = 1f + slideOffset
                 if (binding.overlay.alpha <= 0f) {
@@ -206,7 +217,7 @@ class AudioPlayerFragment : Fragment() {
     }
 
     private fun renderPlaylistsState(state: PlaylistsState) {
-        when(state) {
+        when (state) {
             is PlaylistsState.Error -> showError(state.message)
             is PlaylistsState.Content -> showContent(state.playlists)
         }
@@ -226,5 +237,34 @@ class AudioPlayerFragment : Fragment() {
             playlistsRecyclerView.visibility = View.VISIBLE
         }
         adapter.updateData(playlists)
+    }
+
+    private fun handleAddTrackToPlaylistResult(result: AddTrackResultState) {
+        when(result) {
+            is AddTrackResultState.Added -> {
+                showTrackAddedToast(result.playlistName)
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            }
+            is AddTrackResultState.AlreadyHas -> {
+                showTrackAlreadyAddedToast(result.playlistName)
+            }
+        }
+
+    }
+
+    private fun showTrackAddedToast(playlistName: String) {
+        Toast.makeText(
+            requireContext(),
+            "${requireContext().getString(R.string.track_added_playlist)} $playlistName",
+            Toast.LENGTH_LONG
+        ).show()
+    }
+
+    private fun showTrackAlreadyAddedToast(playlistName: String) {
+        Toast.makeText(
+            requireContext(),
+            "${requireContext().getString(R.string.track_already_in_playlist)} $playlistName",
+            Toast.LENGTH_LONG
+        ).show()
     }
 }

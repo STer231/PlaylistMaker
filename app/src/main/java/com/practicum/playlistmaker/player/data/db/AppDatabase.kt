@@ -8,10 +8,11 @@ import com.practicum.playlistmaker.mediaLibrary.data.db.PlaylistDao
 import com.practicum.playlistmaker.mediaLibrary.data.db.PlaylistEntity
 
 @Database(
-    version = 3,
+    version = 4,
     entities = [
         FavouriteTrackEntity::class,
-        PlaylistEntity::class
+        PlaylistEntity::class,
+        PlaylistTrackEntity::class
     ]
 )
 
@@ -41,11 +42,35 @@ abstract class AppDatabase : RoomDatabase() {
                     trackIdsJson TEXT NOT NULL,
                     trackCount INTEGER NOT NULL DEFAULT 0
                     )
-                    """.trimIndent())
+                    """.trimIndent()
+                )
             }
+        }
+
+        val MIGRATION_3_4 = object : Migration(3, 4) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    """
+                        CREATE TABLE IF NOT EXISTS playlist_tracks (
+                        trackId INTEGER PRIMARY KEY NOT NULL,
+                        artworkUrl TEXT NOT NULL,
+                        trackName TEXT NOT NULL,
+                        artistName TEXT NOT NULL,
+                        collectionName TEXT,
+                        releaseDate INTEGER NOT NULL,
+                        primaryGenreName TEXT NOT NULL,
+                        country TEXT NOT NULL,
+                        trackTime INTEGER NOT NULL,
+                        previewUrl TEXT NOT NULL
+                        )
+                        """.trimIndent()
+                )
+            }
+
         }
     }
 
     abstract fun favouriteTrackDao(): FavouriteTrackDao
     abstract fun playlistDao(): PlaylistDao
+    abstract fun playlistTrackDao(): PlaylistTrackDao
 }

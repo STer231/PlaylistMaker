@@ -4,7 +4,6 @@ import com.practicum.playlistmaker.mediaLibrary.data.impl.CreatePlaylistReposito
 import com.practicum.playlistmaker.mediaLibrary.data.impl.PlaylistCoverStorageRepositoryImpl
 import com.practicum.playlistmaker.mediaLibrary.domain.repository.CreatePlaylistRepository
 import com.practicum.playlistmaker.mediaLibrary.domain.repository.PlaylistCoverStorageRepository
-import com.practicum.playlistmaker.player.data.converters.TrackDbConvertor
 import com.practicum.playlistmaker.player.data.impl.AudioPlayerRepositoryImpl
 import com.practicum.playlistmaker.player.data.impl.FavouriteRepositoryImpl
 import com.practicum.playlistmaker.player.data.repository.AudioPlayerRepository
@@ -47,14 +46,12 @@ val repositoryModule = module {
     }
 
     // зависимости для базы данных
-    factory { TrackDbConvertor() }
-
     single<FavouriteRepository> {
         FavouriteRepositoryImpl(get(), get())
     }
 
     single<CreatePlaylistRepository> {
-        CreatePlaylistRepositoryImpl(get(), get())
+        CreatePlaylistRepositoryImpl(get(), get(), get(), get())
     }
 
     single<PlaylistCoverStorageRepository> {

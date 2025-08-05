@@ -37,4 +37,6 @@
     <string name="create_playlist_title">Название*</string>
     <string name="create_playlist_description">Описание</string>
     <string name="bottom_sheet_title">Добавить плейлист</string>
+    <string name="track_already_in_playlist">Трек уже добавлен в плейлист</string>
+    <string name="track_added_playlist">Добавлено в плейлист</string>
 </resources>
