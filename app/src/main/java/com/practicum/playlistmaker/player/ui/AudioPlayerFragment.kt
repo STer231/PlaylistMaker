@@ -89,7 +89,6 @@ class AudioPlayerFragment : Fragment() {
                 visibility = View.VISIBLE
                 animate()
                     .alpha(1f)
-                    .setDuration(300)
                     .start()
             }
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
@@ -200,7 +199,6 @@ class AudioPlayerFragment : Fragment() {
                     BottomSheetBehavior.STATE_HIDDEN -> {
                         binding.overlay.animate()
                             .alpha(0f)
-                            .setDuration(150)
                             .withEndAction { binding.overlay.visibility = View.GONE }
                             .start()
                     }

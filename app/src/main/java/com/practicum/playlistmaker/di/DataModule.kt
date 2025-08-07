@@ -87,7 +87,7 @@ val dataModule = module {
     // зависимости для конверторов
     factory { TrackDbConvertor() }
     
-    single<PlaylistDbConvertor> { PlaylistDbConvertor(get()) }
+    factory<PlaylistDbConvertor> { PlaylistDbConvertor(get()) }
 
-    single<PlaylistTrackDbConvertor> { PlaylistTrackDbConvertor() }
+    factory<PlaylistTrackDbConvertor> { PlaylistTrackDbConvertor() }
 }

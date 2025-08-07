@@ -9,7 +9,7 @@ import com.practicum.playlistmaker.player.data.db.PlaylistTrackDao
 import com.practicum.playlistmaker.search.domain.entity.Track
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
@@ -24,9 +24,9 @@ class CreatePlaylistRepositoryImpl(
     }
 
     override fun getPlaylists(): Flow<List<Playlist>> {
-        return playlistDao.getPlaylists().map { entityList ->
+        return playlistDao.getPlaylists().distinctUntilChanged().map { entityList ->
             entityList.map { playlistEntity -> playlistDbConvertor.mapToDomain(playlistEntity) }
-        }.flowOn(Dispatchers.IO)
+        }
     }
 
     override suspend fun addTrackToPlaylist(track: Track, playlist: Playlist) {

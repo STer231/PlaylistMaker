@@ -50,7 +50,7 @@ val repositoryModule = module {
         FavouriteRepositoryImpl(get(), get())
     }
 
-    single<CreatePlaylistRepository> {
+    factory<CreatePlaylistRepository> {
         CreatePlaylistRepositoryImpl(get(), get(), get(), get())
     }
 
