@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker.mediaLibrary.ui
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,9 +17,8 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentCreatePlaylistBinding
-import com.practicum.playlistmaker.mediaLibrary.domain.repository.PlaylistCoverStorageRepository
+import com.practicum.playlistmaker.mediaLibrary.presentation.CreatePlaylistState
 import com.practicum.playlistmaker.mediaLibrary.presentation.CreatePlaylistViewModel
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CreatePlaylistFragment : Fragment() {
@@ -29,26 +27,15 @@ class CreatePlaylistFragment : Fragment() {
     private val binding: FragmentCreatePlaylistBinding
         get() = _binding!!
 
-    private var selectedCoverUri: Uri? = null
-
     private lateinit var confirmDialog: MaterialAlertDialogBuilder
 
     private val createPlaylistViewModel: CreatePlaylistViewModel by viewModel()
-
-    private val playlistCoverStorage: PlaylistCoverStorageRepository by inject()
 
     private val pickPhoto = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()
     ) { uri ->
         uri?.let {
-            selectedCoverUri = it
-            Glide.with(this)
-                .load(it)
-                .transform(
-                    CenterCrop(),
-                    RoundedCorners(resources.getDimensionPixelSize(R.dimen.cover_radius_8))
-                )
-                .into(binding.ivCover)
+            createPlaylistViewModel.onCoverSelected(it)
         }
     }
 
@@ -68,14 +55,13 @@ class CreatePlaylistFragment : Fragment() {
             backNavigation()
         }
 
-        createPlaylistViewModel.canCreate.observe(viewLifecycleOwner) { enabled ->
-            binding.btnCreatePlaylist.isEnabled = enabled
-        }
-
         binding.ivCover.setOnClickListener {
             pickPhoto.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
 
+        createPlaylistViewModel.createPlaylistState.observe(viewLifecycleOwner) { state ->
+            renderState(state)
+        }
 
         binding.edTitle.doAfterTextChanged { name ->
             createPlaylistViewModel.onNameChange(name?.toString().orEmpty())
@@ -86,12 +72,11 @@ class CreatePlaylistFragment : Fragment() {
         }
 
         binding.btnCreatePlaylist.setOnClickListener {
-            if (!savePlaylistCover()) return@setOnClickListener
             createPlaylistViewModel.createPlaylist {
                 findNavController().navigateUp()
                 Toast.makeText(
                     requireContext(),
-                    "Плейлист ${createPlaylistViewModel.playlistName.value} создан",
+                    "Плейлист ${createPlaylistViewModel.createPlaylistState.value?.name} создан",
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -116,10 +101,8 @@ class CreatePlaylistFragment : Fragment() {
     }
 
     private fun hasUnsavedData(): Boolean {
-        val isNameNotEmpty = binding.edTitle.text?.isNotBlank() == true
-        val isDescriptionNotEmpty = binding.edDescription.text?.isNotBlank() == true
-        val isCoverNotEmpty = selectedCoverUri != null
-        return isNameNotEmpty || isDescriptionNotEmpty || isCoverNotEmpty
+        val state = createPlaylistViewModel.createPlaylistState.value ?: return false
+        return state.name.isNotBlank() || state.description.isNotBlank() || state.coverPath != null
     }
 
     private fun backNavigation() {
@@ -130,20 +113,24 @@ class CreatePlaylistFragment : Fragment() {
         }
     }
 
-    private fun savePlaylistCover(): Boolean {
-        selectedCoverUri?.let { uri ->
-            val savePath = playlistCoverStorage.saveImageToPrivateStorage(uri)
-            return if (savePath != null) {
-                createPlaylistViewModel.onCoverSelected(savePath)
-                true
-            } else {
-                Toast.makeText(
-                    requireContext(),
-                    "Не удалось сохранить обложку", Toast.LENGTH_SHORT
-                ).show()
-                false
-            }
+    private fun renderState(state: CreatePlaylistState) {
+        binding.btnCreatePlaylist.isEnabled = state.canCreate
+
+        if (binding.edTitle.text.toString() != state.name) {
+            binding.edTitle.setText(state.name)
         }
-        return true
+        if (binding.edDescription.text.toString() != state.description) {
+            binding.edDescription.setText(state.description)
+        }
+
+        if (state.coverPath != null) {
+            Glide.with(this)
+                .load(state.coverPath)
+                .transform(
+                    CenterCrop(),
+                    RoundedCorners(resources.getDimensionPixelSize(R.dimen.cover_radius_8))
+                )
+                .into(binding.ivCover)
+        }
     }
 }
