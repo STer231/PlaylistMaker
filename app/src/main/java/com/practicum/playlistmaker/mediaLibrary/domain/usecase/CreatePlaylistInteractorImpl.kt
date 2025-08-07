@@ -1,5 +1,6 @@
 package com.practicum.playlistmaker.mediaLibrary.domain.usecase
 
+import android.net.Uri
 import com.practicum.playlistmaker.mediaLibrary.domain.model.Playlist
 import com.practicum.playlistmaker.mediaLibrary.domain.repository.CreatePlaylistInteractor
 import com.practicum.playlistmaker.mediaLibrary.domain.repository.CreatePlaylistRepository
@@ -19,5 +20,9 @@ class CreatePlaylistInteractorImpl(
 
     override suspend fun addTrackToPlaylist(track: Track, playlist: Playlist) {
         createPlaylistRepository.addTrackToPlaylist(track, playlist)
+    }
+
+    override suspend fun saveImageToPrivateStorage(uri: Uri): String? {
+        return createPlaylistRepository.saveImageToPrivateStorage(uri)
     }
 }
