@@ -5,10 +5,13 @@
     <dimen name="text_16">16sp</dimen>
     <dimen name="text_14">14sp</dimen>
     <dimen name="text_13">13sp</dimen>
+    <dimen name="text_12">12sp</dimen>
     <dimen name="text_11">11sp</dimen>
     <dimen name="margin_140">140dp</dimen>
     <dimen name="margin_54">54dp</dimen>
+    <dimen name="margin_44">44dp</dimen>
     <dimen name="margin_42">42dp</dimen>
+    <dimen name="margin_30">30dp</dimen>
     <dimen name="margin_24">24dp</dimen>
     <dimen name="margin_21">21dp</dimen>
     <dimen name="margin_20">20dp</dimen>
@@ -28,4 +31,8 @@
     <dimen name="dimen_44">44dp</dimen>
     <dimen name="dimen_24">24dp</dimen>
     <dimen name="tabIndicatorHeight">2dp</dimen>
+    <dimen name="boxStrokeWidth">1dp</dimen>
+    <dimen name="cover_margin_top">82dp</dimen>
+    <dimen name="cover_radius_8">8dp</dimen>
+    <dimen name="cover_radius_2">2dp</dimen>
 </resources>

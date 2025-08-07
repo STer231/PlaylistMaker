@@ -33,4 +33,14 @@
     <string name="empty_playlists">Вы не создали\nни одного плейлиста</string>
     <string name="new_playlist">Новый плейлист</string>
     <string name="no_internet">Проверьте подключение к интернету</string>
+    <string name="create">Создать</string>
+    <string name="create_playlist_title">Название*</string>
+    <string name="create_playlist_description">Описание</string>
+    <string name="bottom_sheet_title">Добавить в плейлист</string>
+    <string name="track_already_in_playlist">Трек уже добавлен в плейлист</string>
+    <string name="track_added_playlist">Добавлено в плейлист</string>
+    <string name="complete">Завершить</string>
+    <string name="cansel">Отмена</string>
+    <string name="confirm_dialog_title">Завершить создание плейлиста?</string>
+    <string name="confirm_dialog_message">Все несохраненные данные будут потеряны</string>
 </resources>

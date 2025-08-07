@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".player.ui.AudioPlayerFragment">
+
+<androidx.constraintlayout.widget.ConstraintLayout 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/leftBorder"
@@ -204,24 +209,77 @@
         tools:text="Yesterday (Remastered 2009)" />
 
     <ImageView
+        style="@style/ImageViewCoverStyle"
         android:id="@+id/imageCover"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="82dp"
         android:layout_marginBottom="@dimen/margin_24"
         android:scaleType="centerCrop"
         android:src="@drawable/placeholder_cover"
         app:layout_constraintBottom_toTopOf="@id/trackTitle"
-        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="@id/rightBorder"
         app:layout_constraintStart_toStartOf="@id/leftBorder"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/backButton"
+        android:id="@+id/back_button"
         style="@style/SubsequentToolbarsStyle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/back" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/bottom_sheet_container"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:background="@drawable/bottom_sheet_background"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        app:behavior_hideable="true"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        tools:visibility="gone">
+        
+        <View
+            android:layout_width="50dp"
+            android:layout_height="4dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounder"/>
+
+        <TextView
+            style="@style/BottomSheetTitle"
+            android:text="@string/bottom_sheet_title"/>
+
+        <Button
+            android:id="@+id/newPlaylistButton"
+            style="@style/ErrorPlaceholderButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16"
+            android:text="@string/new_playlist" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/playlists_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/margin_24"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/playlistsPlaceholderMessage"
+            style="@style/ErrorPlaceholderTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="@string/empty_playlists"
+            android:layout_gravity="center"
+            android:visibility="gone"/>
+        
+    </LinearLayout>
+    
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

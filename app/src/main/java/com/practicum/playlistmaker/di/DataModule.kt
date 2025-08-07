@@ -4,9 +4,16 @@ import android.content.Context
 import android.media.MediaPlayer
 import androidx.room.Room
 import com.google.gson.Gson
+import com.practicum.playlistmaker.mediaLibrary.converters.PlaylistDbConvertor
+import com.practicum.playlistmaker.mediaLibrary.converters.PlaylistTrackDbConvertor
+import com.practicum.playlistmaker.mediaLibrary.data.db.PlaylistDao
+import com.practicum.playlistmaker.player.data.converters.TrackDbConvertor
 import com.practicum.playlistmaker.player.data.db.AppDatabase
 import com.practicum.playlistmaker.player.data.db.AppDatabase.Companion.MIGRATION_1_2
+import com.practicum.playlistmaker.player.data.db.AppDatabase.Companion.MIGRATION_2_3
+import com.practicum.playlistmaker.player.data.db.AppDatabase.Companion.MIGRATION_3_4
 import com.practicum.playlistmaker.player.data.db.FavouriteTrackDao
+import com.practicum.playlistmaker.player.data.db.PlaylistTrackDao
 import com.practicum.playlistmaker.search.data.NetworkClient
 import com.practicum.playlistmaker.search.data.impl.SearchHistoryRepositoryImpl
 import com.practicum.playlistmaker.search.data.network.ItunesApi
@@ -61,11 +68,26 @@ val dataModule = module {
     // зависимости для базы данных
     single {
         Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
-            .addMigrations(MIGRATION_1_2)
+            .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
             .build()
     }
 
     single<FavouriteTrackDao> {
         get<AppDatabase>().favouriteTrackDao()
     }
+
+    single<PlaylistDao> {
+        get<AppDatabase>().playlistDao()
+    }
+
+    single<PlaylistTrackDao> {
+        get<AppDatabase>().playlistTrackDao()
+    }
+
+    // зависимости для конверторов
+    factory { TrackDbConvertor() }
+    
+    factory<PlaylistDbConvertor> { PlaylistDbConvertor(get()) }
+
+    factory<PlaylistTrackDbConvertor> { PlaylistTrackDbConvertor() }
 }

@@ -1,6 +1,9 @@
 package com.practicum.playlistmaker.di
 
-import com.practicum.playlistmaker.player.data.converters.TrackDbConvertor
+import com.practicum.playlistmaker.mediaLibrary.data.impl.CreatePlaylistRepositoryImpl
+import com.practicum.playlistmaker.mediaLibrary.data.impl.PlaylistCoverStorageRepositoryImpl
+import com.practicum.playlistmaker.mediaLibrary.domain.repository.CreatePlaylistRepository
+import com.practicum.playlistmaker.mediaLibrary.domain.repository.PlaylistCoverStorageRepository
 import com.practicum.playlistmaker.player.data.impl.AudioPlayerRepositoryImpl
 import com.practicum.playlistmaker.player.data.impl.FavouriteRepositoryImpl
 import com.practicum.playlistmaker.player.data.repository.AudioPlayerRepository
@@ -43,9 +46,15 @@ val repositoryModule = module {
     }
 
     // зависимости для базы данных
-    factory { TrackDbConvertor() }
-
     single<FavouriteRepository> {
         FavouriteRepositoryImpl(get(), get())
+    }
+
+    factory<CreatePlaylistRepository> {
+        CreatePlaylistRepositoryImpl(get(), get(), get(), get())
+    }
+
+    single<PlaylistCoverStorageRepository> {
+        PlaylistCoverStorageRepositoryImpl(androidContext())
     }
 }
