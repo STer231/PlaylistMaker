@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker.databinding.ItemPlaylistBinding
 import com.practicum.playlistmaker.mediaLibrary.domain.model.Playlist
-import com.practicum.playlistmaker.player.ui.PlaylistBottomSheetAdapter.PlaylistClickListener
 
 class PlaylistAdapter(
     private val clickListener: PlaylistClickListener

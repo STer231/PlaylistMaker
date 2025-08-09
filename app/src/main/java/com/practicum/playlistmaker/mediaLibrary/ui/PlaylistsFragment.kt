@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.practicum.playlistmaker.R
@@ -14,10 +13,6 @@ import com.practicum.playlistmaker.databinding.FragmentPlaylistsBinding
 import com.practicum.playlistmaker.mediaLibrary.domain.model.Playlist
 import com.practicum.playlistmaker.mediaLibrary.presentation.PlaylistsState
 import com.practicum.playlistmaker.mediaLibrary.presentation.PlaylistsViewModel
-import com.practicum.playlistmaker.search.domain.entity.Track
-import com.practicum.playlistmaker.search.ui.SearchFragment
-import com.practicum.playlistmaker.search.ui.SearchFragment.Companion
-import com.practicum.playlistmaker.util.debounce
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistsFragment : Fragment() {

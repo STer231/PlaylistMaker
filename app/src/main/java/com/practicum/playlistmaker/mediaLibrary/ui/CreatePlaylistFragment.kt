@@ -27,8 +27,6 @@ class CreatePlaylistFragment : Fragment() {
     private val binding: FragmentCreatePlaylistBinding
         get() = _binding!!
 
-    private lateinit var confirmDialog: MaterialAlertDialogBuilder
-
     private val createPlaylistViewModel: CreatePlaylistViewModel by viewModel()
 
     private val pickPhoto = registerForActivityResult(
@@ -52,6 +50,10 @@ class CreatePlaylistFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnBack.setNavigationOnClickListener {
+            backNavigation()
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             backNavigation()
         }
 
@@ -81,18 +83,6 @@ class CreatePlaylistFragment : Fragment() {
                 ).show()
             }
         }
-
-        confirmDialog = MaterialAlertDialogBuilder(requireContext())
-            .setTitle(R.string.confirm_dialog_title)
-            .setMessage(R.string.confirm_dialog_message)
-            .setNegativeButton(R.string.complete) { _, _ ->
-                findNavController().navigateUp()
-            }
-            .setNeutralButton(R.string.cansel) { _, _ -> }
-
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            backNavigation()
-        }
     }
 
     override fun onDestroyView() {
@@ -107,7 +97,7 @@ class CreatePlaylistFragment : Fragment() {
 
     private fun backNavigation() {
         if (hasUnsavedData()) {
-            confirmDialog.show()
+            confirmExitDialog()
         } else {
             findNavController().navigateUp()
         }
@@ -132,5 +122,16 @@ class CreatePlaylistFragment : Fragment() {
                 )
                 .into(binding.ivCover)
         }
+    }
+
+    private fun confirmExitDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.confirm_dialog_title)
+            .setMessage(R.string.confirm_dialog_message)
+            .setNegativeButton(R.string.complete) { _, _ ->
+                findNavController().navigateUp()
+            }
+            .setNeutralButton(R.string.cansel) { _, _ -> }
+            .show()
     }
 }

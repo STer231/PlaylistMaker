@@ -59,5 +59,8 @@
         <argument
             android:name="playlistId"
             app:argType="long" />
+        <action
+            android:id="@+id/action_playlistDetailsFragment_to_audioPlayerFragment"
+            app:destination="@id/audioPlayerFragment" />
     </fragment>
 </navigation>

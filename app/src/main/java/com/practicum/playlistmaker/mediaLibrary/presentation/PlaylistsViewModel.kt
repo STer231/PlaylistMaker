@@ -4,13 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.practicum.playlistmaker.mediaLibrary.domain.repository.CreatePlaylistInteractor
+import com.practicum.playlistmaker.mediaLibrary.domain.repository.PlaylistInteractor
 import com.practicum.playlistmaker.util.ErrorMessageProvider
 import kotlinx.coroutines.launch
 
 class PlaylistsViewModel(
     private val errorMessageProvider: ErrorMessageProvider,
-    private val createPlaylistInteractor: CreatePlaylistInteractor
+    private val playlistInteractor: PlaylistInteractor
 ) : ViewModel() {
 
     private val playlistsState = MutableLiveData<PlaylistsState>()
@@ -18,7 +18,7 @@ class PlaylistsViewModel(
 
     init {
         viewModelScope.launch {
-            createPlaylistInteractor.getPlaylists()
+            playlistInteractor.getPlaylists()
                 .collect { list ->
                     if (list.isEmpty()) {
                         playlistsState.postValue(PlaylistsState.Error(errorMessageProvider.emptyPlaylists()))

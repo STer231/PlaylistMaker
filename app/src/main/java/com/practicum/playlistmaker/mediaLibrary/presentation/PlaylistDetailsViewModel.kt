@@ -4,13 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.practicum.playlistmaker.mediaLibrary.domain.repository.CreatePlaylistInteractor
+import com.practicum.playlistmaker.mediaLibrary.domain.repository.PlaylistInteractor
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class PlaylistDetailsViewModel(
-    private val createPlaylistInteractor: CreatePlaylistInteractor
+    private val playlistInteractor: PlaylistInteractor
 ) : ViewModel() {
 
     private val _playlistDetailsState = MutableLiveData<PlaylistDetailsState>()
@@ -18,7 +18,7 @@ class PlaylistDetailsViewModel(
 
     fun loadPlaylist(playlistId: Long) {
         viewModelScope.launch {
-            createPlaylistInteractor.getPlaylistById(playlistId)
+            playlistInteractor.getPlaylistById(playlistId)
                 .collectLatest { playlist ->
                     if (playlist == null) {
                         _playlistDetailsState.postValue(
@@ -32,7 +32,7 @@ class PlaylistDetailsViewModel(
                         val tracks = if (playlist.trackIds.isEmpty()) {
                             emptyList()
                         } else {
-                            createPlaylistInteractor.getTracksByIds(playlist.trackIds).first()
+                            playlistInteractor.getTracksByIds(playlist.trackIds).first()
                         }
 
                         val durationMillsSum = tracks.sumOf { it.trackTime.toLong() }
@@ -48,6 +48,13 @@ class PlaylistDetailsViewModel(
                 }
         }
         }
+
+    fun removeTrack(trackId: Int) {
+        val playlist = _playlistDetailsState.value?.playlist ?: return
+        viewModelScope.launch {
+            playlistInteractor.deleteTrackFromPlaylist(trackId, playlist)
+        }
+    }
 
         fun formatMinutesFromMillis(millis: Long): String {
             val totalMinutes = millis / 60000

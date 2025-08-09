@@ -8,25 +8,26 @@ import com.practicum.playlistmaker.mediaLibrary.converters.PlaylistDbConvertor
 import com.practicum.playlistmaker.mediaLibrary.converters.PlaylistTrackDbConvertor
 import com.practicum.playlistmaker.mediaLibrary.data.db.PlaylistDao
 import com.practicum.playlistmaker.mediaLibrary.domain.model.Playlist
-import com.practicum.playlistmaker.mediaLibrary.domain.repository.CreatePlaylistRepository
+import com.practicum.playlistmaker.mediaLibrary.domain.repository.PlaylistRepository
 import com.practicum.playlistmaker.player.data.db.PlaylistTrackDao
 import com.practicum.playlistmaker.search.domain.entity.Track
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 
-class CreatePlaylistRepositoryImpl(
+class PlaylistRepositoryImpl(
     private val playlistDao: PlaylistDao,
     private val playlistDbConvertor: PlaylistDbConvertor,
     private val playlistTrackDao: PlaylistTrackDao,
     private val playlistTrackDbConvertor: PlaylistTrackDbConvertor,
     private val context: Context
-) : CreatePlaylistRepository {
+) : PlaylistRepository {
     override suspend fun createPlaylist(playlist: Playlist) {
         return playlistDao.insertPlaylist(playlistDbConvertor.mapToEntity(playlist))
     }
@@ -84,6 +85,25 @@ class CreatePlaylistRepositoryImpl(
             entityList.filter { playlistTrackEntity ->
                 id.contains(playlistTrackEntity.trackId.toLong())
             }.map { playlistTrackEntity -> playlistTrackDbConvertor.mapToDomain(playlistTrackEntity) }
+        }
+    }
+
+    override suspend fun deleteTrackFromPlaylist(trackId: Int, playlist: Playlist) {
+        withContext(Dispatchers.IO) {
+            val newIds = playlist.trackIds.filter { it != trackId.toLong() }
+            val newSize = newIds.size
+            val updatedPlaylist = playlist.copy(trackIds = newIds, playlistSize = newSize)
+            playlistDao.insertPlaylist(playlistDbConvertor.mapToEntity(updatedPlaylist))
+
+            val allPlaylistEntities = playlistDao.getPlaylists().first()
+            val allPlaylists = allPlaylistEntities.map { playlistDbConvertor.mapToDomain(it) }
+
+            val somePlaylistHasTrack = allPlaylists.any{ playlist ->
+                playlist.trackIds.contains(trackId.toLong())
+            }
+            if (!somePlaylistHasTrack) {
+                playlistTrackDao.deleteTrackById(trackId)
+            }
         }
     }
 }

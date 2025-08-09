@@ -5,7 +5,7 @@ import com.practicum.playlistmaker.mediaLibrary.domain.model.Playlist
 import com.practicum.playlistmaker.search.domain.entity.Track
 import kotlinx.coroutines.flow.Flow
 
-interface CreatePlaylistRepository {
+interface PlaylistInteractor {
 
     suspend fun createPlaylist(playlist: Playlist)
 
@@ -19,4 +19,5 @@ interface CreatePlaylistRepository {
 
     fun getTracksByIds(id: List<Long>): Flow<List<Track>>
 
+    suspend fun deleteTrackFromPlaylist(trackId: Int, playlist: Playlist)
 }

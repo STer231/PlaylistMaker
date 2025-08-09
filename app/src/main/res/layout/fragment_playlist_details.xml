@@ -15,12 +15,12 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/btn_back"
             style="@style/SubsequentToolbarsStyle"
+            android:elevation="0.1dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:elevation="0.1dp"
             app:navigationIcon="@drawable/back" />
 
-        <ImageView android:src="@drawable/placeholder_cover"
+        <ImageView
             android:id="@+id/iv_cover"
             style="@style/ImageViewCoverStyle"
             android:layout_marginTop="0dp"
@@ -38,7 +38,7 @@
             android:orientation="vertical"
             app:layout_constraintGuide_begin="@dimen/margin_16" />
 
-        <TextView android:text="Best Songs 2021"
+        <TextView
             android:id="@+id/tv_playlist_name"
             style="@style/PlaylistDetailsTitleStyle"
             android:layout_marginTop="@dimen/margin_24"
@@ -48,7 +48,7 @@
             app:layout_constraintTop_toBottomOf="@id/iv_cover"
             tools:text="Best Songs 2021" />
 
-        <TextView android:text="Длинное длинное описание плейлиста"
+        <TextView
             android:id="@+id/tv_playlist_description"
             style="@style/PlaylistDetailsTextStyle."
             android:layout_marginTop="@dimen/margin_8"
@@ -56,7 +56,7 @@
             app:layout_constraintTop_toBottomOf="@id/tv_playlist_name"
             tools:text="Длинное длинное описание плейлиста" />
 
-        <TextView android:text="300 минут"
+        <TextView
             android:id="@+id/tv_playlist_duration"
             style="@style/PlaylistDetailsTextStyle."
             android:layout_marginTop="@dimen/margin_8"
@@ -110,10 +110,9 @@
         android:background="@drawable/bottom_sheet_background"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        app:behavior_peekHeight="200dp"
         app:behavior_hideable="false"
+        app:behavior_peekHeight="200dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-
         tools:visibility="visible">
 
         <View
@@ -123,20 +122,20 @@
             android:background="@drawable/rounder" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/playlists_recyclerView"
+            android:id="@+id/playlist_details_recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/margin_24"
-            android:visibility="gone" />
+            android:layout_marginTop="@dimen/margin_16"
+            tools:visibility="gone" />
 
         <TextView
             android:id="@+id/playlistsPlaceholderMessage"
             style="@style/ErrorPlaceholderTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            tools:text="@string/empty_playlists" />
+            android:layout_marginTop="@dimen/margin_44"
+            tools:text="@string/nothing_found"
+            tools:visibility="visible" />
 
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

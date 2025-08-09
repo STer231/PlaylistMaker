@@ -43,4 +43,7 @@
     <string name="cansel">Отмена</string>
     <string name="confirm_dialog_title">Завершить создание плейлиста?</string>
     <string name="confirm_dialog_message">Все несохраненные данные будут потеряны</string>
+    <string name="delete_dialog_message">Хотите удалить трек?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
 </resources>

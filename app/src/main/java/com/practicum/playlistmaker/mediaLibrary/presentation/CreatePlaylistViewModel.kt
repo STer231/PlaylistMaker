@@ -6,11 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.mediaLibrary.domain.model.Playlist
-import com.practicum.playlistmaker.mediaLibrary.domain.repository.CreatePlaylistInteractor
+import com.practicum.playlistmaker.mediaLibrary.domain.repository.PlaylistInteractor
 import kotlinx.coroutines.launch
 
 class CreatePlaylistViewModel(
-    private val createPlaylistInteractor: CreatePlaylistInteractor
+    private val playlistInteractor: PlaylistInteractor
 ): ViewModel() {
 
     private var selectedCoverUri: Uri? = null
@@ -50,9 +50,9 @@ class CreatePlaylistViewModel(
 
         viewModelScope.launch {
             val savePath = selectedCoverUri?.let {
-                createPlaylistInteractor.saveImageToPrivateStorage(it)
+                playlistInteractor.saveImageToPrivateStorage(it)
             }
-            createPlaylistInteractor.createPlaylist(
+            playlistInteractor.createPlaylist(
                 Playlist(
                     name = state.name,
                     description = state.description,
