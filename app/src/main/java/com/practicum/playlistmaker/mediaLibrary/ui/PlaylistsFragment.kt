@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.practicum.playlistmaker.R
@@ -13,6 +14,10 @@ import com.practicum.playlistmaker.databinding.FragmentPlaylistsBinding
 import com.practicum.playlistmaker.mediaLibrary.domain.model.Playlist
 import com.practicum.playlistmaker.mediaLibrary.presentation.PlaylistsState
 import com.practicum.playlistmaker.mediaLibrary.presentation.PlaylistsViewModel
+import com.practicum.playlistmaker.search.domain.entity.Track
+import com.practicum.playlistmaker.search.ui.SearchFragment
+import com.practicum.playlistmaker.search.ui.SearchFragment.Companion
+import com.practicum.playlistmaker.util.debounce
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistsFragment : Fragment() {
@@ -27,7 +32,7 @@ class PlaylistsFragment : Fragment() {
     private val binding: FragmentPlaylistsBinding
         get() = _binding!!
 
-    private var adapter = PlaylistAdapter()
+    private lateinit var adapter: PlaylistAdapter
 
     private val playlistsViewModel: PlaylistsViewModel by viewModel()
 
@@ -51,6 +56,11 @@ class PlaylistsFragment : Fragment() {
                 R.id.action_mediaLibraryFragment_to_createPlaylistFragment
             )
         }
+
+        adapter = PlaylistAdapter(PlaylistAdapter.PlaylistClickListener { playlistDetails ->
+            val action = MediaLibraryFragmentDirections.actionMediaLibraryFragmentToPlaylistDetailsFragment(playlistDetails.id)
+            findNavController().navigate(action)
+        })
 
         binding.playlistsRecyclerView.layoutManager = GridLayoutManager(requireContext(),2,)
         binding.playlistsRecyclerView.adapter = adapter

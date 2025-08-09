@@ -8,7 +8,7 @@ import com.practicum.playlistmaker.mediaLibrary.data.db.PlaylistDao
 import com.practicum.playlistmaker.mediaLibrary.data.db.PlaylistEntity
 
 @Database(
-    version = 1,
+    version = 4,
     entities = [
         FavouriteTrackEntity::class,
         PlaylistEntity::class,
@@ -21,12 +21,27 @@ abstract class AppDatabase : RoomDatabase() {
     companion object {
         val MIGRATION_1_2 = object : Migration(1, 2) {
             override fun migrate(db: SupportSQLiteDatabase) {
-                db.execSQL(
-                    """
-      ALTER TABLE favourite_tracks 
-      ADD COLUMN lastAdded INTEGER NOT NULL DEFAULT 0
-    """.trimIndent()
-                )
+                var hasColumn = false
+                val cursor = db.query("PRAGMA table_info('favourite_tracks')")
+                cursor.use { c ->
+                    val nameIndex = c.getColumnIndex("name")
+                    while (c.moveToNext()) {
+                        val columnName = c.getString(nameIndex)
+                        if (columnName == "lastAdded") {
+                            hasColumn = true
+                            break
+                        }
+                    }
+                }
+
+                if (!hasColumn) {
+                    db.execSQL(
+                        """
+                ALTER TABLE favourite_tracks 
+                ADD COLUMN lastAdded INTEGER NOT NULL DEFAULT 0
+                """.trimIndent()
+                    )
+                }
             }
         }
 
@@ -38,9 +53,9 @@ abstract class AppDatabase : RoomDatabase() {
                     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                     name TEXT NOT NULL,
                     description TEXT,
-                    coverPath TEXT,
+                    pathImageFile TEXT,
                     trackIdsJson TEXT NOT NULL,
-                    trackCount INTEGER NOT NULL DEFAULT 0
+                    playlistSize INTEGER NOT NULL DEFAULT 0
                     )
                     """.trimIndent()
                 )

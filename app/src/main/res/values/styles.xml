@@ -198,4 +198,14 @@
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="fontWeight">500</item>
     </style>
+    <style name="PlaylistDetailsTitleStyle" parent="TracksTextStyle">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/text_24</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontWeight">700</item>
+    </style>
+    <style name="PlaylistDetailsTextStyle." parent="TracksTextStyle">
+    <item name="android:textColor">@color/black</item>
+    <item name="android:textSize">@dimen/text_18</item>
+    </style>
 </resources>

@@ -14,4 +14,8 @@ interface CreatePlaylistInteractor {
     suspend fun addTrackToPlaylist(track: Track, playlist: Playlist)
 
     suspend fun saveImageToPrivateStorage(uri: Uri): String?
+
+    fun getPlaylistById(id: Long): Flow<Playlist?>
+
+    fun getTracksByIds(id: List<Long>): Flow<List<Track>>
 }

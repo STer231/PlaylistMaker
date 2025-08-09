@@ -2,6 +2,7 @@ package com.practicum.playlistmaker.di
 
 import com.practicum.playlistmaker.mediaLibrary.presentation.CreatePlaylistViewModel
 import com.practicum.playlistmaker.mediaLibrary.presentation.FavouritesViewModel
+import com.practicum.playlistmaker.mediaLibrary.presentation.PlaylistDetailsViewModel
 import com.practicum.playlistmaker.mediaLibrary.presentation.PlaylistsViewModel
 import com.practicum.playlistmaker.player.presentation.AudioPlayerViewModel
 import com.practicum.playlistmaker.search.presentation.SearchViewModel
@@ -39,4 +40,10 @@ val viewModelModule = module {
     viewModel {
         CreatePlaylistViewModel(get())
     }
+
+    // зависимости для экрана плейлист
+    viewModel {
+        PlaylistDetailsViewModel(get())
+    }
+
 }

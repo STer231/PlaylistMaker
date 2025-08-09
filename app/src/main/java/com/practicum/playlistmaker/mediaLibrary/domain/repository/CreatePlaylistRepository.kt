@@ -15,4 +15,8 @@ interface CreatePlaylistRepository {
 
     suspend fun saveImageToPrivateStorage(uri: Uri): String?
 
+    fun getPlaylistById(id: Long): Flow<Playlist?>
+
+    fun getTracksByIds(id: List<Long>): Flow<List<Track>>
+
 }

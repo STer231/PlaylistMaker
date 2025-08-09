@@ -25,4 +25,12 @@ class CreatePlaylistInteractorImpl(
     override suspend fun saveImageToPrivateStorage(uri: Uri): String? {
         return createPlaylistRepository.saveImageToPrivateStorage(uri)
     }
+
+    override fun getPlaylistById(id: Long): Flow<Playlist?> {
+        return createPlaylistRepository.getPlaylistById(id)
+    }
+
+    override fun getTracksByIds(id: List<Long>): Flow<List<Track>> {
+        return createPlaylistRepository.getTracksByIds(id)
+    }
 }

@@ -2,6 +2,7 @@ package com.practicum.playlistmaker.mediaLibrary.converters
 
 import com.practicum.playlistmaker.player.data.db.PlaylistTrackEntity
 import com.practicum.playlistmaker.search.domain.entity.Track
+import java.util.Date
 
 class PlaylistTrackDbConvertor {
 
@@ -17,6 +18,22 @@ class PlaylistTrackDbConvertor {
             country = track.country,
             trackTime = track.trackTime,
             previewUrl = track.previewUrl
+        )
+    }
+
+    fun mapToDomain(trackEntity: PlaylistTrackEntity, isFavourite: Boolean = false): Track {
+        return Track(
+            trackId = trackEntity.trackId,
+            trackName = trackEntity.trackName,
+            artistName = trackEntity.artistName,
+            trackTime = trackEntity.trackTime,
+            artworkUrl100 = trackEntity.artworkUrl,
+            collectionName = trackEntity.collectionName ?: "",
+            releaseDate = Date(trackEntity.releaseDate),
+            primaryGenreName = trackEntity.primaryGenreName,
+            country = trackEntity.country,
+            previewUrl = trackEntity.previewUrl,
+            isFavourite = isFavourite
         )
     }
 }

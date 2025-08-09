@@ -72,4 +72,18 @@ class CreatePlaylistRepositoryImpl(
             null
         }
     }
+
+    override fun getPlaylistById(id: Long): Flow<Playlist?> {
+        return playlistDao.getPlaylistById(id).distinctUntilChanged().map { entity ->
+            entity?.let { entityPlaylist -> playlistDbConvertor.mapToDomain(entityPlaylist) }
+        }
+    }
+
+    override fun getTracksByIds(id: List<Long>): Flow<List<Track>> {
+        return playlistTrackDao.getAllTracks().distinctUntilChanged().map { entityList ->
+            entityList.filter { playlistTrackEntity ->
+                id.contains(playlistTrackEntity.trackId.toLong())
+            }.map { playlistTrackEntity -> playlistTrackDbConvertor.mapToDomain(playlistTrackEntity) }
+        }
+    }
 }

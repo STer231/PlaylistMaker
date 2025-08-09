@@ -5,8 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker.databinding.ItemPlaylistBinding
 import com.practicum.playlistmaker.mediaLibrary.domain.model.Playlist
+import com.practicum.playlistmaker.player.ui.PlaylistBottomSheetAdapter.PlaylistClickListener
 
-class PlaylistAdapter(): RecyclerView.Adapter<PlaylistViewHolder>() {
+class PlaylistAdapter(
+    private val clickListener: PlaylistClickListener
+): RecyclerView.Adapter<PlaylistViewHolder>() {
 
     private val playlists = mutableListOf<Playlist>()
 
@@ -20,12 +23,20 @@ class PlaylistAdapter(): RecyclerView.Adapter<PlaylistViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: PlaylistViewHolder, position: Int) {
-        holder.bind(playlists[position])
+        val playlist = playlists[position]
+        holder.bind(playlist)
+        holder.itemView.setOnClickListener {
+            clickListener.onPlaylistClick(playlist)
+        }
     }
 
     fun updateData(newPlaylist: List<Playlist>) {
         playlists.clear()
         playlists.addAll(newPlaylist)
         notifyDataSetChanged()
+    }
+
+    fun interface PlaylistClickListener {
+        fun onPlaylistClick(playlist: Playlist)
     }
 }
