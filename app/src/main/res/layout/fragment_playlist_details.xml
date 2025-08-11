@@ -104,7 +104,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
-        android:id="@+id/bottom_sheet_container"
+        android:id="@+id/bottom_sheet_container_tracks"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/bottom_sheet_background"
@@ -113,7 +113,7 @@
         app:behavior_hideable="false"
         app:behavior_peekHeight="200dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-        tools:visibility="visible">
+        tools:visibility="gone">
 
         <View
             android:layout_width="50dp"
@@ -138,4 +138,83 @@
             tools:visibility="visible" />
 
     </LinearLayout>
+
+    <View
+        android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/bottom_sheet_container_more"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bottom_sheet_background"
+        android:orientation="vertical"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="383dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        tools:visibility="visible">
+
+        <View
+            android:layout_width="50dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounder" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_12"
+            android:layout_marginStart="@dimen/margin_5"
+            android:padding="@dimen/padding_8">
+
+            <ImageView
+                android:id="@+id/iv_playlist_cover_bottom_sheet"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:contentDescription="@string/track_cover"
+                tools:src="@drawable/placeholder_cover" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/padding_8"
+                android:layout_marginEnd="@dimen/margin_44"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_playlist_name_bottom_sheet"
+                    style="@style/PlaylistTextStyle"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    tools:text="Best Songs 2021" />
+
+                <TextView
+                    android:id="@+id/tv_playlist_size_bottom_sheet"
+                    style="@style/TracksTextStyle"
+                    tools:text="152 треков" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/bt_share_bottom_sheet"
+            style="@style/SettingsListTextStyle"
+            android:layout_marginTop="@dimen/margin_8"
+            android:text="@string/share_playlist" />
+
+        <TextView
+            android:id="@+id/bt_edit_information_bottom_sheet"
+            style="@style/SettingsListTextStyle"
+            android:text="@string/edit_information" />
+
+        <TextView
+            android:id="@+id/bt_delete_playlist_bottom_sheet"
+            style="@style/SettingsListTextStyle"
+            android:text="@string/delete_playlist" />
+    </LinearLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

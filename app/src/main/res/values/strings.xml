@@ -43,7 +43,12 @@
     <string name="cansel">Отмена</string>
     <string name="confirm_dialog_title">Завершить создание плейлиста?</string>
     <string name="confirm_dialog_message">Все несохраненные данные будут потеряны</string>
-    <string name="delete_dialog_message">Хотите удалить трек?</string>
+    <string name="delete_track_dialog_message">Хотите удалить трек?</string>
+    <string name="delete_playlist_dialog_message">Хотите удалить плейлист</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
+    <string name="share_playlist">Поделиться</string>
+    <string name="edit_information">Редактировать информацию</string>
+    <string name="delete_playlist">Удалить плейлист</string>
+    <string name="no_tracks_to_share">В этом плейлисте нет списка треков, которым можно поделиться</string>
 </resources>

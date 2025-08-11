@@ -106,4 +106,23 @@ class PlaylistRepositoryImpl(
             }
         }
     }
+
+    override suspend fun deletePlaylist(playlistId: Long) {
+        withContext(Dispatchers.IO) {
+            val playlistEntity = playlistDao.getPlaylistById(playlistId).first()
+            val trackIds = playlistEntity?.let { playlistDbConvertor.mapToDomain(it).trackIds } ?: emptyList()
+
+            playlistDao.deletePlaylist(playlistId)
+
+            val allPlaylistEntities = playlistDao.getPlaylists().first()
+            val allPlaylist = allPlaylistEntities.map { playlistDbConvertor.mapToDomain(it) }
+
+            trackIds.forEach { trackId ->
+                val containsAnywhereElse = allPlaylist.any { playlist -> playlist.trackIds.contains(trackId) }
+                if (!containsAnywhereElse) {
+                    playlistTrackDao.deleteTrackById(trackId.toInt())
+                }
+            }
+        }
+    }
 }
