@@ -103,7 +103,7 @@ open class CreatePlaylistFragment : Fragment() {
         }
     }
 
-    private fun renderState(state: CreatePlaylistState) {
+    protected open fun renderState(state: CreatePlaylistState) {
         binding.btnCreatePlaylist.isEnabled = state.canCreate
 
         if (binding.edTitle.text.toString() != state.name) {
@@ -114,12 +114,14 @@ open class CreatePlaylistFragment : Fragment() {
         }
 
         if (state.coverPath != null) {
+
             Glide.with(this)
                 .load(state.coverPath)
                 .transform(
                     CenterCrop(),
                     RoundedCorners(resources.getDimensionPixelSize(R.dimen.cover_radius_8))
                 )
+                .placeholder(R.drawable.placeholder_cover)
                 .into(binding.ivCover)
         }
     }

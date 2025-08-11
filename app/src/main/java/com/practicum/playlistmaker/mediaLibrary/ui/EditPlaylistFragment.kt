@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.mediaLibrary.presentation.CreatePlaylistState
 import com.practicum.playlistmaker.mediaLibrary.presentation.EditPlaylistViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -31,6 +32,15 @@ class EditPlaylistFragment: CreatePlaylistFragment() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
+        }
+    }
+
+    override fun renderState(state: CreatePlaylistState) {
+        super.renderState(state)
+
+        val coverPath = state.coverPath
+        if (coverPath.isNullOrBlank()) {
+            binding.ivCover.setImageResource(R.drawable.placeholder_cover)
         }
     }
 

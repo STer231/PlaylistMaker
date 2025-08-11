@@ -42,7 +42,7 @@ class PlaylistRepositoryImpl(
         withContext(Dispatchers.IO) {
             playlistTrackDao.insertTrack(playlistTrackDbConvertor.mapToEntity(track))
 
-            val newIds = playlist.trackIds + track.trackId.toLong()
+            val newIds = listOf(track.trackId.toLong()) + playlist.trackIds
             val newSize = playlist.playlistSize + 1
 
             val updated = playlist.copy(trackIds = newIds, playlistSize = newSize)
@@ -82,9 +82,12 @@ class PlaylistRepositoryImpl(
 
     override fun getTracksByIds(id: List<Long>): Flow<List<Track>> {
         return playlistTrackDao.getAllTracks().distinctUntilChanged().map { entityList ->
-            entityList.filter { playlistTrackEntity ->
-                id.contains(playlistTrackEntity.trackId.toLong())
-            }.map { playlistTrackEntity -> playlistTrackDbConvertor.mapToDomain(playlistTrackEntity) }
+            val mapById = entityList.associateBy { it.trackId.toLong() }
+            id.mapNotNull { trackId ->
+                mapById[trackId]
+            }.map { playlistTrackEntity ->
+                playlistTrackDbConvertor.mapToDomain(playlistTrackEntity)
+            }
         }
     }
 

@@ -113,7 +113,7 @@
         app:behavior_hideable="false"
         app:behavior_peekHeight="200dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-        tools:visibility="gone">
+        tools:visibility="visible">
 
         <View
             android:layout_width="50dp"
@@ -155,7 +155,7 @@
         app:behavior_hideable="true"
         app:behavior_peekHeight="383dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-        tools:visibility="visible">
+        tools:visibility="gone">
 
         <View
             android:layout_width="50dp"
