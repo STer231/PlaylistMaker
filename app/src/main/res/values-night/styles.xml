@@ -167,6 +167,11 @@
         <item name="hintTextColor">@color/blue</item>
     </style>
     <style name="CreatePlaylistTextInputHint">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:maxLength">35</item>
+        <item name="maxLines">1</item>
+        <item name="android:inputType">text</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:fontWeight">400</item>
         <item name="android:textSize">@dimen/text_16</item>

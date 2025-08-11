@@ -138,6 +138,12 @@ class PlaylistDetailsFragment : Fragment() {
             showDeletePlaylistDialog()
         }
 
+        binding.btEditInformationBottomSheet.setOnClickListener {
+            val playlistId = viewModel.playlistDetailsState.value?.playlist?.id ?: return@setOnClickListener
+            val action = PlaylistDetailsFragmentDirections.actionPlaylistDetailsFragmentToEditPlaylistFragment(playlistId)
+            findNavController().navigate(action)
+        }
+
     }
 
     override fun onDestroyView() {

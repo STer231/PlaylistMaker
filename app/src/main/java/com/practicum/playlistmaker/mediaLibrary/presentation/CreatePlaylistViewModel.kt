@@ -9,13 +9,13 @@ import com.practicum.playlistmaker.mediaLibrary.domain.model.Playlist
 import com.practicum.playlistmaker.mediaLibrary.domain.repository.PlaylistInteractor
 import kotlinx.coroutines.launch
 
-class CreatePlaylistViewModel(
+open class CreatePlaylistViewModel(
     private val playlistInteractor: PlaylistInteractor
 ): ViewModel() {
 
-    private var selectedCoverUri: Uri? = null
+    protected var selectedCoverUri: Uri? = null
 
-    private val _createPlaylistState = MutableLiveData<CreatePlaylistState>()
+    protected val _createPlaylistState = MutableLiveData<CreatePlaylistState>()
     val createPlaylistState: LiveData<CreatePlaylistState> = _createPlaylistState
 
     fun onNameChange(name: String) {
@@ -44,7 +44,7 @@ class CreatePlaylistViewModel(
         }
     }
 
-    fun createPlaylist(onCompleted: () -> Unit) {
+    open fun createPlaylist(onCompleted: () -> Unit) {
 
         val state = _createPlaylistState.value ?: return
 
@@ -63,7 +63,7 @@ class CreatePlaylistViewModel(
         }
     }
 
-    private fun updateState(block: (CreatePlaylistState) -> CreatePlaylistState) {
+    protected fun updateState(block: (CreatePlaylistState) -> CreatePlaylistState) {
         val current = _createPlaylistState.value ?: CreatePlaylistState()
         _createPlaylistState.value = block(current)
     }

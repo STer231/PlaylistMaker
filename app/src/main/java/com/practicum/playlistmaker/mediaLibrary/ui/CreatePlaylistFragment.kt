@@ -21,13 +21,13 @@ import com.practicum.playlistmaker.mediaLibrary.presentation.CreatePlaylistState
 import com.practicum.playlistmaker.mediaLibrary.presentation.CreatePlaylistViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class CreatePlaylistFragment : Fragment() {
+open class CreatePlaylistFragment : Fragment() {
 
-    private var _binding: FragmentCreatePlaylistBinding? = null
-    private val binding: FragmentCreatePlaylistBinding
+    protected var _binding: FragmentCreatePlaylistBinding? = null
+    protected val binding: FragmentCreatePlaylistBinding
         get() = _binding!!
 
-    private val createPlaylistViewModel: CreatePlaylistViewModel by viewModel()
+    protected open val createPlaylistViewModel: CreatePlaylistViewModel by viewModel()
 
     private val pickPhoto = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()
@@ -90,7 +90,7 @@ class CreatePlaylistFragment : Fragment() {
         _binding = null
     }
 
-    private fun hasUnsavedData(): Boolean {
+    protected open fun hasUnsavedData(): Boolean {
         val state = createPlaylistViewModel.createPlaylistState.value ?: return false
         return state.name.isNotBlank() || state.description.isNotBlank() || state.coverPath != null
     }
