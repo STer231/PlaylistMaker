@@ -18,6 +18,9 @@ open class CreatePlaylistViewModel(
     protected val _createPlaylistState = MutableLiveData<CreatePlaylistState>()
     val createPlaylistState: LiveData<CreatePlaylistState> = _createPlaylistState
 
+    private val _playlistCreatedEvent = MutableLiveData<CreatePlaylistEvent<Unit>>()
+    val playlistCreatedEvent: LiveData<CreatePlaylistEvent<Unit>> = _playlistCreatedEvent
+
     fun onNameChange(name: String) {
         updateState { oldState ->
             oldState.copy(
@@ -44,7 +47,7 @@ open class CreatePlaylistViewModel(
         }
     }
 
-    open fun createPlaylist(onCompleted: () -> Unit) {
+    open fun createPlaylist() {
 
         val state = _createPlaylistState.value ?: return
 
@@ -59,12 +62,16 @@ open class CreatePlaylistViewModel(
                     pathImageFile = savePath
                 )
             )
-            onCompleted()
+            notifyPlaylistCreated()
         }
     }
 
     protected fun updateState(block: (CreatePlaylistState) -> CreatePlaylistState) {
         val current = _createPlaylistState.value ?: CreatePlaylistState()
         _createPlaylistState.value = block(current)
+    }
+
+    protected fun notifyPlaylistCreated() {
+        _playlistCreatedEvent.value = CreatePlaylistEvent(Unit)
     }
 }

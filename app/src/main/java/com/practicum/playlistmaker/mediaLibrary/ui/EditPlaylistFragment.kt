@@ -23,15 +23,14 @@ class EditPlaylistFragment: CreatePlaylistFragment() {
         binding.btnBack.title = getString(R.string.edit)
         binding.btnCreatePlaylist.text = getString(R.string.save)
 
-        binding.btnCreatePlaylist.setOnClickListener {
-            createPlaylistViewModel.createPlaylist {
-                findNavController().navigateUp()
-                Toast.makeText(
-                    requireContext(),
-                    "Плейлист ${createPlaylistViewModel.createPlaylistState.value?.name} изменён",
-                    Toast.LENGTH_SHORT
-                ).show()
+        createPlaylistViewModel.playlistCreatedEvent.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let {
+                onPlaylistCreated()
             }
+        }
+
+        binding.btnCreatePlaylist.setOnClickListener {
+            createPlaylistViewModel.createPlaylist()
         }
     }
 
@@ -46,5 +45,14 @@ class EditPlaylistFragment: CreatePlaylistFragment() {
 
     override fun hasUnsavedData(): Boolean {
         return false
+    }
+
+    override fun onPlaylistCreated() {
+        findNavController().navigateUp()
+        Toast.makeText(
+            requireContext(),
+            "Плейлист ${createPlaylistViewModel.createPlaylistState.value?.name} изменён",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 }

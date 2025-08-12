@@ -65,6 +65,12 @@ open class CreatePlaylistFragment : Fragment() {
             renderState(state)
         }
 
+        createPlaylistViewModel.playlistCreatedEvent.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let {
+                onPlaylistCreated()
+            }
+        }
+
         binding.edTitle.doAfterTextChanged { name ->
             createPlaylistViewModel.onNameChange(name?.toString().orEmpty())
         }
@@ -74,14 +80,7 @@ open class CreatePlaylistFragment : Fragment() {
         }
 
         binding.btnCreatePlaylist.setOnClickListener {
-            createPlaylistViewModel.createPlaylist {
-                findNavController().navigateUp()
-                Toast.makeText(
-                    requireContext(),
-                    "Плейлист ${createPlaylistViewModel.createPlaylistState.value?.name} создан",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+            createPlaylistViewModel.createPlaylist()
         }
     }
 
@@ -135,5 +134,14 @@ open class CreatePlaylistFragment : Fragment() {
             }
             .setNeutralButton(R.string.cansel) { _, _ -> }
             .show()
+    }
+
+    protected open fun onPlaylistCreated() {
+        findNavController().navigateUp()
+        Toast.makeText(
+            requireContext(),
+            "Плейлист ${createPlaylistViewModel.createPlaylistState.value?.name} создан",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 }

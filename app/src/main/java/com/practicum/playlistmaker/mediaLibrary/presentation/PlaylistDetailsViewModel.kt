@@ -73,9 +73,9 @@ class PlaylistDetailsViewModel(
         }
     }
 
-    fun formatMinutesFromMillis(millis: Long): String {
+    fun formatMinutesFromMillis(millis: Long): Int {
         val totalMinutes = millis / 60000
-        return "$totalMinutes минут"
+        return totalMinutes.toInt()
     }
 
     fun onShareCliched() {

@@ -1,18 +1,21 @@
 package com.practicum.playlistmaker.mediaLibrary.domain.usecase
 
 import android.net.Uri
+import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.mediaLibrary.domain.model.Playlist
 import com.practicum.playlistmaker.mediaLibrary.domain.repository.PlaylistInteractor
 import com.practicum.playlistmaker.mediaLibrary.domain.repository.PlaylistRepository
 import com.practicum.playlistmaker.search.domain.entity.Track
 import com.practicum.playlistmaker.sharing.domain.ExternalNavigator
+import com.practicum.playlistmaker.util.PluralsProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import java.util.Locale
 
 class PlaylistInteractorImpl(
     private val playlistRepository: PlaylistRepository,
-    private val externalNavigator: ExternalNavigator
+    private val externalNavigator: ExternalNavigator,
+    private val pluralsProvider: PluralsProvider
 ) : PlaylistInteractor {
     override suspend fun createPlaylist(playlist: Playlist) {
         return playlistRepository.createPlaylist(playlist)
@@ -75,7 +78,9 @@ class PlaylistInteractorImpl(
         playlist.description?.takeIf { it.isNotBlank() }?.let {
             builder.append(it).append("\n")
         }
-        builder.append("${tracks.size} треков").append("\n")
+        val countTracks = tracks.size
+        val countTracksText = pluralsProvider.getQuantityString(R.plurals.tracks_count, countTracks, countTracks)
+        builder.append(countTracksText).append("\n")
         tracks.forEachIndexed { index, track ->
             val duration = formatDuration(track.trackTime)
             builder.append("${index + 1}. ${track.artistName} - ${track.trackName} ($duration)").append("\n")

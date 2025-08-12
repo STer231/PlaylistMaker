@@ -166,6 +166,8 @@ class PlaylistDetailsFragment : Fragment() {
 
     private fun renderPlaylistDetails(state: PlaylistDetailsState) {
         val playlist = state.playlist ?: return
+        val countTracks = playlist.playlistSize
+        val countMinuets = viewModel.formatMinutesFromMillis(state.durationTrackSum)
 
         binding.tvPlaylistName.text = playlist.name
         if (!playlist.description.isNullOrBlank()) {
@@ -174,8 +176,8 @@ class PlaylistDetailsFragment : Fragment() {
         } else {
             binding.tvPlaylistDescription.visibility = View.GONE
         }
-        binding.tvPlaylistDuration.text = viewModel.formatMinutesFromMillis(state.durationTrackSum)
-        binding.tvPlaylistSize.text = "${playlist.playlistSize} треков"
+        binding.tvPlaylistDuration.text = resources.getQuantityString(R.plurals.minutes_count, countMinuets, countMinuets)
+        binding.tvPlaylistSize.text = resources.getQuantityString(R.plurals.tracks_count, countTracks, countTracks)
 
         Glide.with(this)
             .load(playlist.pathImageFile)
@@ -184,7 +186,7 @@ class PlaylistDetailsFragment : Fragment() {
             .into(binding.ivCover)
 
         binding.tvPlaylistNameBottomSheet.text = playlist.name
-        binding.tvPlaylistSizeBottomSheet.text = "${playlist.playlistSize} треков"
+        binding.tvPlaylistSizeBottomSheet.text = resources.getQuantityString(R.plurals.tracks_count, countTracks, countTracks)
 
         Glide.with(this)
             .load(playlist.pathImageFile)

@@ -92,7 +92,6 @@ class PlaylistRepositoryImpl(
     }
 
     override suspend fun deleteTrackFromPlaylist(trackId: Int, playlist: Playlist) {
-        withContext(Dispatchers.IO) {
             val newIds = playlist.trackIds.filter { it != trackId.toLong() }
             val newSize = newIds.size
             val updatedPlaylist = playlist.copy(trackIds = newIds, playlistSize = newSize)
@@ -101,13 +100,12 @@ class PlaylistRepositoryImpl(
             val allPlaylistEntities = playlistDao.getPlaylists().first()
             val allPlaylists = allPlaylistEntities.map { playlistDbConvertor.mapToDomain(it) }
 
-            val somePlaylistHasTrack = allPlaylists.any{ playlist ->
-                playlist.trackIds.contains(trackId.toLong())
+            val somePlaylistHasTrack = allPlaylists.any{ currentPlaylist ->
+                currentPlaylist.trackIds.contains(trackId.toLong())
             }
             if (!somePlaylistHasTrack) {
                 playlistTrackDao.deleteTrackById(trackId)
             }
-        }
     }
 
     override suspend fun deletePlaylist(playlistId: Long) {

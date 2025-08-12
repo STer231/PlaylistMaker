@@ -30,7 +30,7 @@ class EditPlaylistViewModel(
         }
     }
 
-    override fun createPlaylist(onCompleted: () -> Unit) {
+    override fun createPlaylist() {
         val state = _createPlaylistState.value ?: return
         val oldPlaylist = currentPlaylist ?: return
 
@@ -49,7 +49,7 @@ class EditPlaylistViewModel(
             )
 
             playlistInteractor.createPlaylist(newPlaylist)
-            onCompleted()
+            notifyPlaylistCreated()
         }
     }
 }
