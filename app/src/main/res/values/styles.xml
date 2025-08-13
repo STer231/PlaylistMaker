@@ -56,7 +56,7 @@
         <item name="android:paddingRight">@dimen/padding_12</item>
         <item name="android:paddingLeft">@dimen/margin_16</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:textColor">@color/black_total</item>
+        <item name="android:textColor">@color/black</item>
         <item name="android:textSize">@dimen/text_16</item>
         <item name="drawableTint">@color/gray</item>
         <item name="fontFamily">@font/ys_display_regular</item>
@@ -171,6 +171,11 @@
         <item name="hintTextColor">@color/blue</item>
     </style>
     <style name="CreatePlaylistTextInputHint">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:maxLength">35</item>
+        <item name="maxLines">1</item>
+        <item name="android:inputType">text</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:fontWeight">400</item>
         <item name="android:textSize">@dimen/text_16</item>
@@ -197,5 +202,15 @@
         <item name="android:textColor">@color/black</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="fontWeight">500</item>
+    </style>
+    <style name="PlaylistDetailsTitleStyle" parent="TracksTextStyle">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/text_24</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontWeight">700</item>
+    </style>
+    <style name="PlaylistDetailsTextStyle." parent="TracksTextStyle">
+    <item name="android:textColor">@color/black</item>
+    <item name="android:textSize">@dimen/text_18</item>
     </style>
 </resources>

@@ -27,7 +27,7 @@ class PlaylistsFragment : Fragment() {
     private val binding: FragmentPlaylistsBinding
         get() = _binding!!
 
-    private var adapter = PlaylistAdapter()
+    private lateinit var adapter: PlaylistAdapter
 
     private val playlistsViewModel: PlaylistsViewModel by viewModel()
 
@@ -51,6 +51,11 @@ class PlaylistsFragment : Fragment() {
                 R.id.action_mediaLibraryFragment_to_createPlaylistFragment
             )
         }
+
+        adapter = PlaylistAdapter(PlaylistAdapter.PlaylistClickListener { playlistDetails ->
+            val action = MediaLibraryFragmentDirections.actionMediaLibraryFragmentToPlaylistDetailsFragment(playlistDetails.id)
+            findNavController().navigate(action)
+        })
 
         binding.playlistsRecyclerView.layoutManager = GridLayoutManager(requireContext(),2,)
         binding.playlistsRecyclerView.adapter = adapter

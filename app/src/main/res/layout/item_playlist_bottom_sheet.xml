@@ -23,8 +23,6 @@
         <TextView
             android:id="@+id/tv_playlist_name"
             style="@style/PlaylistTextStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             tools:text="Best Songs 2021"
             android:maxLines="1"
             android:ellipsize="end"/>
@@ -32,8 +30,6 @@
         <TextView
             android:id="@+id/tv_playlist_size"
             style="@style/TracksTextStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             tools:text="152 треков"/>
     </LinearLayout>
 

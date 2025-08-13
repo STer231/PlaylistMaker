@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.mediaLibrary.domain.model.Playlist
-import com.practicum.playlistmaker.mediaLibrary.domain.repository.CreatePlaylistInteractor
+import com.practicum.playlistmaker.mediaLibrary.domain.repository.PlaylistInteractor
 import com.practicum.playlistmaker.mediaLibrary.presentation.PlaylistsState
 import com.practicum.playlistmaker.player.data.repository.FavouriteInteractor
 import com.practicum.playlistmaker.player.domain.model.PlayerModel
@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 class AudioPlayerViewModel(
     private val playerInteractor: AudioPlayerInteractor,
     private val favouriteInteractor: FavouriteInteractor,
-    private val createPlaylistInteractor: CreatePlaylistInteractor,
+    private val playlistInteractor: PlaylistInteractor,
     private val errorMessageProvider: ErrorMessageProvider,
 ) : ViewModel() {
 
@@ -53,7 +53,7 @@ class AudioPlayerViewModel(
         playerInteractor.onCompletion.observeForever { onCompletion() }
 
         viewModelScope.launch {
-            createPlaylistInteractor.getPlaylists()
+            playlistInteractor.getPlaylists()
                 .collect { list ->
                     if (list.isEmpty()) {
                         _playlistsState.postValue(PlaylistsState.Error(errorMessageProvider.emptyPlaylists()))
@@ -152,7 +152,7 @@ class AudioPlayerViewModel(
             _addTrackToPlaylistResult.postValue(AddTrackResultState.AlreadyHas(playlist.name))
         } else {
             viewModelScope.launch {
-                createPlaylistInteractor.addTrackToPlaylist(currentDomainTrack, playlist)
+                playlistInteractor.addTrackToPlaylist(currentDomainTrack, playlist)
                 _addTrackToPlaylistResult.postValue(AddTrackResultState.Added(playlist.name))
             }
         }

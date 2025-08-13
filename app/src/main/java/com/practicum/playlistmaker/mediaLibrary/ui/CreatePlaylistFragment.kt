@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker.mediaLibrary.ui
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,37 +17,23 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentCreatePlaylistBinding
-import com.practicum.playlistmaker.mediaLibrary.domain.repository.PlaylistCoverStorageRepository
+import com.practicum.playlistmaker.mediaLibrary.presentation.CreatePlaylistState
 import com.practicum.playlistmaker.mediaLibrary.presentation.CreatePlaylistViewModel
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class CreatePlaylistFragment : Fragment() {
+open class CreatePlaylistFragment : Fragment() {
 
-    private var _binding: FragmentCreatePlaylistBinding? = null
-    private val binding: FragmentCreatePlaylistBinding
+    protected var _binding: FragmentCreatePlaylistBinding? = null
+    protected val binding: FragmentCreatePlaylistBinding
         get() = _binding!!
 
-    private var selectedCoverUri: Uri? = null
-
-    private lateinit var confirmDialog: MaterialAlertDialogBuilder
-
-    private val createPlaylistViewModel: CreatePlaylistViewModel by viewModel()
-
-    private val playlistCoverStorage: PlaylistCoverStorageRepository by inject()
+    protected open val createPlaylistViewModel: CreatePlaylistViewModel by viewModel()
 
     private val pickPhoto = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()
     ) { uri ->
         uri?.let {
-            selectedCoverUri = it
-            Glide.with(this)
-                .load(it)
-                .transform(
-                    CenterCrop(),
-                    RoundedCorners(resources.getDimensionPixelSize(R.dimen.cover_radius_8))
-                )
-                .into(binding.ivCover)
+            createPlaylistViewModel.onCoverSelected(it)
         }
     }
 
@@ -68,14 +53,23 @@ class CreatePlaylistFragment : Fragment() {
             backNavigation()
         }
 
-        createPlaylistViewModel.canCreate.observe(viewLifecycleOwner) { enabled ->
-            binding.btnCreatePlaylist.isEnabled = enabled
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            backNavigation()
         }
 
         binding.ivCover.setOnClickListener {
             pickPhoto.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
 
+        createPlaylistViewModel.createPlaylistState.observe(viewLifecycleOwner) { state ->
+            renderState(state)
+        }
+
+        createPlaylistViewModel.playlistCreatedEvent.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let {
+                onPlaylistCreated()
+            }
+        }
 
         binding.edTitle.doAfterTextChanged { name ->
             createPlaylistViewModel.onNameChange(name?.toString().orEmpty())
@@ -86,27 +80,7 @@ class CreatePlaylistFragment : Fragment() {
         }
 
         binding.btnCreatePlaylist.setOnClickListener {
-            if (!savePlaylistCover()) return@setOnClickListener
-            createPlaylistViewModel.createPlaylist {
-                findNavController().navigateUp()
-                Toast.makeText(
-                    requireContext(),
-                    "Плейлист ${createPlaylistViewModel.playlistName.value} создан",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
-
-        confirmDialog = MaterialAlertDialogBuilder(requireContext())
-            .setTitle(R.string.confirm_dialog_title)
-            .setMessage(R.string.confirm_dialog_message)
-            .setNegativeButton(R.string.complete) { _, _ ->
-                findNavController().navigateUp()
-            }
-            .setNeutralButton(R.string.cansel) { _, _ -> }
-
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            backNavigation()
+            createPlaylistViewModel.createPlaylist()
         }
     }
 
@@ -115,35 +89,59 @@ class CreatePlaylistFragment : Fragment() {
         _binding = null
     }
 
-    private fun hasUnsavedData(): Boolean {
-        val isNameNotEmpty = binding.edTitle.text?.isNotBlank() == true
-        val isDescriptionNotEmpty = binding.edDescription.text?.isNotBlank() == true
-        val isCoverNotEmpty = selectedCoverUri != null
-        return isNameNotEmpty || isDescriptionNotEmpty || isCoverNotEmpty
+    protected open fun hasUnsavedData(): Boolean {
+        val state = createPlaylistViewModel.createPlaylistState.value ?: return false
+        return state.name.isNotBlank() || state.description.isNotBlank() || state.coverPath != null
     }
 
     private fun backNavigation() {
         if (hasUnsavedData()) {
-            confirmDialog.show()
+            confirmExitDialog()
         } else {
             findNavController().navigateUp()
         }
     }
 
-    private fun savePlaylistCover(): Boolean {
-        selectedCoverUri?.let { uri ->
-            val savePath = playlistCoverStorage.saveImageToPrivateStorage(uri)
-            return if (savePath != null) {
-                createPlaylistViewModel.onCoverSelected(savePath)
-                true
-            } else {
-                Toast.makeText(
-                    requireContext(),
-                    "Не удалось сохранить обложку", Toast.LENGTH_SHORT
-                ).show()
-                false
-            }
+    protected open fun renderState(state: CreatePlaylistState) {
+        binding.btnCreatePlaylist.isEnabled = state.canCreate
+
+        if (binding.edTitle.text.toString() != state.name) {
+            binding.edTitle.setText(state.name)
         }
-        return true
+        if (binding.edDescription.text.toString() != state.description) {
+            binding.edDescription.setText(state.description)
+        }
+
+        if (state.coverPath != null) {
+
+            Glide.with(this)
+                .load(state.coverPath)
+                .transform(
+                    CenterCrop(),
+                    RoundedCorners(resources.getDimensionPixelSize(R.dimen.cover_radius_8))
+                )
+                .placeholder(R.drawable.placeholder_cover)
+                .into(binding.ivCover)
+        }
+    }
+
+    private fun confirmExitDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.confirm_dialog_title)
+            .setMessage(R.string.confirm_dialog_message)
+            .setNegativeButton(R.string.complete) { _, _ ->
+                findNavController().navigateUp()
+            }
+            .setNeutralButton(R.string.cansel) { _, _ -> }
+            .show()
+    }
+
+    protected open fun onPlaylistCreated() {
+        findNavController().navigateUp()
+        Toast.makeText(
+            requireContext(),
+            "Плейлист ${createPlaylistViewModel.createPlaylistState.value?.name} создан",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 }

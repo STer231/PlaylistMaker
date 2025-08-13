@@ -1,57 +1,77 @@
 package com.practicum.playlistmaker.mediaLibrary.presentation
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.mediaLibrary.domain.model.Playlist
-import com.practicum.playlistmaker.mediaLibrary.domain.repository.CreatePlaylistInteractor
+import com.practicum.playlistmaker.mediaLibrary.domain.repository.PlaylistInteractor
 import kotlinx.coroutines.launch
 
-class CreatePlaylistViewModel(
-    private val createPlaylistInteractor: CreatePlaylistInteractor
+open class CreatePlaylistViewModel(
+    private val playlistInteractor: PlaylistInteractor
 ): ViewModel() {
 
-    private val _playlistName = MutableLiveData<String>("")
-    val playlistName: LiveData<String> = _playlistName
+    protected var selectedCoverUri: Uri? = null
 
-    private val _playlistDescription = MutableLiveData<String>("")
-    val playlistDescription: LiveData<String> = _playlistDescription
+    protected val _createPlaylistState = MutableLiveData<CreatePlaylistState>()
+    val createPlaylistState: LiveData<CreatePlaylistState> = _createPlaylistState
 
-    private val _playlistCoverPath = MutableLiveData<String?>(null)
-    val playlistCoverPath: LiveData<String?> = _playlistCoverPath
-
-    private val _canCreate = MutableLiveData<Boolean>(false)
-    val canCreate: LiveData<Boolean> = _canCreate
+    private val _playlistCreatedEvent = MutableLiveData<CreatePlaylistEvent<Unit>>()
+    val playlistCreatedEvent: LiveData<CreatePlaylistEvent<Unit>> = _playlistCreatedEvent
 
     fun onNameChange(name: String) {
-        _playlistName.value = name
-        _canCreate.value = name.isNotBlank()
+        updateState { oldState ->
+            oldState.copy(
+                name = name,
+                canCreate = name.isNotBlank()
+            )
+        }
     }
 
     fun onDescriptionChange(description: String) {
-        _playlistDescription.value = description
+        updateState { oldState ->
+            oldState.copy(
+                description = description
+            )
+        }
     }
 
-    fun onCoverSelected(path: String) {
-        _playlistCoverPath.value = path
+    fun onCoverSelected(uri: Uri) {
+        selectedCoverUri = uri
+        updateState { oldState ->
+            oldState.copy(
+                coverPath = selectedCoverUri.toString()
+            )
+        }
     }
 
-    fun createPlaylist(onCompleted: () -> Unit) {
-        val name = _playlistName.value.orEmpty()
-        if (name.isBlank()) return
-        val description = _playlistDescription.value
-        val playlistCoverPath = _playlistCoverPath.value
+    open fun createPlaylist() {
+
+        val state = _createPlaylistState.value ?: return
 
         viewModelScope.launch {
-            createPlaylistInteractor.createPlaylist(
+            val savePath = selectedCoverUri?.let {
+                playlistInteractor.saveImageToPrivateStorage(it)
+            }
+            playlistInteractor.createPlaylist(
                 Playlist(
-                    name = name,
-                    description = description,
-                    pathImageFile = playlistCoverPath
+                    name = state.name,
+                    description = state.description,
+                    pathImageFile = savePath
                 )
             )
-            onCompleted()
+            notifyPlaylistCreated()
         }
+    }
+
+    protected fun updateState(block: (CreatePlaylistState) -> CreatePlaylistState) {
+        val current = _createPlaylistState.value ?: CreatePlaylistState()
+        _createPlaylistState.value = block(current)
+    }
+
+    protected fun notifyPlaylistCreated() {
+        _playlistCreatedEvent.value = CreatePlaylistEvent(Unit)
     }
 }

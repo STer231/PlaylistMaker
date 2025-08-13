@@ -20,6 +20,8 @@ import com.practicum.playlistmaker.search.data.network.ItunesApi
 import com.practicum.playlistmaker.search.data.network.RetrofitNetworkClient
 import com.practicum.playlistmaker.settings.data.impl.SettingsRepositoryImpl
 import com.practicum.playlistmaker.sharing.data.impl.SharingConfig
+import com.practicum.playlistmaker.util.PluralsProvider
+import com.practicum.playlistmaker.util.PluralsProviderImpl
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -83,6 +85,8 @@ val dataModule = module {
     single<PlaylistTrackDao> {
         get<AppDatabase>().playlistTrackDao()
     }
+
+    single<PluralsProvider> { PluralsProviderImpl(androidContext()) }
 
     // зависимости для конверторов
     factory { TrackDbConvertor() }

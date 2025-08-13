@@ -14,7 +14,8 @@ class PlaylistViewHolder(
 
     fun bind(model: Playlist) {
         binding.tvPlaylistName.text = model.name
-        binding.tvPlaylistSize.text = "${model.playlistSize} треков"
+        val countTracks = model.playlistSize
+        binding.tvPlaylistSize.text = binding.root.resources.getQuantityString(R.plurals.tracks_count, countTracks, countTracks)
         Glide.with(itemView)
             .load(model.pathImageFile)
             .placeholder(R.drawable.placeholder_cover)

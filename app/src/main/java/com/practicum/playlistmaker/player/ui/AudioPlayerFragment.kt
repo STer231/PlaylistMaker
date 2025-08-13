@@ -40,7 +40,9 @@ class AudioPlayerFragment : Fragment() {
 
     private lateinit var adapter: PlaylistBottomSheetAdapter
 
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
+    private var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>? = null
+
+    private var bottomSheetCallback: BottomSheetBehavior.BottomSheetCallback? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,7 +93,7 @@ class AudioPlayerFragment : Fragment() {
                     .alpha(1f)
                     .start()
             }
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            bottomSheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED
         }
 
         binding.newPlaylistButton.setOnClickListener {
@@ -124,6 +126,11 @@ class AudioPlayerFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+        bottomSheetCallback?.let {
+            bottomSheetBehavior?.removeBottomSheetCallback(it)
+        }
+        bottomSheetCallback = null
+        bottomSheetBehavior = null
         super.onDestroyView()
         _binding = null
     }
@@ -192,26 +199,28 @@ class AudioPlayerFragment : Fragment() {
             state = BottomSheetBehavior.STATE_HIDDEN
         }
 
-        bottomSheetBehavior.addBottomSheetCallback(object :
-            BottomSheetBehavior.BottomSheetCallback() {
+        bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_HIDDEN -> {
-                        binding.overlay.animate()
-                            .alpha(0f)
-                            .withEndAction { binding.overlay.visibility = View.GONE }
-                            .start()
+                        _binding?.overlay?.animate()
+                            ?.alpha(0f)
+                            ?.withEndAction { _binding?.overlay?.visibility = View.GONE }
+                            ?.start()
                     }
                 }
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                binding.overlay.alpha = 1f + slideOffset
-                if (binding.overlay.alpha <= 0f) {
-                    binding.overlay.visibility = View.GONE
+                _binding?.overlay?.let { overlay ->
+                    overlay.alpha = 1f + slideOffset
+                    if (overlay.alpha <= 0f) {
+                        overlay.visibility = View.GONE
+                    }
                 }
             }
-        })
+        }
+        bottomSheetCallback?.let { bottomSheetBehavior?.addBottomSheetCallback(it) }
     }
 
     private fun renderPlaylistsState(state: PlaylistsState) {
@@ -241,7 +250,7 @@ class AudioPlayerFragment : Fragment() {
         when(result) {
             is AddTrackResultState.Added -> {
                 showTrackAddedToast(result.playlistName)
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+                bottomSheetBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
             }
             is AddTrackResultState.AlreadyHas -> {
                 showTrackAlreadyAddedToast(result.playlistName)

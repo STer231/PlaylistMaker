@@ -1,9 +1,7 @@
 package com.practicum.playlistmaker.di
 
-import com.practicum.playlistmaker.mediaLibrary.data.impl.CreatePlaylistRepositoryImpl
-import com.practicum.playlistmaker.mediaLibrary.data.impl.PlaylistCoverStorageRepositoryImpl
-import com.practicum.playlistmaker.mediaLibrary.domain.repository.CreatePlaylistRepository
-import com.practicum.playlistmaker.mediaLibrary.domain.repository.PlaylistCoverStorageRepository
+import com.practicum.playlistmaker.mediaLibrary.data.impl.PlaylistRepositoryImpl
+import com.practicum.playlistmaker.mediaLibrary.domain.repository.PlaylistRepository
 import com.practicum.playlistmaker.player.data.impl.AudioPlayerRepositoryImpl
 import com.practicum.playlistmaker.player.data.impl.FavouriteRepositoryImpl
 import com.practicum.playlistmaker.player.data.repository.AudioPlayerRepository
@@ -50,11 +48,7 @@ val repositoryModule = module {
         FavouriteRepositoryImpl(get(), get())
     }
 
-    factory<CreatePlaylistRepository> {
-        CreatePlaylistRepositoryImpl(get(), get(), get(), get())
-    }
-
-    single<PlaylistCoverStorageRepository> {
-        PlaylistCoverStorageRepositoryImpl(androidContext())
+    factory<PlaylistRepository> {
+        PlaylistRepositoryImpl(get(), get(), get(), get(), androidContext())
     }
 }
