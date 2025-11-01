@@ -36,8 +36,6 @@
   &nbsp;
   <img src="screenshots/screen_player.jpg" alt="Player" width="35%"/>
 </p>
-*Экран поиска: ввод запроса и результаты.*  
-*Экран плеера: обложка, 30s preview и кнопки добавления.*
 <p>
   <img src="screenshots/screen_playlists.jpg" alt="Playlists" width="35%"/>
   &nbsp;
